@@ -14,9 +14,15 @@ return new class extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id')->unsigned()->index();
-            $table->string('name', 100)->index();
-            $table->string('type', 100)->nullable();
-            $table->string('detail', 500)->nullable();
+            $table->string('name', 100);
+            $table->string('category', 50);
+            $table->string('theme', 50);
+            $table->string('kind', 50);
+            $table->string('company', 50);
+            $table->date('release', 50);
+            $table->string('detail', 1000);
+            $table->string('image_item', 100)->nullable();
+            $table->string('status', 20)->default('active');
             $table->timestamps();
         });
     }

@@ -13,9 +13,16 @@ class Item extends Model
      */
     protected $fillable = [
         'user_id',
+        'nickname',
         'name',
-        'type',
+        'category',
+        'theme',
+        'kind',
+        'company',
+        'release',
         'detail',
+        'imag_item',
+        'status',
     ];
 
     /**
@@ -24,6 +31,7 @@ class Item extends Model
      * @var array<int, string>
      */
     protected $hidden = [
+        'created_at',
     ];
 
     /**
