@@ -1,6 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
+use App\Models\User;
+use App\Models\Item;
+use App\Models\Policy;
+use App\Models\Possesion;
 
 /*
 |--------------------------------------------------------------------------

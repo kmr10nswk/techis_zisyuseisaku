@@ -30,6 +30,7 @@ class LoginController extends Controller
 
     /**
      * Create a new controller instance.
+     * ログアウト機能を除いて、login機能を使う時は必ずguestユーザーであることを確認
      *
      * @return void
      */
@@ -37,4 +38,22 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    /**
+     * Validate the user login request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function validateLogin(Request $request)
+    {
+        $request->validate([
+            'name' => 'required_without|regex:/^[a-zA-Z0-9]+$/|min:6',
+            $this->username() => 'required_without|string',
+            'password' => 'required|string',
+        ]);
+    }
+
 }
