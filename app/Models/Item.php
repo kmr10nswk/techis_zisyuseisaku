@@ -21,8 +21,7 @@ class Item extends Model
         'company',
         'release',
         'detail',
-        'imag_item',
-        'status',
+        'image_item',
     ];
 
     /**

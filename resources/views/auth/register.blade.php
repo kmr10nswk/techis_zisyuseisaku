@@ -12,12 +12,63 @@
                         @csrf
 
                         <div class="row mb-3">
-                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
+                            <label for="name" class="col-md-4 col-form-label text-md-end">ID</label>
 
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
 
                                 @error('name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            <span>※英数字のみ。6～20文字</span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="nickname" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="nickname" type="text" class="form-control @error('nickname') is-invalid @enderror" name="nickname" value="{{ old('nickname') }}" required autocomplete="nickname">
+
+                                @error('nickname')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                                <span>※6～20文字</span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3 align-items-center">
+                            <label for="sex" class="col-md-4 col-form-label text-md-end">性別</label>
+
+                            <div class="col-md-6">
+                                <input id="onna" type="radio" class="@error('sex') is-invalid @enderror" name="sex" value="女" checked required>
+                                <label for="onna">女</label>
+
+                                <input id="otoko" type="radio" class="@error('sex') is-invalid @enderror" name="sex" value="男" required>
+                                <label for="otoko">男</label>
+
+                                <input id="hoka" type="radio" class="@error('sex') is-invalid @enderror" name="sex" value="その他" required>
+                                <label for="hoka">その他</label>
+
+                                @error('sex')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="age" class="col-md-4 col-form-label text-md-end">年齢</label>
+
+                            <div class="col-md-6">
+                                <input id="age" type="text" class="form-control @error('age') is-invalid @enderror" name="age" value="{{ old('age') }}" required autocomplete="age">
+
+                                @error('age')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -50,6 +101,7 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
+                                <span>※6～20文字</span>
                             </div>
                         </div>
 

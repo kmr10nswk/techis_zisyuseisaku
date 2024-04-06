@@ -2,7 +2,8 @@
 
 return [
 
-    'full_name'                   => '氏名',
+    'name'                        => 'ID',
+    'nickname'                    => '名前',
     'email'                       => 'メールアドレス',
     'password'                    => 'パスワード',
     'retype_password'             => 'もう一度入力',

@@ -50,7 +50,7 @@ class LoginController extends Controller
     protected function validateLogin(Request $request)
     {
         $request->validate([
-            'name' => 'required_without|regex:/^[a-zA-Z0-9]+$/|min:6',
+            'name' => 'required_without|regex:/^[a-zA-Z0-9]+$/',
             $this->username() => 'required_without|string',
             'password' => 'required|string',
         ]);
