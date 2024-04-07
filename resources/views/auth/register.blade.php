@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-lg-8 col-sm-10">
             <div class="card">
                 <div class="card-header">{{ __('Register') }}</div>
 
@@ -37,7 +37,7 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
-                                <span>※6～20文字</span>
+                                <span>※20文字</span>
                             </div>
                         </div>
 

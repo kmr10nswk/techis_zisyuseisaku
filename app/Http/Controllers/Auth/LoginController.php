@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -50,10 +51,24 @@ class LoginController extends Controller
     protected function validateLogin(Request $request)
     {
         $request->validate([
-            'name' => 'required_without|regex:/^[a-zA-Z0-9]+$/',
-            $this->username() => 'required_without|string',
+            'name' => 'required_without',
+            $this->username() => 'required_without',
             'password' => 'required|string',
         ]);
     }
 
+    /**
+     * Get the needed authorization credentials from the request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    protected function credentials(Request $request)
+    {
+        if(empty('name')){
+            return $request->only($this->username(), 'password');
+        }
+        
+        return $request->only('name', 'password');
+    }
 }
