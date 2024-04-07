@@ -8,6 +8,10 @@ use App\Models\Item;
 use App\Models\Policy;
 use App\Models\Possesion;
 
+use App\Http\Controllers\Homecontroller;
+use App\Http\Controllers\Itemcontroller;
+use App\Http\Controllers\UserController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,10 +29,14 @@ use App\Models\Possesion;
 
 Auth::routes();
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::prefix('items')->group(function () {
-    Route::get('/', [App\Http\Controllers\ItemController::class, 'index']);
-    Route::get('/add', [App\Http\Controllers\ItemController::class, 'add']);
-    Route::post('/add', [App\Http\Controllers\ItemController::class, 'add']);
+    Route::get('/', [ItemController::class, 'index']);
+    Route::get('/add', [ItemController::class, 'add']);
+    Route::post('/add', [ItemController::class, 'add']);
+});
+
+Route::prefix('users')->group(function (){
+    Route::get('/', [UserController::class, 'index']);
 });
