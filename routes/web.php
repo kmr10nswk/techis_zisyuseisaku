@@ -39,4 +39,7 @@ Route::prefix('items')->group(function () {
 
 Route::prefix('users')->group(function (){
     Route::get('/', [UserController::class, 'index']);
+    Route::get('/admin_edit/{id}',[UserController::class, 'admin_edit']);
+    Route::patch('/admin_update/{id}',[UserController::class, 'admin_update']);
+    Route::patch('/delete/{id}',[UserController::class, 'delete']);
 });

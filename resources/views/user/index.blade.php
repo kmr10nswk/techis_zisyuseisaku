@@ -39,8 +39,8 @@
                                     <td>{{ $user->sex }}</td>
                                     <td>{{ $user->age }}</td>
                                     <td>{{ $user->email }}</td>
-                                    <td>{{ $user->ippan_admin }}</td>
-                                    <td><a href="" class="btn btn-outline-success">編集</a></td>
+                                    <td>{{ $user->admin }}</td>
+                                    <td><a href="{{ url('users/admin_edit', $user) }}" class="btn btn-outline-success">編集</a></td>
                                     <td><a href="" class="btn btn-outline-danger">詳細</a></td>
                                 </tr>
                             @endforeach

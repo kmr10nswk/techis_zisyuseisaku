@@ -56,4 +56,21 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Policy');
     }
+
+    /**
+     * 権限判断コード
+     */
+    public static function admin($user){
+        if($user->item_admin === 1 && $user->theread_admin === 1){
+            $user['admin'] = '全て';
+        } elseif($user->item_admin === 1){
+            $user['admin'] = '商品';
+        } elseif($user->theread_admin === 1){
+            $user['admin'] = '掲示板';
+        } else {
+            $user['admin'] = '一般';
+        }
+
+        return $user['admin'];
+    }
 }
