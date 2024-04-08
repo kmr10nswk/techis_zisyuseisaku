@@ -18,9 +18,7 @@ class UserController extends Controller
         $users = User::with('policies')
             ->orderby('id', 'asc')
             ->paginate(10);
-
         
-
         return view('user.index', compact('users', ));
     }
 }

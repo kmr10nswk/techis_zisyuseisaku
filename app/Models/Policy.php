@@ -10,6 +10,19 @@ use App\Models\User;
 class Policy extends Model
 {
     use HasFactory;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'user_id',
+        'ippan_admin',
+        'item_admin',
+        'theread_admin',
+    ];
+
     /**
      * リレーション
      */
