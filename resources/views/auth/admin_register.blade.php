@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('AdminRegister') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('admin_register') }}">
+                    <form method="POST" action="{{ url('/register/admin') }}">
                         @csrf
 
                         <div class="row mb-3">

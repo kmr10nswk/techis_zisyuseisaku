@@ -6,9 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use App\Models\Policy;
+use App\Models\Admin;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -40,6 +44,7 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+        $this->middleware('guest:admin');
     }
 
     /**
@@ -112,7 +117,7 @@ class RegisterController extends Controller
 
         return $request->wantsJson()
             ? new JsonResponse([], 201)
-            : redirect(route('admin-home'));
+            : redirect(route('home'));
     }
 
     protected function createAdmin(array $data)
@@ -135,13 +140,11 @@ class RegisterController extends Controller
         } elseif($data['admin'] === '掲示板'){
             $create_policy['theread_admin'] = 1;
         } elseif($data['admin'] === '全て'){
-            $create_policy = [
-                'item_admin' => 1,
-                'theread_admin' => 1,
-            ];
+            $create_policy['item_admin'] = 1;
+            $create_policy['theread_admin'] = 1;
         }
-
-        $register_admin = Policy::create($create_policy);
+        
+        Policy::create($create_policy);
 
         return $register_admin;
     }

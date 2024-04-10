@@ -17,7 +17,7 @@ class Policy extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id',
+        'admin_id',
         'ippan_admin',
         'item_admin',
         'theread_admin',

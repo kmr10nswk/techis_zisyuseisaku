@@ -11,6 +11,7 @@ use App\Models\Possesion;
 use App\Http\Controllers\Homecontroller;
 use App\Http\Controllers\Itemcontroller;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 
 /*
@@ -31,8 +32,10 @@ use App\Http\Controllers\Auth\RegisterController;
 Auth::routes();
 
 // TODO:adminregisterは管理者のみ入れる
-Route::get('/adminregister', [RegisterController::class, 'showAdminRegisterForm'])->name('admin_register');
-Route::post('/adminregister', [RegisterController::class, 'registerAdmin']);
+Route::get('/login/admin', [LoginController::class, 'showAdminLoginForm']);
+Route::post('/login/admin', [LoginController::class, 'adminLogin']);
+Route::get('/register/admin', [RegisterController::class, 'showAdminRegisterForm']);
+Route::post('/register/admin', [RegisterController::class, 'registerAdmin']);
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
