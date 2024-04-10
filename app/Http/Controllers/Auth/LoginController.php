@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -31,13 +32,14 @@ class LoginController extends Controller
 
     /**
      * Create a new controller instance.
-     * ログアウト機能を除いて、login機能を使う時は必ずguestユーザーであることを確認
+     * ログアウト機能を除いて、login機能を使う時は必ずlogin済でないことを確認
      *
      * @return void
      */
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+        $this->middleware('guest:admin')->except('logout');
     }
 
     /**
@@ -71,4 +73,47 @@ class LoginController extends Controller
         
         return $request->only('name', 'password');
     }
+
+    /**
+     * 管理者ログイン用
+     */
+    public function showAdminLoginForm()
+    {
+        return view('auth.login', ['authgroup' => 'admin']);
+    }
+
+    public function adminLogin(Request $request)
+    {
+        $this->validate($request,[
+            'email' => 'required|email',
+            'password' => 'required|min6'
+        ]);
+
+         // クラスがThrottlesLoginsトレイトを使用している場合、自動的にスロットルを調整できます
+        // このアプリケーションのログイン試行。これにユーザー名をキーとして入力します。
+        // このアプリケーションに対してこれらのリクエストを行うクライアントのIPアドレスを記録。
+        if (method_exists($this, 'hasTooManyLoginAttempts') && 
+            $this->hasTooManyLoginAttempts($request)) {
+                $this->fireLockoutEvent($request);
+
+            return $this->sendLockoutResponse($request);
+        }
+
+        if(Auth::guard('admin')->attempt([
+            'email' => $request->email, 
+            'password' => $request->password,
+            ],
+        $request->get('remember'))){
+            return redirect()->intended('/home');
+        }
+
+        // If the login attempt was unsuccessful we will increment the number of attempts
+        // to login and redirect the user back to the login form. Of course, when this
+        // user surpasses their maximum number of attempts they will get locked out.
+        $this->incrementLoginAttempts($request);
+
+        return back()->withInput($request->only('email', 'remember'));
+    }
+
+
 }

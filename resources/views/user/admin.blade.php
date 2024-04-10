@@ -10,18 +10,13 @@
 @section('content')
     <div class="container text-center">
         <h5>編集アカウント：{{ $user->name }}さん</h5>
-        <form action="{{ url('users/admin_update', $user) }}" method="POST" class="form-list w-50 p-3 mx-auto">
+        <form action="{{ url('users/admin_update/'. $user->id) }}" method="POST" class="form-list w-50 p-3 mx-auto">
         @csrf
         @method('patch')
 
             <div class="mb-2">
                 <h5 class="mt-3 mb-4">【権限一覧】</h5>
                 <div class="d-flex justify-content-between">
-
-                    <div class="col-3">
-                        <input type="radio" name="admin" id="ippan" value="一般" {{ $user->item_admin === 1 || $user->theread_admin === 1 ? "" : "checked" }} />
-                        <label for="ippan">一般</label>
-                    </div>
 
                     <div class="col-3">
                         <input type="radio" name="admin" id="item" value="商品" {{ $user->item_admin === 1 && !isset($user->theread_admin) ? "checked" : "" }} >

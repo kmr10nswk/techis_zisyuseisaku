@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('policies', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id')->unsigned()->index();
+            $table->bigInteger('admin_id')->unsigned()->index();
             $table->tinyinteger('item_admin')->nullable();
             $table->tinyInteger('theread_admin')->nullable();
             $table->timestamps();

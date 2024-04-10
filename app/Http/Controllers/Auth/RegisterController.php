@@ -69,7 +69,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $register_user= User::create([
+        return User::create([
             'nickname' => $data['nickname'],
             'name' => $data['name'],
             'sex' => $data['sex'],
@@ -78,12 +78,76 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             // 'image_icon' => $data['image_icon'],
         ]);
+    }
 
-        Policy::create([
-            'user_id' => $register_user->id,
-            'ippan_admin' => 1,
+    /**
+     * 管理者アカウント作成用
+     */
+    protected function adminValidator(array $data)
+    {
+        return Validator::make($data, [
+            'name' => ['required', 'string' , 'max:20'],
+            'admin' => ['required', 'in:商品,掲示板,全て'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:admins'],
+            'password' => ['required', 'string', 'min:6', 'max:20', 'confirmed'],
+        ]);
+    }
+
+    public function showAdminRegisterForm()
+    {
+        return view('auth.admin_register', ['authgroup' => 'admin']);
+    }
+
+    public function registerAdmin(Request $request)
+    {
+        $this->adminValidator($request->all())->validate();
+
+        event(new Registered($user = $this->createAdmin($request->all())));
+
+        Auth::guard('admin')->login($user);
+
+        if($response = $this->registeredAdmin($request, $user)){
+            return $response;
+        }
+
+        return $request->wantsJson()
+            ? new JsonResponse([], 201)
+            : redirect(route('admin-home'));
+    }
+
+    protected function createAdmin(array $data)
+    {
+        $register_admin = Admin::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
         ]);
 
-        return $register_user;
+        $create_policy = [
+            'admin_id' => $register_admin->id,
+            'item_admin' => null,
+            'theread_admin' => null,
+        ];
+
+        // adminに入ってる値によって入れるところを変える。
+        if($data['admin'] === '商品'){
+            $create_policy['item_admin'] = 1;
+        } elseif($data['admin'] === '掲示板'){
+            $create_policy['theread_admin'] = 1;
+        } elseif($data['admin'] === '全て'){
+            $create_policy = [
+                'item_admin' => 1,
+                'theread_admin' => 1,
+            ];
+        }
+
+        $register_admin = Policy::create($create_policy);
+
+        return $register_admin;
+    }
+
+    protected function registeredAdmin(Request $request, $user)
+    {
+        // 
     }
 }

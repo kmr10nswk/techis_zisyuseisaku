@@ -16,20 +16,11 @@ class UserController extends Controller
      */
     public function index(Request $request){
 
-        $users = User::with('policies')
-            ->orderby('id', 'asc')
+        $users = User::orderby('id', 'asc')
             ->paginate(10);
         
         foreach($users as $user){
-            if($user->item_admin === 1 && $user->theread_admin === 1){
-                $user['admin'] = '全て';
-            } elseif($user->item_admin === 1){
-                $user['admin'] = '商品';
-            } elseif($user->theread_admin === 1){
-                $user['admin'] = '掲示板';
-            } else {
-                $user['admin'] = '一般';
-            }
+            User::admin($user);
         }
 
         return view('user.index', compact('users'));
@@ -47,7 +38,9 @@ class UserController extends Controller
      * Admin編集動作
      */
     public function admin_update(Request $request, User $user){
-        dd($user);
+        // TODO:まずバリデートしろよ！
+        // 'admin' => ['required', 'in:商品,掲示板,全て'],
+
         // ユーザーがどの権限を持ってるかの判定
         $user['admin']= User::admin($user);
         
@@ -72,7 +65,6 @@ class UserController extends Controller
             }
 
             // データの更新
-            dd($user);
             Policy::where('user_id', $user->id)
                 ->update($updateData);
 

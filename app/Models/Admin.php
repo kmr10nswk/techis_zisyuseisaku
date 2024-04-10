@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+// メール用
+use Illuminate\Notifications\Notifiable;
 
-class Admin extends Model
+class Admin extends Authenticatable
 {
-    use HasFactory;
+    use Notifiable;
+
+    protected $guard = 'admin';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -57,8 +61,6 @@ class Admin extends Model
             $admin['admin'] = '商品';
         } elseif($admin->policy->theread_admin === 1){
             $admin['admin'] = '掲示板';
-        } else {
-            $admin['admin'] = '一般';
         }
 
         return $admin['admin'];
