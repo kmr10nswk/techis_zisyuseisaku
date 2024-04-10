@@ -52,20 +52,20 @@ class User extends Authenticatable
     /**
      * リレーション
      */
-    public function policies()
+    public function policy()
     {
-        return $this->hasMany('App\Models\Policy');
+        return $this->hasOne('App\Models\Policy');
     }
 
     /**
      * 権限判断コード
      */
     public static function admin($user){
-        if($user->item_admin === 1 && $user->theread_admin === 1){
+        if($user->policy->item_admin === 1 && $user->policy->theread_admin === 1){
             $user['admin'] = '全て';
-        } elseif($user->item_admin === 1){
+        } elseif($user->policy->item_admin === 1){
             $user['admin'] = '商品';
-        } elseif($user->theread_admin === 1){
+        } elseif($user->policy->theread_admin === 1){
             $user['admin'] = '掲示板';
         } else {
             $user['admin'] = '一般';
