@@ -26,8 +26,8 @@ class Policy extends Model
     /**
      * リレーション
      */
-    public function user()
+    public function admin()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo('App\Models\Admin');
     }
 }

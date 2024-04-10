@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('policies', function (Blueprint $table) {
-            $table->tinyinteger('ippan_admin')->after('user_id');
+        Schema::create('admins', function (Blueprint $table) {
+            $table->id();
+            $table->string('name',20);
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->rememberToken();
+            $table->timestamps();
         });
     }
 
@@ -21,8 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('policies', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('admins');
     }
 };

@@ -49,28 +49,5 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    /**
-     * リレーション
-     */
-    public function policy()
-    {
-        return $this->hasOne('App\Models\Policy');
-    }
 
-    /**
-     * 権限判断コード
-     */
-    public static function admin($user){
-        if($user->policy->item_admin === 1 && $user->policy->theread_admin === 1){
-            $user['admin'] = '全て';
-        } elseif($user->policy->item_admin === 1){
-            $user['admin'] = '商品';
-        } elseif($user->policy->theread_admin === 1){
-            $user['admin'] = '掲示板';
-        } else {
-            $user['admin'] = '一般';
-        }
-
-        return $user['admin'];
-    }
 }
