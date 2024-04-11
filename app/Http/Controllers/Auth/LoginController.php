@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
@@ -53,8 +54,8 @@ class LoginController extends Controller
     protected function validateLogin(Request $request)
     {
         $request->validate([
-            'name' => 'required_without',
-            $this->username() => 'required_without',
+            'name' => 'required_without:'.$this->username(),
+            $this->username() => 'required_without:name',
             'password' => 'required|string',
         ]);
     }
@@ -67,7 +68,7 @@ class LoginController extends Controller
      */
     protected function credentials(Request $request)
     {
-        if(empty('name')){
+        if(empty($request->name)){
             return $request->only($this->username(), 'password');
         }
         
@@ -86,7 +87,7 @@ class LoginController extends Controller
     {
         $this->validate($request,[
             'email' => 'required|email',
-            'password' => 'required|min6'
+            'password' => 'required|min:6'
         ]);
 
          // クラスがThrottlesLoginsトレイトを使用している場合、自動的にスロットルを調整できます
@@ -104,7 +105,7 @@ class LoginController extends Controller
             'password' => $request->password,
             ],
         $request->get('remember'))){
-            return redirect()->intended('/home');
+            return redirect()->intended('/');
         }
 
         // If the login attempt was unsuccessful we will increment the number of attempts
