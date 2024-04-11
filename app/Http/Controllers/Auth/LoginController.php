@@ -90,7 +90,7 @@ class LoginController extends Controller
             'password' => 'required|min:6'
         ]);
 
-         // クラスがThrottlesLoginsトレイトを使用している場合、自動的にスロットルを調整できます
+        // クラスがThrottlesLoginsトレイトを使用している場合、自動的にスロットルを調整できます
         // このアプリケーションのログイン試行。これにユーザー名をキーとして入力します。
         // このアプリケーションに対してこれらのリクエストを行うクライアントのIPアドレスを記録。
         if (method_exists($this, 'hasTooManyLoginAttempts') && 
