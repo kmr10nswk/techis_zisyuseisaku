@@ -21,27 +21,35 @@
                     <table class="table table-hover text-nowrap">
                         <thead>
                             <tr class="text-center">
+                                <th></th>
                                 <th>ID</th>
                                 <th>名前</th>
-                                <th>性別</th>
-                                <th>年齢</th>
-                                <th>email</th>
-                                <th>権限</th>
-                                <th>権限編集</th>
+                                <th>GM/PL</th>
+                                <th>スタイル</th>
+                                @if(Auth::user())
+                                    <th>一言コメント</th>
+                                @elseif(Auth::guard('admin')->check())
+                                    <th>email</th>
+                                    <th>削除</th>
+                                @endif
                                 <th>詳細</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($users as $user)
                                 <tr class="text-center">
+                                    <td>{{ empty($user->image_icon) ? $user->image_icon : "" }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->nickname }}</td>
-                                    <td>{{ $user->sex }}</td>
-                                    <td>{{ $user->age }}</td>
-                                    <td>{{ $user->email }}</td>
-                                    <td>{{ $user->admin }}</td>
-                                    <td><a href="{{ url('users/admin_edit', $user) }}" class="btn btn-outline-success">編集</a></td>
-                                    <td><a href="" class="btn btn-outline-danger">詳細</a></td>
+                                    <td>{{ $user->gmpl }}</td>
+                                    <td>{{ $user->session_style }}</td>
+                                    @if(Auth::user())
+                                        <td>40文字までコメント</td>
+                                    @elseif(Auth::guard('admin')->check())
+                                        <td>{{ $user->email }}</td>
+                                        <td><a href="" class="btn btn-outline-danger">削除</td>
+                                    @endif
+                                    <td><a href="" class="btn btn-outline-primary">詳細</a></td>
                                 </tr>
                             @endforeach
                         </tbody>

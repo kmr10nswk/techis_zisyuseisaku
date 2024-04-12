@@ -37,23 +37,23 @@ Route::post('/login/admin', [LoginController::class, 'adminLogin']);
 Route::get('/register/admin', [RegisterController::class, 'showAdminRegisterForm']);
 Route::post('/register/admin', [RegisterController::class, 'registerAdmin']);
 
+// Home
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-
+// Item
 Route::prefix('items')->group(function () {
     Route::get('/', [ItemController::class, 'index']);
     Route::get('/add', [ItemController::class, 'add']);
     Route::post('/add', [ItemController::class, 'add']);
 });
 
+// User
 Route::prefix('users')->group(function (){
     Route::get('/', [UserController::class, 'index']);
-    Route::get('/admin_edit/{id}',[UserController::class, 'admin_edit']);
-    Route::patch('/admin_update/{user}',[UserController::class, 'admin_update']);
+    Route::get('/admin/edit/{id}',[UserController::class, 'admin_edit']);
+    Route::patch('/admin/update/{user}',[UserController::class, 'admin_update']);
     Route::patch('/delete/{id}',[UserController::class, 'delete']);
-});
-
-Route::prefix('admins')->group(function (){
-    Route::get('');
-
+    
+    Route::get('/profile/edit/{user}',[UserCOntroller::class, 'profile_edit']);
+    Route::get('/profile/update/{user}',[UserCOntroller::class, 'profile_update']);
 });

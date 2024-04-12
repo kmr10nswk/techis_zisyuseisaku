@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Policy;
+use App\Models\Admin;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -15,16 +16,30 @@ class UserController extends Controller
      * User一覧
      */
     public function index(Request $request){
-
-        $users = User::orderby('id', 'asc')
-            ->paginate(10);
+        $users = User::query();
         
-        foreach($users as $user){
-            User::admin($user);
+        $users = $users->orderby('id', 'asc')
+            ->paginate(10)->withQueryString();
+        
+        // 一般ユーザーの場合はemail情報を渡さない
+        if(Auth::user()){
+            foreach($users as $user){
+                $user['email'] = "";
+            }
         }
 
         return view('user.index', compact('users'));
     }
+
+    /**
+     * プロフィール画面表示
+     */
+    public function profile_edit(User $user)
+    {
+        
+    }
+
+
 
     /**
      * Admin編集画面
@@ -38,11 +53,13 @@ class UserController extends Controller
      * Admin編集動作
      */
     public function admin_update(Request $request, User $user){
-        // TODO:まずバリデートしろよ！
-        // 'admin' => ['required', 'in:商品,掲示板,全て'],
+        // バリデーション
+        $this->validate($request, [
+            'admin' => ['required', 'in:商品,掲示板,全て'],
+        ]);
 
         // ユーザーがどの権限を持ってるかの判定
-        $user['admin']= User::admin($user);
+        $user['admin'] = User::admin($user);
         
         // 変更されてたらupdate
         if($user->admin !== $request->admin){
@@ -73,7 +90,7 @@ class UserController extends Controller
                 ->with('admin_message', $message);
         }
 
-        // されてなかったらredirectして一覧に戻る。
+        // 変更されてなかったらredirectして一覧に戻る。
         return redirect('users/');
     }
 

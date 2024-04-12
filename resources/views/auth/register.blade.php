@@ -42,19 +42,22 @@
                         </div>
 
                         <div class="row mb-3 align-items-center">
-                            <label for="sex" class="col-md-4 col-form-label text-md-end">性別</label>
+                            <label for="gmpl" class="col-md-4 col-form-label text-md-end">GM/PL傾向</label>
 
                             <div class="col-md-6">
-                                <input id="onna" type="radio" class="@error('sex') is-invalid @enderror" name="sex" value="女" checked required>
-                                <label for="onna">女</label>
+                                <input id="GMonly" type="radio" class="@error('gmpl') is-invalid @enderror" name="gmpl" value="GMのみ" checked required>
+                                <label for="GMonly">GMのみ</label>
 
-                                <input id="otoko" type="radio" class="@error('sex') is-invalid @enderror" name="sex" value="男" required>
-                                <label for="otoko">男</label>
+                                <input id="PLonly" type="radio" class="@error('gmpl') is-invalid @enderror" name="gmpl" value="PLのみ" required>
+                                <label for="PLonly">PLのみ</label>
 
-                                <input id="hoka" type="radio" class="@error('sex') is-invalid @enderror" name="sex" value="その他" required>
-                                <label for="hoka">その他</label>
+                                <input id="GM" type="radio" class="@error('gmpl') is-invalid @enderror" name="gmpl" value="GMより" required>
+                                <label for="GM">GMより</label>
 
-                                @error('sex')
+                                <input id="PL" type="radio" class="@error('gmpl') is-invalid @enderror" name="gmpl" value="PLより" required>
+                                <label for="PL">PLより</label>
+
+                                @error('gmpl')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -62,13 +65,20 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
-                            <label for="age" class="col-md-4 col-form-label text-md-end">年齢</label>
+                        <div class="row mb-3 d-flex align-items-center">
+                            <label for="session_style" class="col-md-4 col-form-label text-md-end">セッションスタイル</label>
 
                             <div class="col-md-6">
-                                <input id="age" type="text" class="form-control @error('age') is-invalid @enderror" name="age" value="{{ old('age') }}" required autocomplete="age">
+                                <input id="voice" type="checkbox" class="@error('session_style') is-invalid @enderror" name="session_style[]" value="voice" {{ is_array(old('session_style')) && in_array('voice', old('session_style')) ? 'checked' : '' }} required autocomplete="session_style">
+                                <label for="voice">ボイス</label>
+                                
+                                <input id="text" type="checkbox" class="@error('session_style') is-invalid @enderror" name="session_style[]" value="text" {{ is_array(old('session_style')) && in_array('text', old('session_style')) ? 'checked' : '' }} required autocomplete="session_style">
+                                <label for="text">テキスト</label>
+                                
+                                <input id="mix" type="checkbox" class="@error('session_style') is-invalid @enderror" name="session_style[]" value="mix" {{ is_array(old('session_style')) && in_array('mix', old('session_style')) ? 'checked' : '' }} required autocomplete="session_style">
+                                <label for="mix">ボイス＋テキスト</label>
 
-                                @error('age')
+                                @error('session_style')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

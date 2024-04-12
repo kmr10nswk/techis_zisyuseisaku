@@ -57,8 +57,9 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'nickname' => ['required','string', 'max:20'],
             'name' => ['required', 'string', 'min:6', 'max:20','regex:/^[a-zA-Z0-9]+$/'],
-            'sex' => ['required', 'in:男,女,その他', 'string'],
-            'age' => ['required', 'numeric', 'between:18,90'],
+            'gmpl' => ['required', 'in:GMのみ,PLのみ,GMより,PLより', 'string'],
+            'session_style' => ['required', 'array'],
+            'session_style.*'  => ['string', 'in:voice,text,mix'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'image_icon' => ['image', 'mimes:jpeg,png', 'max:1024'],
@@ -73,11 +74,13 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $data['session_style'] = implode(',' , $data['session_style']);
+
         return User::create([
             'nickname' => $data['nickname'],
             'name' => $data['name'],
-            'sex' => $data['sex'],
-            'age' => $data['age'],
+            'gmpl' => $data['gmpl'],
+            'session_style' => $data['session_style'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             // 'image_icon' => $data['image_icon'],
