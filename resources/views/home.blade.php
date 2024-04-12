@@ -8,10 +8,6 @@
 
 @section('content')
     <p>Welcome to this beautiful admin panel.</p>
-    <form action="{{ route('logout') }}" method="POST">
-        @csrf
-        <button type="submit">logout</button>
-    </form>
 @stop
 
 @section('css')
