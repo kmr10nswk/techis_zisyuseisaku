@@ -69,14 +69,14 @@
                             <label for="session_style" class="col-md-4 col-form-label text-md-end">セッションスタイル</label>
 
                             <div class="col-md-6">
-                                <input id="voice" type="checkbox" class="@error('session_style') is-invalid @enderror" name="session_style[]" value="voice" {{ is_array(old('session_style')) && in_array('voice', old('session_style')) ? 'checked' : '' }} required autocomplete="session_style">
-                                <label for="voice">ボイス</label>
+                                <input id="voice" type="checkbox" class="@error('session_style') is-invalid @enderror" name="session_style[]" value="ボイスのみ" {{ is_array(old('session_style')) && in_array('voice', old('session_style')) ? 'checked' : '' }} required autocomplete="session_style">
+                                <label for="voice">ボイスのみ</label>
                                 
-                                <input id="text" type="checkbox" class="@error('session_style') is-invalid @enderror" name="session_style[]" value="text" {{ is_array(old('session_style')) && in_array('text', old('session_style')) ? 'checked' : '' }} required autocomplete="session_style">
-                                <label for="text">テキスト</label>
+                                <input id="text" type="checkbox" class="@error('session_style') is-invalid @enderror" name="session_style[]" value="テキストのみ" {{ is_array(old('session_style')) && in_array('text', old('session_style')) ? 'checked' : '' }} required autocomplete="session_style">
+                                <label for="text">テキストのみ</label>
                                 
-                                <input id="mix" type="checkbox" class="@error('session_style') is-invalid @enderror" name="session_style[]" value="mix" {{ is_array(old('session_style')) && in_array('mix', old('session_style')) ? 'checked' : '' }} required autocomplete="session_style">
-                                <label for="mix">ボイス＋テキスト</label>
+                                <input id="mix" type="checkbox" class="@error('session_style') is-invalid @enderror" name="session_style[]" value="半テキ" {{ is_array(old('session_style')) && in_array('mix', old('session_style')) ? 'checked' : '' }} required autocomplete="session_style">
+                                <label for="mix">半分テキスト</label>
 
                                 @error('session_style')
                                     <span class="invalid-feedback" role="alert">
