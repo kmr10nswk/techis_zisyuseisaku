@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Collection;
 
 use App\Models\Policy;
 
@@ -49,5 +51,18 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-
+    /**
+     * 一般ユーザーの場合はemail情報を渡さない
+     */
+    public static function noEmail($users) {
+        if(Auth::user() && $users->count() > 1){
+            foreach($users as $user){
+                $user = $user->makeHidden('email');
+                dd($user);
+            }
+        } elseif(Auth::user()) {
+            $users->makeHidden('email');
+        }
+        return $users;
+    }
 }

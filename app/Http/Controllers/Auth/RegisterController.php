@@ -59,7 +59,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'min:6', 'max:20','regex:/^[a-zA-Z0-9]+$/'],
             'gmpl' => ['required', 'in:GMのみ,PLのみ,GMより,PLより', 'string'],
             'session_style' => ['required', 'array'],
-            'session_style.*'  => ['string', 'in:voice,text,mix'],
+            'session_style.*'  => ['string', 'in:ボイスのみ,テキストのみ,混合'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'image_icon' => ['image', 'mimes:jpeg,png', 'max:1024'],

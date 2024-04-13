@@ -21,7 +21,7 @@
                     <table class="table table-hover text-nowrap">
                         <thead>
                             <tr class="text-center">
-                                <th></th>
+                                <th>アイコン予定</th>
                                 <th>ID</th>
                                 <th>名前</th>
                                 <th>GM/PL</th>
@@ -38,6 +38,7 @@
                         <tbody>
                             @foreach ($users as $user)
                                 <tr class="text-center">
+                                    <!-- ""じゃなくてcontrollerの方でimage_iconに入れる値を管理 -->
                                     <td>{{ empty($user->image_icon) ? $user->image_icon : "" }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->nickname }}</td>
@@ -49,7 +50,7 @@
                                         <td>{{ $user->email }}</td>
                                         <td><a href="" class="btn btn-outline-danger">削除</td>
                                     @endif
-                                    <td><a href="" class="btn btn-outline-primary">詳細</a></td>
+                                    <td><a href="{{ url('users/profile/edit', $user) }}" class="btn btn-outline-primary">詳細</a></td>
                                 </tr>
                             @endforeach
                         </tbody>
