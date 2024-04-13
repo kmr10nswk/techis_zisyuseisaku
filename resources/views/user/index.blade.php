@@ -25,7 +25,7 @@
                                 <th>ID</th>
                                 <th>名前</th>
                                 <th>GM/PL</th>
-                                <th>スタイル</th>
+                                <th>セッションスタイル</th>
                                 @if(Auth::user())
                                     <th>一言コメント</th>
                                 @elseif(Auth::guard('admin')->check())
