@@ -50,7 +50,7 @@
                                         <td>{{ $user->email }}</td>
                                         <td><a href="" class="btn btn-outline-danger">削除</td>
                                     @endif
-                                    <td><a href="{{ url('users/profile/edit', $user) }}" class="btn btn-outline-primary">詳細</a></td>
+                                    <td><a href="{{ url('users/profile/show', $user) }}" class="btn btn-outline-primary">詳細</a></td>
                                 </tr>
                             @endforeach
                         </tbody>

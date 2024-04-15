@@ -4,7 +4,7 @@
 @if(true)
     @section('title', 'マイプロフィール')
 @endif
-{{ dd($user) }}
+
 @section('content_header')
     <!-- Todo:if文 -->
     <h1>マイプロフィール</h1>
@@ -12,25 +12,6 @@
 @stop
 
 @section('content')
-<!-- どう考えてもここに書くべきじゃないんだけど、CSSをどこに書いたらいいのか分からん -->
-<style>
-    /**
-    ◇やりたいことを書いていきます。
-    ・レスポンシブ対応を出来れば短く済ませたい。
-    　こいつに時間を取られたくない。
-    ・見出し幅でかすぎ。ちっちゃくしたい。
-    ・なんかもうちょっとおしゃれにしたい。これはググった奴持ってくる。
-    */
-
-    .table th{
-        background-color: #CFF4FC;
-    }
-
-    
-
-</style>
-
-
 <div class="container">
     <!-- ID部分 -->
     <div class="text-center mb-3">
@@ -38,6 +19,10 @@
     </div>
 
     <!-- アイコン部分 -->
+    <div class="text-center my-3">
+        <!-- Todo:nullだったらnull用画像、nullじゃなかったら登録画像の表示 -->
+        <img src="" alt="プロフィールアイコン">
+    </div>
     
     
     <table class="table table-bordered">
@@ -59,6 +44,7 @@
                 <td>{{ $user->session_style }}</td>
             </tr>
             <tr>
+                <!-- Todo:所持ルールブックの対応 -->
                 <th scope="row">所持ルールブック</th>
                 <td>あとでね</td>
             </tr>
@@ -73,6 +59,22 @@
 @stop
 
 @section('css')
+<style>
+    /**
+    ◇やりたいことを書いていきます。
+    ・レスポンシブ対応を出来れば短く済ませたい。
+    　こいつに時間を取られたくない。
+    ・なんかもうちょっとおしゃれにしたい。これはググった奴持ってくる。
+    */
+
+    .table th{
+        background-color: #CFF4FC;
+        width: 20%;
+        @media screen and (max-width: 915px){
+            width: 30%;
+        }
+    }
+</style>
 @stop
 
 @section('js')

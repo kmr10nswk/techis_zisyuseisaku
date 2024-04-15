@@ -41,23 +41,25 @@ Route::post('/register/admin', [RegisterController::class, 'registerAdmin']);
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Item
-Route::prefix('items')->group(function () {
-    Route::get('/', [ItemController::class, 'index']);
-    Route::get('/add', [ItemController::class, 'add']);
-    Route::post('/add', [ItemController::class, 'add']);
+// addは元からあったやつ。getとpostで使い分けてて頭がいいが、俺はpatchの方が好き。
+Route::prefix('items')->name('items.')->group(function () {
+    Route::get('/', [ItemController::class, 'index'])->name('index');
+    Route::get('/add', [ItemController::class, 'add'])->name('add');
+    Route::post('/add', [ItemController::class, 'add'])->name('add.post');
 });
 
 // User
-Route::prefix('users')->group(function (){
-    Route::get('/', [UserController::class, 'index']);
-    Route::patch('/delete/{id}',[UserController::class, 'delete']);
+Route::prefix('users')->name('users.')->group(function (){
+    Route::get('/', [UserController::class, 'index'])->name('index');
+    Route::patch('/delete/{id}',[UserController::class, 'delete'])->name('delete');
     
-    Route::get('/profile/edit/{user}',[UserCOntroller::class, 'profile_edit']);
-    Route::get('/profile/update/{user}',[UserCOntroller::class, 'profile_update']);
+    Route::get('/profile/show/{user}',[UserController::class, 'profile_show'])->name('profile.show');
+    Route::get('/profile/edit',[UserController::class, 'profile_edit'])->name('profile.edit');
+    Route::patch('/profile/update/{user}',[UserController::class, 'profile_update'])->name('profile.update');
 });
 
 // Admin
-Route::prefix('admins')->group(function (){
+Route::prefix('admins')->name('admins.')->group(function (){
     Route::get('/', [AdminController::class, 'admin_index']);
     Route::patch('/delete/{id}',[AdminController::class, 'admin_delete']);
 

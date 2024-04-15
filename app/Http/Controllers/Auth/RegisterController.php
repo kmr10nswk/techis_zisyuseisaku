@@ -62,7 +62,6 @@ class RegisterController extends Controller
             'session_style.*'  => ['string', 'in:ボイスのみ,テキストのみ,混合'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'image_icon' => ['image', 'mimes:jpeg,png', 'max:1024'],
         ]);
     }
 

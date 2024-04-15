@@ -28,7 +28,7 @@ class User extends Authenticatable
         'session_style',
         'email',
         'password',
-        'image_icon',
+        'icon',
     ];
 
     /**
@@ -58,11 +58,28 @@ class User extends Authenticatable
         if(Auth::user() && $users->count() > 1){
             foreach($users as $user){
                 $user = $user->makeHidden('email');
-                dd($user);
             }
         } elseif(Auth::user()) {
             $users->makeHidden('email');
         }
         return $users;
     }
+
+    /**
+     * 画像アップロード
+     * @param ファイル情報, 保存先
+     * @return string || bool
+     */
+    public static function uploadImage($file, $path) {
+        if(isset($file) && $path === 'icon'){
+            $name = $file->store('public/' . $path);
+            return (basename($name));
+        } elseif(isset($file) && $path === 'item') {
+            $name = $file->store('public/' . $path);
+            return (basename($name));
+        }
+
+        return null;
+    }
+
 }
