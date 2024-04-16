@@ -65,11 +65,31 @@ class UserController extends Controller
             'password' => ['confirmed', 'min:6', 'max:20' , 'nullable'],
         ]);
 
-        // Todo:if文で、変更されている時だけ下記の処理。
-        $file = $request->file('image_icon');
-        $file_name = User::uploadImage($file, 'icon');
+        $data = [
+            'nickname' => $request->nickname,
+            'name' => $request->name,
+            'gmpl' => $request->gmpl,
+            'session_style' => $request->session_style,
+            'email' => $request->email,
+            'oneword' => $request->oneword,
+            'comment' => $request->comment,
+        ];
+        
+        // セッションスタイルを配列から文字列へ
+        $data['session_style'] = implode(',' , $data['session_style']);
 
-        // Todo:更新処理
+        // パスワードが入力されていれば、更新データに追加
+        if($request->password) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        // 画像処理
+        $file = $request->file('image_icon');
+        $data['image_icon'] = User::uploadImage($file, 'icon');
+
+        // 更新
+        User::where('id', $user->id)
+            ->update($data);
 
         return redirect()->route('users.profile.edit');
     }

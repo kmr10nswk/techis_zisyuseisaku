@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', '商品一覧')
+@section('title', 'ユーザー一覧')
 
 @section('content_header')
-    <h1>アカウント一覧</h1>
+    <h1>ユーザー一覧</h1>
 @stop
 
 @section('content')
@@ -11,7 +11,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">アカウント一覧</h3>
+                    <h3 class="card-title">ユーザー一覧</h3>
                     <div class="card-tools">
                         <div class="input-group input-group-sm">
                         </div>
@@ -39,13 +39,13 @@
                             @foreach ($users as $user)
                                 <tr class="text-center">
                                     <!-- ""じゃなくてcontrollerの方でimage_iconに入れる値を管理 -->
-                                    <td>{{ empty($user->image_icon) ? $user->image_icon : "" }}</td>
+                                    <td><img src="{{ asset('icon/', $user->image_icon) }}" alt="アイコン" /></td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->nickname }}</td>
                                     <td>{{ $user->gmpl }}</td>
                                     <td>{{ $user->session_style }}</td>
                                     @if(Auth::user())
-                                        <td>40文字までコメント</td>
+                                        <td>{{ $user->oneword }}</td>
                                     @elseif(Auth::guard('admin')->check())
                                         <td>{{ $user->email }}</td>
                                         <td><a href="" class="btn btn-outline-danger">削除</td>
@@ -62,6 +62,13 @@
 @stop
 
 @section('css')
+<style>
+    .row .col-12 .card .card-body .table tbody img{
+        width: 10%;
+        border-radius: 50%;
+    }
+
+</style>
 @stop
 
 @section('js')

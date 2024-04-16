@@ -13,7 +13,7 @@
 <div class="container">
     <div class="text-center my-3">
         <!-- Todo:srcにはasset関数使って引っ張ってくる。null値かどうかはcontrollerで -->
-        <img src="" alt="プロフィールアイコン">
+        <img src="{{ asset('icon/' . $user->image_icon) }}" alt="プロフィールアイコン">
     </div>
     <form method="POST" action="{{ url('users/profile/update', $user) }}" enctype="multipart/form-data">
     @csrf
@@ -128,7 +128,7 @@
             <label for="comment" class="col-md-3 col-form-label text-md-end">{{ __('自己紹介') }}</label>
 
             <div class="col-md-6">
-                <textarea id="comment" rows="10" maxlength="400" class="form-control @error('comment') is-invalid @enderror" name="comment" autocomplete="comment">{{ old('comment', isset($user->comment) ? "" : $user->nul) }}</textarea>
+                <textarea id="comment" rows="10" maxlength="400" class="form-control @error('comment') is-invalid @enderror" name="comment" autocomplete="comment" >{{ old('comment',$user->comment) }}</textarea>
 
                 @error('comment')
                     <span class="invalid-feedback" role="alert">
@@ -212,6 +212,11 @@
         @media screen and (max-width: 915px) {
             max-width: 90%;
         }
+    }
+
+    .container .text-center img{
+        width: 50%;
+        border-radius: 50%;
     }
 </style>
 @stop
