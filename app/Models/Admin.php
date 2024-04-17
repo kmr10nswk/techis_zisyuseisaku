@@ -10,7 +10,7 @@ class Admin extends Authenticatable
 {
     use Notifiable;
 
-    protected $guard = 'admin';
+    protected $guard = 'policy';
 
     /**
      * The attributes that are mass assignable.
@@ -54,15 +54,15 @@ class Admin extends Authenticatable
     /**
      * 権限判断コード
      */
-    public static function admin($admin){
+    public static function policyType($admin){
         if($admin->policy->item_admin === 1 && $admin->policy->theread_admin === 1){
-            $admin['admin'] = '全て';
+            $admin['policy_name'] = '全て';
         } elseif($admin->policy->item_admin === 1){
-            $admin['admin'] = '商品';
+            $admin['policy_name'] = '商品';
         } elseif($admin->policy->theread_admin === 1){
-            $admin['admin'] = '掲示板';
+            $admin['policy_name'] = '掲示板';
         }
 
-        return $admin['admin'];
+        return $admin['policy_name'];
     }
 }

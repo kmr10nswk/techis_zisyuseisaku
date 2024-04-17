@@ -23,6 +23,11 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        // 管理者ユーザー
+        Gate::define('admin', function($admin){
+            return (Auth::guard('admin'));
+        });
+
         // 商品＋アカウント
         Gate::define('item_admin', function($admin){
             return ($admin->policy->item_admin === 1);

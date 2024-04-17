@@ -11,6 +11,7 @@ use App\Models\Possesion;
 use App\Http\Controllers\Homecontroller;
 use App\Http\Controllers\Itemcontroller;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 
@@ -60,9 +61,9 @@ Route::prefix('users')->name('users.')->group(function (){
 
 // Admin
 Route::prefix('admins')->name('admins.')->group(function (){
-    Route::get('/', [AdminController::class, 'admin_index']);
-    Route::patch('/delete/{id}',[AdminController::class, 'admin_delete']);
+    Route::get('/', [AdminController::class, 'index']);
+    Route::patch('/delete/{id}',[AdminController::class, 'delete']);
 
-    Route::get('/edit/{id}',[AdminController::class, 'admin_edit']);
-    Route::patch('/update/{user}',[AdminController::class, 'admin_update']);
+    Route::get('/edit/{id}',[AdminController::class, 'edit']);
+    Route::patch('/update/{admin}',[AdminController::class, 'update']);
 });

@@ -13,7 +13,7 @@
 
 @section('content')
 <div class="container">
-    <!-- ID部分 -->
+    <!-- 名前部分 -->
     <div class="text-center mb-3">
         <h4>{{ $user->nickname }}さんのマイページ</h4>
     </div>

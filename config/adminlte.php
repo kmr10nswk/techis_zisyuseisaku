@@ -300,6 +300,12 @@ return [
             'url'  => 'items/',
             'icon' => 'fas fa-gamepad',
         ],
+        [
+            'text' => '管理者一覧',
+            'url' => 'admins/',
+            'icon' => 'fas fa-gamepad',
+            'can' => 'admin',
+        ]
 
         // AdminLTEデフォルト
         /*

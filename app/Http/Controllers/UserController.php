@@ -17,6 +17,7 @@ class UserController extends Controller
      * User一覧
      */
     public function index(Request $request){
+        // Todo:検索機能
         $users = User::query();
         
         $users = $users->orderby('id', 'asc')
