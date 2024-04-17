@@ -304,7 +304,8 @@ return [
             'text' => '管理者一覧',
             'url' => 'admins/',
             'icon' => 'fas fa-gamepad',
-            'can' => 'admin',
+            // Todo:うまく動いてない
+            'can' => 'all_admin',
         ]
 
         // AdminLTEデフォルト
