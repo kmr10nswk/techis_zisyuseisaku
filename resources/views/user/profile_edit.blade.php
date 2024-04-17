@@ -12,8 +12,7 @@
 @section('content')
 <div class="container">
     <div class="text-center my-3">
-        <!-- Todo:srcにはasset関数使って引っ張ってくる。null値かどうかはcontrollerで -->
-        <img src="{{ asset('icon/' . $user->image_icon) }}" alt="プロフィールアイコン">
+        <img src="{{ asset('storage/icon/' . $user->image_icon) }}" alt="プロフィールアイコン">
     </div>
     <form method="POST" action="{{ url('users/profile/update', $user) }}" enctype="multipart/form-data">
     @csrf
@@ -215,7 +214,9 @@
     }
 
     .container .text-center img{
-        width: 50%;
+        max-width: 280px;
+        max-height: 280px;
+        width: 30%;
         border-radius: 50%;
     }
 </style>

@@ -291,8 +291,13 @@ return [
 
     'menu' => [
         [
+            'text' => 'ユーザー一覧',
+            'url' => 'users/',
+            'icon' => 'fas fa-gamepad',
+        ],
+        [
             'text' => '商品一覧',
-            'url'  => 'items',
+            'url'  => 'items/',
             'icon' => 'fas fa-gamepad',
         ],
 

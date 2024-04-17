@@ -20,12 +20,11 @@
 
     <!-- アイコン部分 -->
     <div class="text-center my-3">
-        <!-- Todo:nullだったらnull用画像、nullじゃなかったら登録画像の表示 -->
-        <img src="" alt="プロフィールアイコン">
+        <img src="{{ asset('storage/icon/' . $user->image_icon) }}" alt="プロフィールアイコン">
     </div>
     
     
-    <table class="table table-bordered">
+    <table class="table table-bordered mx-auto">
         <tbody>
             <tr>
                 <th scope="row ">ID</th>
@@ -67,12 +66,23 @@
     ・なんかもうちょっとおしゃれにしたい。これはググった奴持ってくる。
     */
 
+    .container .table{
+        max-width: 900px;
+    }
+
     .table th{
         background-color: #CFF4FC;
         width: 20%;
         @media screen and (max-width: 915px){
             width: 30%;
         }
+    }
+
+    .container .text-center img{
+        max-width: 280px;
+        max-height: 280px;
+        width: 30%;
+        border-radius: 50%;
     }
 </style>
 @stop

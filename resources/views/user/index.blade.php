@@ -21,7 +21,7 @@
                     <table class="table table-hover text-nowrap">
                         <thead>
                             <tr class="text-center">
-                                <th>アイコン予定</th>
+                                <th width="100"></th>
                                 <th>ID</th>
                                 <th>名前</th>
                                 <th>GM/PL</th>
@@ -38,8 +38,7 @@
                         <tbody>
                             @foreach ($users as $user)
                                 <tr class="text-center">
-                                    <!-- ""じゃなくてcontrollerの方でimage_iconに入れる値を管理 -->
-                                    <td><img src="{{ asset('icon/', $user->image_icon) }}" alt="アイコン" /></td>
+                                    <td class="icon"><img src="{{ asset('storage/icon/'. $user->image_icon) }}" alt="アイコン"></td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->nickname }}</td>
                                     <td>{{ $user->gmpl }}</td>
@@ -63,9 +62,26 @@
 
 @section('css')
 <style>
-    .row .col-12 .card .card-body .table tbody img{
-        width: 10%;
+    /* Todo:何かうまいこと真ん中に行かない。なぜ。 */
+    .row .col-12 .card .card-body .table tbody .icon{
+        max-width: 100px;
+        padding: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .row .col-12 .card .card-body .table tbody .icon img{
+        max-width: 45px;
+        max-height: 45px;
+        width: 70%;
         border-radius: 50%;
+        
+        @media screen and (max-width: 915px){
+            width: 100%;
+            min-width: 30px;
+            margin: auto;
+        }
     }
 
 </style>
