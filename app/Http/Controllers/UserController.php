@@ -40,7 +40,7 @@ class UserController extends Controller
     /**
      * プロフィール編集 画面表示
      */
-    public function profile_edit(User $user)
+    public function profile_edit()
     {
         $user = Auth::user();
         $user->session_style =  explode(',' ,$user->session_style);
