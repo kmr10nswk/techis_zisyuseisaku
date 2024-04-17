@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use app\Models\Admin;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -23,23 +24,19 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        // 管理者ユーザー
-        Gate::define('admin', function($admin){
-            return (Auth::guard('admin'));
-        });
-
         // 商品＋アカウント
-        Gate::define('item_admin', function($admin){
+        Gate::define('item_admin', function(Admin $admin){
             return ($admin->policy->item_admin === 1);
         });
 
         // 掲示板＋アカウント
-        Gate::define('theread_admin', function($admin) {
+        Gate::define('theread_admin', function(Admin $admin) {
             return ($admin->policy->theread_admin === 1);
         });
 
         // 全て
-        Gate::define('all_admin', function($admin){
+        Gate::define('all_admin', function(Admin $admin){
+            Debugbar::addMessage($admin);
             return ($admin->policy->item_admin === 1 && $admin->policy->theread_admin === 1);
         });
     }
