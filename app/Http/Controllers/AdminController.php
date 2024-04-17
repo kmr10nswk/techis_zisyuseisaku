@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Policy;
 use App\Models\Admin;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use App\Rules\CurrentPasswordRule;
 
 class AdminController extends Controller
 {
@@ -24,9 +28,45 @@ class AdminController extends Controller
 
         return view('admin.index', compact('admins'));
     }
+
+    /**
+     * Adminユーザー編集画面
+     */
+    public function profile_edit(){
+        $admin = Auth::guard('admin')->user();
+        return view('admin.profile_edit', compact('admin'));
+    }
+
+    /**
+     * Adminユーザー編集動作
+     */
+    public function profile_update(Request $request, Admin $admin){
+            $this->Validate($request, [            
+                'name' => ['required', 'string' , 'max:20'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:admins,email,' . Auth::guard('admin')->user()->email . ',email'],
+                'now_password' => ['required', 'min:6' , 'max:20' , new CurrentPasswordRule(), 'nullable'],
+                'password' => ['confirmed', 'min:6', 'max:20' , 'nullable'],
+            ]);
+    
+            $data = [
+                'name' => $request->name,
+                'email' => $request->email,
+            ];
+                
+            // パスワードが入力されていれば、更新データに追加
+            if($request->password) {
+                $data['password'] = Hash::make($request->password);
+            }
+            
+            // 更新
+            Admin::where('id', $admin->id)
+                ->update($data);
+    
+            return redirect('admins/');
+    }    
     
     /**
-     * Admin編集画面
+     * Admin権限編集画面
      */
     public function edit($id){
         $admin = Admin::find($id);
@@ -35,7 +75,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Admin編集動作
+     * Admin権限編集動作
      */
     public function update(Request $request, Admin $admin){
         // バリデーション

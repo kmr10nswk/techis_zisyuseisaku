@@ -68,7 +68,13 @@
 
         {{-- User menu footer --}}
         <li class="user-footer">
-            Todo:ここにマイプロフィール
+            @if(Auth::user())
+            <a href="{{ route('users.profile.edit') }}" class="btn btn-default btn-flat d-flex justify-content-center">
+                    <i class="fa fa-fw fa-user text-lightblue"></i>{{ __('adminlte::menu.profile') }}</a>
+            @else
+                <a href="{{ route('admins.profile.edit') }}" class="btn btn-default btn-flat d-flex justify-content-center">
+                    <i class="fa fa-fw fa-user text-lightblue"></i>{{ __('adminlte::menu.profile') }}</a>
+            @endif
         </li>
         <li class="user-footer">
             @if($profile_url)

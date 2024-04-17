@@ -66,4 +66,6 @@ Route::prefix('admins')->name('admins.')->group(function (){
 
     Route::get('/edit/{id}',[AdminController::class, 'edit']);
     Route::patch('/update/{admin}',[AdminController::class, 'update']);
+    Route::get('profile/edit',[AdminController::class, 'profile_edit'])->name('profile.edit');
+    Route::patch('profile/update/{admin}',[AdminController::class, 'profile_update'])->name('profile.update');
 });
