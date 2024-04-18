@@ -6,6 +6,7 @@ return [
     'nickname'                    => '名前',
     'email'                       => 'メールアドレス',
     'password'                    => 'パスワード',
+    'now_password'                => '現在のパスワード',
     'retype_password'             => 'もう一度入力',
     'remember_me'                 => 'パスワードを記憶する',
     'register'                    => '登録する',
