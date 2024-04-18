@@ -45,17 +45,7 @@
                 削除
             </button>
         </form>
-
-
-
     </div>
-    
-
-
-
-
-
-
 @stop
 
 @section('css')
