@@ -1,4 +1,5 @@
 @extends('adminlte::page')
+@section('plugins.Datatables', true)
 
 @section('title', '商品登録')
 
@@ -7,49 +8,193 @@
 @stop
 
 @section('content')
-    <div class="row">
-        <div class="col-md-10">
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                       @foreach ($errors->all() as $error)
-                          <li>{{ $error }}</li>
-                       @endforeach
-                    </ul>
-                </div>
-            @endif
+<div class="container">
+    <form method="POST" action="" enctype="multipart/form-data">
+    @csrf
 
-            <div class="card card-primary">
-                <form method="POST">
-                    @csrf
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label for="name">名前</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="名前">
-                        </div>
+        <div class="row mb-3">
+            <label for="image_item" class="col-md-3 col-form-label text-md-end">{{__('書籍画像')}}</label>
+            <div class="col-md-6">
+                <p>
+                    <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" id="preview" class="no-image">
+                </p>
+                <!-- Todo:時間があったらボタン装飾 -->
+                <input type="file" name="image_item" id="image_item" style="display:block;" accept='image/*' onchange="previewImage(this);">
 
-                        <div class="form-group">
-                            <label for="type">種別</label>
-                            <input type="text" class="form-control" id="type" name="type" placeholder="種別">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="detail">詳細</label>
-                            <input type="text" class="form-control" id="detail" name="detail" placeholder="詳細説明">
-                        </div>
-                    </div>
-
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">登録</button>
-                    </div>
-                </form>
+                @error('image_item')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+                <span>※jpg、pngのみ。1MB以下。</span>
             </div>
         </div>
-    </div>
+
+        <div class="row mb-3 form-group">
+            <label for="name" class="col-md-3 col-form-label text-md-end">{{__('書籍名')}}</label>
+
+            <div class="col-md-6">
+                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+
+                @error('name')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+        </div>
+
+        <div class="row mb-3 form-group">
+            <label for="category" class="col-md-3 col-form-label text-md-end">{{ __('カテゴリ') }}</label>
+
+            <div class="col-md-6">
+                <select name="category" id="category" class="form-control @error('category') is-invalid @enderror" required autocomplete="category" area-label="default form-control">
+                    @foreach($category_list as $c_key => $c_name)
+                        <option value="{{ $c_key }}" @if(old('category')==$c_key) selected @endif>{{ $c_name }}</option>
+                    @endforeach
+                </select>
+
+                @error('category')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center form-group">
+            <label for="theme" class="col-md-3 col-form-label text-md-end">{{__('テーマ')}}</label>
+
+            <div class="col-md-6">
+                <select name="theme" id="theme" class="form-control" @error('theme') is-invalid @enderror" required autocomplete="theme" area-label="default form-control">
+                    @foreach($theme_list as $t_key => $t_name)
+                        <option value="{{ $t_key }}" @if(old('theme')==$t_key) selected @endif>{{ $t_name }}</option>
+                    @endforeach
+                </select>
+
+                @error('theme')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+        </div>
+
+        <div class="row mb-3 d-flex align-items-center form-group">
+            <label for="kind" class="col-md-3 col-form-label text-md-end">{{__('書籍種類')}}</label>
+
+            <div class="col-md-6">
+                <select name="kind" id="kind" class="form-control" @error('kind') is-invalid @enderror" required autocomplete="kind" area-label="default form-control">
+                    @foreach($kind_list as $k_key => $k_name)
+                        <option value="{{ $k_key }}" @if(old('kind')==$k_key) selected @endif>{{ $k_name }}</option>
+                    @endforeach
+                </select>
+
+                @error('kind')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+        </div>
+
+        <div class="row mb-3 form-group">
+            <label for="company" class="col-md-3 col-form-label text-md-end">{{ __('開発会社') }}</label>
+
+            <div class="col-md-6">
+                <select name="company" id="company" class="form-control" @error('company') is-invalid @enderror" required autocomplete="company" area-label="default form-control">
+                    @foreach($company_list as $co_key => $co_name)
+                        <option value="{{ $co_key }}" @if(old('company')==$co_key) selected @endif>{{ $co_name }}</option>
+                    @endforeach
+                </select>
+
+                @error('company')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+        </div>
+        
+        <div class="row mb-3 form-group">
+            <label for="release" class="col-md-3 col-form-label text-md-end">{{ __('発売日') }}</label>
+
+            <div class="col-md-6">
+                <input id="release" type="date" class="form-control @error('release') is-invalid @enderror" name="release" required autocomplete="release" value="{{ old('relase') }}">
+
+                @error('release')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+        </div>
+
+        <!-- Todo:jsにて残り文字数をリアルタイムで表示させる -->
+        <div class="row mb-3 form-group">
+            <label for="detail" class="col-md-3 col-form-label text-md-end">{{ __('詳細') }}</label>
+
+            <div class="col-md-6">
+                <textarea id="detail" rows="10" maxlength="500" class="form-control @error('detail') is-invalid @enderror" name="detail" autocomplete="detail" required>{{ old('detail') }}</textarea>
+
+                @error('detail')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+        </div>
+
+        <div class="row mb-0">
+            <div class="col-md-6 offset-md-4">
+                <button type="submit" class="btn btn-primary">
+                    {{ __('更新') }}
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
 @stop
 
 @section('css')
+    <style>
+        .container p .no-image{
+            display: none;
+        }
+
+        .container p .loaded-image{
+            max-width: 500px;
+            max-height: 500px;
+            min-width: 200px;
+            min-height: 200px;
+            width: 70%;
+        }
+
+
+    </style>
 @stop
 
 @section('js')
+    <script>
+        function previewImage(obj)
+        {
+            const previewImage = document.getElementById('preview');
+            const fileInput = document.getElementById('image_item');
+
+            if (fileInput.files.length === 1) {
+                var fileReader = new FileReader();
+                fileReader.onload = function() {
+                    previewImage.src = fileReader.result;
+
+                    previewImage.classList.add('loaded-image');
+                    previewImage.classList.remove('no-image');
+                }
+                fileReader.readAsDataURL(obj.files[0]);
+            } else {
+                previewImage.src = '';
+                previewImage.classList.remove('loaded-image');
+                previewImage.classList.add('no-image');
+            }
+        }
+    </script>
 @stop
