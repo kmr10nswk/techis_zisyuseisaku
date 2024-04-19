@@ -33,9 +33,9 @@ use App\Http\Controllers\Auth\RegisterController;
 Auth::routes();
 
 // TODO:adminregisterは管理者のみ入れる
-Route::get('/login/admin', [LoginController::class, 'showAdminLoginForm']);
+Route::get('/login/admin', [LoginController::class, 'showAdminLoginForm'])->name('login.admin');
 Route::post('/login/admin', [LoginController::class, 'adminLogin']);
-Route::get('/register/admin', [RegisterController::class, 'showAdminRegisterForm']);
+Route::get('/register/admin', [RegisterController::class, 'showAdminRegisterForm'])->name('register.admin');;
 Route::post('/register/admin', [RegisterController::class, 'registerAdmin']);
 
 // Home
