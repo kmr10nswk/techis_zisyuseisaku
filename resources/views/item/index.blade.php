@@ -62,6 +62,15 @@
         overflow: hidden;
     }
 
+    .row .card .card-title a{
+        color: #353535;
+    }
+
+    .row .card .card-title a:hover{
+        color: #007BFF;
+        text-decoration: underline;
+    }
+
     .row .card hr{
         margin: 0.5rem 1rem;
     }
