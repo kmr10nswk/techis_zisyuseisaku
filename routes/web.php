@@ -47,6 +47,7 @@ Route::prefix('items')->name('items.')->group(function () {
     Route::get('/', [ItemController::class, 'index'])->name('index');
     Route::get('/add', [ItemController::class, 'add'])->name('add');
     Route::post('/add', [ItemController::class, 'add'])->name('add.post');
+    Route::get('/show/{item}', [ItemController::class, 'show'])->name('show');
 });
 
 // User
