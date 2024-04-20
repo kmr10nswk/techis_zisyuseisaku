@@ -80,4 +80,30 @@ class Item extends Model
             '4' => 'その他',
         ];
     }
+
+    /**
+     * blade整え
+     */
+    public static function listSeiton($items)
+    {        
+        $c_list = Item::category_list();
+        $t_list = Item::theme_list();
+        $k_list = Item::kind_list();
+        $co_list = Item::company_list();
+
+        if($items->count() > 1){
+            foreach ($items as $item){
+                $item->category = $c_list[$item->category];
+                $item->theme = $t_list[$item->theme];
+                $item->kind = $k_list[$item->kind];
+                $item->company = $co_list[$item->company];
+            }
+        } else {
+            $item->category = $c_list[$item->category];
+            $item->theme = $t_list[$item->theme];
+            $item->kind = $k_list[$item->kind];
+            $item->company = $co_list[$item->company];
+        }
+        return $items;
+    }
 }

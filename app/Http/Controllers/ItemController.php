@@ -14,23 +14,15 @@ class ItemController extends Controller
      */
     public function index()
     {
+        // Todo:検索機能
+
         // 商品一覧取得
         $items = Item::query();
         $items = $items->orderby('id', 'asc')
             ->paginate(10)->withQueryString();
 
         // blade整え
-        $c_list = Item::category_list();
-        $t_list = Item::theme_list();
-        $k_list = Item::kind_list();
-        $co_list = Item::company_list();
-
-        foreach ($items as $item){
-            $item->category = $c_list[$item->category];
-            $item->theme = $t_list[$item->theme];
-            $item->kind = $k_list[$item->kind];
-            $item->company = $co_list[$item->company];
-        }
+        $items = Item::listSeiton($items);
 
         return view('item.index', compact('items'));
     }
@@ -81,5 +73,16 @@ class ItemController extends Controller
         $company_list = Item::company_list();
 
         return view('item.add', compact('category_list', 'theme_list', 'kind_list', 'company_list'));
+    }
+
+    /**
+     * 商品詳細画面
+     */
+    public function show(Item $item)
+    {        
+        // blade整え
+        $item = Item::listSeiton($item);
+    
+        return view('item.show', compact('item'));
     }
 }

@@ -15,18 +15,22 @@
 @stop
 
 @section('content')
-<i class="bi bi-bookmark-check"></i>
 <div class="row align-items-stretch">
     @foreach($items as $item)
         <div class="col-lg-3 col-md-4 mb-3">
             <div class="card h-100 position-relative">
+                <button class="btn position-absolute">
+                    <!-- Todo:ホバーでbookmark-fillに変更 -->
+                    <i class="bi bi-bookmark-check text-primary" id="icon"></i>
+                </button>
                 <div class="card-img mx-auto">
                     <img src="{{ asset('storage/item/' . $item->image_item) }}" alt="書籍画像" class="mx-auto card-img-top d-block">
-                    <i class="bi bi-bookmark-check text-primary position-absolute top-10 end-0"></i>
                 </div>
                 <hr>
                 <div class="card-body py-0">
-                    <div class="card-title text-center">{{ $item->name }}</div>
+                    <div class="card-title text-center">
+                        <a href="{{ route('items.show', $item) }}">{{ $item->name }}</a>
+                    </div>
                     <p class="card-text text-center">{{ $item->release->format('Y/m') }}発売</p>
                 </div>
                     <ul class="my-1">
@@ -60,6 +64,14 @@
 
     .row .card hr{
         margin: 0.5rem 1rem;
+    }
+
+    .row .card button #icon{
+        font-size: 2.5rem;
+    }
+
+    .row .card button #icon:hover {
+        color: #52BEFF !important;
     }
 
     .row .card .card-img .card-img-top{
