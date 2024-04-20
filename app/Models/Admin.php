@@ -40,6 +40,7 @@ class Admin extends Authenticatable
      */
     protected $casts = [
         'password' => 'hashed',
+        'deleted_at' => 'boolean',
     ];
 
 

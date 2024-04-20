@@ -47,7 +47,7 @@
         <div class="row mb-3 form-group">
             <label for="category" class="col-md-3 col-form-label text-md-end">{{ __('カテゴリ') }}</label>
 
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <select name="category" id="category" class="form-control @error('category') is-invalid @enderror" required autocomplete="category" area-label="default form-control">
                     @foreach($category_list as $c_key => $c_name)
                         <option value="{{ $c_key }}" @if(old('category')==$c_key) selected @endif>{{ $c_name }}</option>
@@ -65,7 +65,7 @@
         <div class="row mb-3 align-items-center form-group">
             <label for="theme" class="col-md-3 col-form-label text-md-end">{{__('テーマ')}}</label>
 
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <select name="theme" id="theme" class="form-control" @error('theme') is-invalid @enderror" required autocomplete="theme" area-label="default form-control">
                     @foreach($theme_list as $t_key => $t_name)
                         <option value="{{ $t_key }}" @if(old('theme')==$t_key) selected @endif>{{ $t_name }}</option>
@@ -83,7 +83,7 @@
         <div class="row mb-3 d-flex align-items-center form-group">
             <label for="kind" class="col-md-3 col-form-label text-md-end">{{__('書籍種類')}}</label>
 
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <select name="kind" id="kind" class="form-control" @error('kind') is-invalid @enderror" required autocomplete="kind" area-label="default form-control">
                     @foreach($kind_list as $k_key => $k_name)
                         <option value="{{ $k_key }}" @if(old('kind')==$k_key) selected @endif>{{ $k_name }}</option>
@@ -101,7 +101,7 @@
         <div class="row mb-3 form-group">
             <label for="company" class="col-md-3 col-form-label text-md-end">{{ __('開発会社') }}</label>
 
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <select name="company" id="company" class="form-control" @error('company') is-invalid @enderror" required autocomplete="company" area-label="default form-control">
                     @foreach($company_list as $co_key => $co_name)
                         <option value="{{ $co_key }}" @if(old('company')==$co_key) selected @endif>{{ $co_name }}</option>
@@ -145,12 +145,10 @@
             </div>
         </div>
 
-        <div class="row mb-0">
-            <div class="col-md-6 offset-md-4">
-                <button type="submit" class="btn btn-primary">
-                    {{ __('更新') }}
-                </button>
-            </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">
+                {{ __('更新') }}
+            </button>
         </div>
     </form>
 </div>

@@ -12,8 +12,6 @@ class Item extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id',
-        'nickname',
         'name',
         'category',
         'theme',
@@ -40,4 +38,45 @@ class Item extends Model
      */
     protected $casts = [
     ];
+
+    /**
+     * リスト一覧
+     */
+    public static function category_list(){
+        return [
+            '1' => '対戦より',
+            '2' => '協力より',
+            '3' => 'どちらも',
+            '4' => '不明',
+        ];
+    }
+
+    public static function theme_list(){
+        return [
+            '1' => 'ファンタジー',
+            '2' => '現代ファンタジー',
+            '3' => 'ホラー',
+            '4' => 'SF',
+            '5' => '終末もの',
+            '6' => '二次創作',
+            '7' => 'その他',
+        ];
+    }
+    
+    public static function kind_list(){
+        return [
+            '1' => 'ルールブック',
+            '2' => 'サプリメント',
+            '3' => 'シナリオ集',
+        ];
+    }
+
+    public static function company_list(){
+        return [
+            '1' => '冒険企画局',
+            '2' => 'F.E.A.R.',
+            '3' => 'SNE',
+            '4' => 'その他',
+        ];
+    }
 }
