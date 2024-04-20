@@ -22,22 +22,24 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->registerPolicies();
+        // $this->registerPolicies();
 
-        // 商品＋アカウント
-        Gate::define('item_admin', function(Admin $admin){
-            return ($admin->policy->item_admin === 1);
-        });
+        // // 商品＋アカウント
+        // Gate::define('item_admin', function($admin, $value){
+        //     Log::info("Checking gate for user {$admin} with value {$value}");
+        //     return ($admin->policy->item_admin === 1);
+        // });
 
-        // 掲示板＋アカウント
-        Gate::define('theread_admin', function(Admin $admin) {
-            return ($admin->policy->theread_admin === 1);
-        });
+        // // 掲示板＋アカウント
+        // Gate::define('theread_admin', function($admin) {
+        //     return ($admin->policy->theread_admin === 1);
+        // });
 
-        // 全て
-        Gate::define('all_admin', function(Admin $admin){
-            Debugbar::addMessage($admin);
-            return ($admin->policy->item_admin === 1 && $admin->policy->theread_admin === 1);
-        });
+        // // 全て
+        // Gate::define('all_admin', function($admin){
+        // item_adminが空ですよ（笑）って言われる。
+        // $userの時はそもそもこのGate読み込まないでくれよ。
+        //     return ($admin->policy->item_admin === 1 && $admin->policy->theread_admin === 1);
+        // });
     }
 }

@@ -37,6 +37,7 @@ class Item extends Model
      * @var array<string, string>
      */
     protected $casts = [
+        'release' => 'datetime',
     ];
 
     /**
