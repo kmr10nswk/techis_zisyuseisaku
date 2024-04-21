@@ -19,7 +19,8 @@ class AdminController extends Controller
         // Todo:検索機能
         $admins = Admin::query();
 
-        $admins = $admins->orderby('id', 'asc')
+        $admins = $admins->where('status', 'active')
+            ->orderby('id', 'asc')
             ->paginate(10)->withQueryString();
         
         foreach($admins as $admin){

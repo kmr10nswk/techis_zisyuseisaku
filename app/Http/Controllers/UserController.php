@@ -20,7 +20,8 @@ class UserController extends Controller
         // Todo:検索機能
         $users = User::query();
         
-        $users = $users->orderby('id', 'asc')
+        $users = $users->where('status', 'active')
+            ->orderby('id', 'asc')
             ->paginate(10)->withQueryString();
         
         $users = User::noEmail($users);
@@ -98,8 +99,13 @@ class UserController extends Controller
     /**
      * アカウント削除
      */
-    public function delete(Request $request, User $user){
-        return ('まだ実装してない');
+    public function delete(User $user){
+        User::where('id', $user->id)
+            ->update([
+                'status' => 'deleted',
+            ]);
+
+        return redirect()->route('users.index');
     }
 
 }
