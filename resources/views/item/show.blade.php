@@ -17,8 +17,13 @@
 @section('content')
     <div class="container">
         <!-- 名前部分 -->
-        <div class="text-center mb-3">
-            <h4>{{ $item->name }}の詳細</h4>
+        <div class="row justify-content-center align-items-center mb-3">
+            <h4 class="mr-2 mb-0">{{ $item->name }}の詳細</h4>
+            <span>
+                <button class="btn">
+                    <i class="bi bi-bookmark-check text-primary"></i>
+                </button>
+            </span>
         </div>
 
         <!-- アイコン部分 -->
@@ -68,7 +73,15 @@
 @stop
 
 @section('css')
-    <style>        
+    <style>
+        .row span i {
+            font-size: 2rem;
+        }
+
+        .row span i:hover {
+            color: #52BEFF !important;
+        }
+
         .container .table{
             max-width: 900px;
         }
