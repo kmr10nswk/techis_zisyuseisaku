@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use app\Models\Possesion;
 
 class Item extends Model
 {
@@ -39,6 +40,14 @@ class Item extends Model
     protected $casts = [
         'release' => 'datetime',
     ];
+
+    /**
+     * リレーション
+     */
+    public function possesions(){
+        return $this->hasMany('app\Modes\Possesion');
+    }
+    
 
     /**
      * リスト一覧

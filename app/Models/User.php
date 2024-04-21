@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Collection;
 
 use App\Models\Policy;
+use app\Models\Possesion;
 
 class User extends Authenticatable
 {
@@ -52,6 +53,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * リレーション
+     */
+    public function possesions(){
+        return $this->hasMany('app\Models\Possesion');
+    }
+
 
     /**
      * 一般ユーザーの場合はemail情報を渡さない
