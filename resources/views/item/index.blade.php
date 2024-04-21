@@ -256,7 +256,7 @@
             border-right: none;
         }
 
-        @media screen and (max-width: 915px) {
+        @media screen and (max-width: 1200px) {
             #table-content .table{
                 font-size: 0.85rem
             }
