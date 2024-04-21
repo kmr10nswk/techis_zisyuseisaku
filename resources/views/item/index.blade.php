@@ -62,28 +62,28 @@
                     <thead>
                         <tr>
                             <th></th>
-                            <th class="t-name">名前</th>
-                            <th>カテゴリ</th>
-                            <th>テーマ</th>
-                            <th>書籍種類</th>
-                            <th>会社名</th>
-                            <th>発売月</th>
-                            <th>所持者数</th>
-                            <th>所持</th>
+                            <th class="t-name"><i class="bi bi-book"></i><span>名前</span></th>
+                            <th><i class="bi bi-bar-chart"></i><span>カテゴリ</span></th>
+                            <th><i class="bi bi-flag"></i><span>テーマ</span></th>
+                            <th><i class="bi bi-journals"></i><span>書籍種類</span></th>
+                            <th><i class="bi bi-building"></i><span>会社名</span></th>
+                            <th><i class="bi bi-clock"></i><span>発売月</span></th>
+                            <th><i class="bi bi-bookmark-check"></i><span>所持者数</span></th>
+                            <th><i class="bi bi-check-square"></i><span>所持</span></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($items as $item)
                             <tr>
                                 <td><img src="{{ asset('storage/item/' . $item->image_item) }}" alt="書籍画像" class="mx-auto"></td>
-                                <td class="t-name">{{ $item->name }}</td>
+                                <td class="t-name"><a href="{{ route('items.show', $item) }}">{{ $item->name }}</a></td>
                                 <td>{{ $item->category }}</td>
                                 <td>{{ $item->theme }}</td>
                                 <td>{{ $item->kind }}</td>
                                 <td>{{ $item->company }}</td>
                                 <td>{{ $item->release->format('Y/m') }}</td>
                                 <td>Todo</td>
-                                <td><button class="btn-sm btn-outline-primary">✓</button></td>
+                                <td class="text-center"><button class="btn-sm btn-outline-primary">✓</button></td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -214,9 +214,22 @@
         }
 
         /* テーブル型 */
+        #table-content .table thead tr th i{
+            display: none;
+        }
+
         #table-content .table tbody tr td img{
             max-width: 50px;
             object-fit: contain;
+        }
+
+        #table-content .table tbody tr td a{
+            color: #353535;
+        }
+
+        #table-content .table tbody tr td a:hover{
+            color: #007BFF;
+            text-decoration: underline;
         }
 
         #table-content .table thead tr th {
@@ -259,6 +272,26 @@
             #table-content .table .t-name {
                 max-width: 100px;
                 overflow-wrap: break-word;
+            }
+        }
+
+        @media screen and (max-width: 415px) {
+            #table-content .table tbody tr td {
+                min-width: 70px;
+                font-size: 0.7rem;
+            }
+
+            #table-content .table tbody tr .t-name{
+                font-size: 0.9rem;
+            }
+
+            #table-content .table thead tr th span{
+                display: none !important;
+            }
+        
+            #table-content .table thead tr th i{
+                display: block !important;
+                font-size: 1rem;
             }
         }
     </style>
