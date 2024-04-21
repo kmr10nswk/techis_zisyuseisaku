@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Collection;
 
 use App\Models\Policy;
-use app\Models\Possesion;
+use App\Models\Possesion;
 
 class User extends Authenticatable
 {
@@ -58,7 +58,7 @@ class User extends Authenticatable
      * リレーション
      */
     public function possesions(){
-        return $this->hasMany('app\Models\Possesion');
+        return $this->hasMany('App\Models\Possesion');
     }
 
 

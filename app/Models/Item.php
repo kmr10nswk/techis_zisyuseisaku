@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use app\Models\Possesion;
+use App\Models\Possesion;
 
 class Item extends Model
 {
@@ -45,8 +45,18 @@ class Item extends Model
      * リレーション
      */
     public function possesions(){
-        return $this->hasMany('app\Modes\Possesion');
+        return $this->hasMany('App\Models\Possesion');
     }
+    
+    /**
+     * Possesion関連
+     */
+    // 所持ボタンを押したかを判定
+    // public function isPossesionBy($user) : bool {
+    //     return Possesion::where('user_id', $user->id)
+    //         ->where('item_id', $this->id)
+    //         ->first() !==null;
+    //     }
     
 
     /**

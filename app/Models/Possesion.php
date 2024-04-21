@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use app\Models\User;
-use app\Models\Item;
+use App\Models\User;
+use App\Models\Item;
 
 class Possesion extends Model
 {
@@ -15,10 +15,10 @@ class Possesion extends Model
      * リレーション
      */
     public function users(){
-        return $this->belongsTo('app\Models\User');
+        return $this->belongsTo('App\Models\User');
     }
 
     public function items(){
-        return $this->belongsTo('app\Modes\Item');
+        return $this->belongsTo('App\Models\Item');
     }
 }
