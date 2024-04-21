@@ -18,11 +18,13 @@ class ItemController extends Controller
 
         // 商品一覧取得
         $items = Item::query();
-        $items = $items->orderby('id', 'asc')
+        $items = $items->where('status', 'active')
+            ->orderby('id', 'asc')
             ->paginate(10)->withQueryString();
-
+        
         // blade整え
-        $items = Item::listSeiton($items);
+        $count = $items->count();
+        $items = Item::listSeiton($items, $count);
 
         return view('item.index', compact('items'));
     }
@@ -78,10 +80,14 @@ class ItemController extends Controller
     /**
      * 商品詳細画面
      */
-    public function show(Item $item)
-    {        
+    public function show($id)
+    {
+        $item_obj = Item::where('id', $id);
+        $item =  $item_obj->first();
+        $count = $item_obj->count();
+
         // blade整え
-        $item = Item::listSeiton($item);
+        $item = Item::listSeiton($item, $count);
     
         return view('item.show', compact('item'));
     }

@@ -33,6 +33,7 @@ use App\Http\Controllers\Auth\RegisterController;
 Auth::routes();
 
 // TODO:adminregisterは管理者のみ入れる
+// login関連
 Route::get('/login/admin', [LoginController::class, 'showAdminLoginForm'])->name('login.admin');
 Route::post('/login/admin', [LoginController::class, 'adminLogin']);
 Route::get('/register/admin', [RegisterController::class, 'showAdminRegisterForm'])->name('register.admin');;
@@ -47,7 +48,7 @@ Route::prefix('items')->name('items.')->group(function () {
     Route::get('/', [ItemController::class, 'index'])->name('index');
     Route::get('/add', [ItemController::class, 'add'])->name('add');
     Route::post('/add', [ItemController::class, 'add'])->name('add.post');
-    Route::get('/show/{item}', [ItemController::class, 'show'])->name('show');
+    Route::get('/show/{id}', [ItemController::class, 'show'])->name('show');
 });
 
 // User
@@ -69,4 +70,9 @@ Route::prefix('admins')->name('admins.')->group(function (){
     Route::patch('/update/{admin}',[AdminController::class, 'update']);
     Route::get('profile/edit',[AdminController::class, 'profile_edit'])->name('profile.edit');
     Route::patch('profile/update/{admin}',[AdminController::class, 'profile_update'])->name('profile.update');
+});
+
+Route::prefix('admins/item')->name('admins.item')->group(function (){
+    Route::get('/', [ItemController::class, 'edit'])->name('edit');
+    Route::post('/', [ItemController::class, 'edit'])->name('update');
 });

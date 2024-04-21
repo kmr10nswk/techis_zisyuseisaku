@@ -117,7 +117,7 @@
         </div>
         
         <div class="row mb-3 form-group">
-            <label for="release" class="col-md-3 col-form-label text-md-end">{{ __('発売日') }}</label>
+            <label for="release" class="col-md-3 col-form-label text-md-end">{{ __('発売月') }}</label>
 
             <div class="col-md-6">
                 <input id="release" type="month" class="form-control @error('release') is-invalid @enderror" name="release" required autocomplete="release" value="{{ old('relase') }}">

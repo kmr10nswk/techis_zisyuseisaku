@@ -57,33 +57,26 @@
 @stop
 
 @section('css')
-<style>
-    /**
-    ◇やりたいことを書いていきます。
-    ・レスポンシブ対応を出来れば短く済ませたい。
-    　こいつに時間を取られたくない。
-    ・なんかもうちょっとおしゃれにしたい。これはググった奴持ってくる。
-    */
-
-    .container .table{
-        max-width: 900px;
-    }
-
-    .table th{
-        background-color: #CFF4FC;
-        width: 20%;
-        @media screen and (max-width: 915px){
-            width: 30%;
+    <style>
+        .container .table{
+            max-width: 900px;
         }
-    }
 
-    .container .text-center img{
-        max-width: 280px;
-        max-height: 280px;
-        width: 30%;
-        border-radius: 50%;
-    }
-</style>
+        .table th{
+            background-color: #CFF4FC;
+            width: 20%;
+            @media screen and (max-width: 915px){
+                width: 30%;
+            }
+        }
+
+        .container .text-center img{
+            max-width: 280px;
+            max-height: 280px;
+            width: 30%;
+            border-radius: 50%;
+        }
+    </style>
 @stop
 
 @section('js')

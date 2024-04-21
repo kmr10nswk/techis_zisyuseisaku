@@ -84,14 +84,14 @@ class Item extends Model
     /**
      * blade整え
      */
-    public static function listSeiton($items)
+    public static function listSeiton($items, $count = null)
     {        
         $c_list = Item::category_list();
         $t_list = Item::theme_list();
         $k_list = Item::kind_list();
         $co_list = Item::company_list();
 
-        if($items->count() > 1){
+        if($count > 1){
             foreach ($items as $item){
                 $item->category = $c_list[$item->category];
                 $item->theme = $t_list[$item->theme];
@@ -99,10 +99,10 @@ class Item extends Model
                 $item->company = $co_list[$item->company];
             }
         } else {
-            $item->category = $c_list[$item->category];
-            $item->theme = $t_list[$item->theme];
-            $item->kind = $k_list[$item->kind];
-            $item->company = $co_list[$item->company];
+            $items->category = $c_list[$items->category];
+            $items->theme = $t_list[$items->theme];
+            $items->kind = $k_list[$items->kind];
+            $items->company = $co_list[$items->company];
         }
         return $items;
     }
