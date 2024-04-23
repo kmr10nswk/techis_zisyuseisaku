@@ -35,7 +35,16 @@ class UserController extends Controller
     public function profile_show(User $user)
     {
         User::noEmail($user);
-        return view('user.profile', compact('user'));
+        $user['possesions'] = $user->possesion_items()
+            ->orderBy('name','asc')
+            ->get();
+        if(auth()->check()){
+            $checkUser = Auth::user()->id;
+        } else {
+            $checkUser = "";
+        }
+
+        return view('user.profile', compact('user', 'checkUser'));
     }
 
     /**

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
 use App\Models\User;
+use App\Models\Possesion;
 
 class ItemController extends Controller
 {
@@ -19,12 +20,16 @@ class ItemController extends Controller
         // 商品一覧取得
         $items = Item::query();
         $items = $items->where('status', 'active')
+            ->withCount('possesions')
             ->orderby('id', 'asc')
             ->paginate(10)->withQueryString();
         
         // blade整え
         $count = $items->count();
         $items = Item::listSeiton($items, $count);
+        foreach($items as $item) {
+            $item['has'] = Auth::user()->is_possesion($item->id);
+        }
 
         return view('item.index', compact('items'));
     }

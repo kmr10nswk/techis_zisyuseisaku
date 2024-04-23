@@ -29,9 +29,17 @@
                 @foreach($items as $item)
                     <div class="col-lg-3 col-md-4 mb-3">
                         <div class="card h-100 position-relative">
-                            <button class="btn position-absolute">
-                                <i class="bi bi-bookmark-check text-primary" id="icon"></i>
-                            </button>
+                            @if(Auth::user())
+                                @if(!$item->has)
+                                        <button class="btn position-absolute">
+                                            <i class="bi bi-bookmark-check text-primary p-icon" data-possesion-id="{{ $item->id }}" data-has-id="{{ $item->has }}"></i>
+                                        </button>
+                                @else
+                                        <button class="btn position-absolute">
+                                            <i class="bi bi-bookmark-check-fill text-primary p-icon" data-possesion-id="{{ $item->id }}" data-has-id="{{ $item->has }}"></i>
+                                        </button>
+                                @endif
+                            @endif
                             <div class="card-img mx-auto">
                                 <img src="{{ asset('storage/item/' . $item->image_item) }}" alt="書籍画像" class="mx-auto card-img-top d-block">
                             </div>
@@ -41,7 +49,7 @@
                                     <a href="{{ route('items.show', $item) }}">{{ $item->name }}</a>
                                 </div>
                                 <p class="card-text text-center mb-1">{{ $item->release->format('Y/m') }}発売</p>
-                                <p class="card-text text-center">Todo:所持者数</p>
+                                <p class="card-text text-center">所持者数：<span class="p-count">{{ $item->possesions_count }}</span></p>
                             </div>
                                 <ul class="my-1">
                                     <li class="c-tag">{{ $item->category }}</li>
@@ -69,7 +77,9 @@
                             <th><i class="bi bi-building"></i><span>会社名</span></th>
                             <th><i class="bi bi-clock"></i><span>発売月</span></th>
                             <th><i class="bi bi-bookmark-check"></i><span>所持者数</span></th>
-                            <th><i class="bi bi-check-square"></i><span>所持</span></th>
+                            @if(Auth::user())
+                                <th><i class="bi bi-check-square"></i><span>所持</span></th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -82,8 +92,14 @@
                                 <td>{{ $item->kind }}</td>
                                 <td>{{ $item->company }}</td>
                                 <td>{{ $item->release->format('Y/m') }}</td>
-                                <td>Todo</td>
-                                <td class="text-center"><button class="btn-sm btn-outline-primary">✓</button></td>
+                                <td>{{ intval($item->possesions_count) }}人</td>
+                                @if(Auth::user())
+                                    @if(!$item->has)
+                                        <td class="text-center"><button class="btn-sm btn-outline-primary p-icon" data-possesion-id="{{ $item->id }}" data-has-id="{{ $item->has }}">✓</button></td>
+                                    @else
+                                        <td class="text-center"><button class="btn-sm btn-primary p-icon" data-possesion-id="{{ $item->id }}" data-has-id="{{ $item->has }}">✓</button></td>
+                                    @endif
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>
@@ -160,11 +176,11 @@
             margin: 0.5rem 1rem;
         }
 
-        #card-content .row .card button #icon{
+        #card-content .row .card button .p-icon{
             font-size: 2.5rem;
         }
 
-        #card-content .row .card button #icon:hover {
+        #card-content .row .card button .p-icon:hover {
             color: #52BEFF !important;
         }
 
@@ -173,6 +189,10 @@
             max-height: 220px;
             min-height: 220px;
             object-fit: contain;
+        }
+
+        #card-content .row .card .card-body .p-count{
+            font-size: 0.95rem;
         }
 
         #card-content .row .card ul{
@@ -214,6 +234,10 @@
         }
 
         /* テーブル型 */
+        #table-content {
+            display: none;
+        }
+
         #table-content .table thead tr th i{
             display: none;
         }
@@ -299,19 +323,81 @@
 
 @section('js')
     <script>
-        const cardButton = $('#card-check');
-        const tableButton = $('#table-check');
-        const cardContent = $('#card-content');
-        const tableContent = $('#table-content');
+        $(function () {
+            // カードとテーブルの切り替え
+            const cardButton = $('#card-check');
+            const tableButton = $('#table-check');
+            const cardContent = $('#card-content');
+            const tableContent = $('#table-content');
 
-        cardButton.on('click', function() {
-            tableContent.hide();
-            cardContent.show();
-        });
+            cardButton.on('click', function() {
+                tableContent.hide();
+                cardContent.show();
+            });
 
-        tableButton.on('click', function() {
-            cardContent.hide();
-            tableContent.show();
+            tableButton.on('click', function() {
+                cardContent.hide();
+                tableContent.show();
+            });
+
+            // 所持機能 非同期
+            $('.p-icon').on('click', function () {
+                const possesion_id = $(this).data('possesion-id');
+                const has_id = $(this).data('has-id');
+                const possesion_obj = $('.p-icon');
+                const possesion_count_obj = $('.p-count');
+                let possesion_count = Number(possesion_obj.html());
+                
+                if(has_id){
+                    // 取り消し
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url: '/api/possesions/remove',
+                        type: 'DELETE',
+                        data: {
+                            'possesion_id' : possesion_id
+                        },
+                        timeout: 10000
+                    })
+                    .done(() => {
+                        possesion_count--;
+                        possesion_count_obj.html(possesion_count+1);
+                        $(this).data('has-id', false);
+                        possesion_obj.removeClass('bi-bookmark-check-fill', 'btn-primary');
+                        possesion_obj.addClass('bi-bookmark-check', 'btn-outline-primary');
+                    })
+                    .fail((data) => {
+                        alert('処理中にエラーが発生しました。');
+                        console.log(data);
+                    });
+                } else {
+                    // 追加
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url: '/api/possesions/add',
+                        type: 'POST',
+                        data: {
+                            'possesion_id' : possesion_id
+                        },
+                        timeout: 10000
+                    })
+                    .done((data) => {
+                        possesion_count++;
+                        possesion_count_obj.html(possesion_count);
+                        $(this).data('has-id', true);
+                        possesion_obj.removeClass('bi-bookmark-check', 'btn-outline-primary');
+                        possesion_obj.addClass('bi-bookmark-check-fill', 'btn-primary');
+                    })
+                    .fail((data) => {
+                        alert('処理中にエラーが発生しました。');
+                        console.log(data);
+                    });
+                }
+            });
         });
     </script>
 @stop

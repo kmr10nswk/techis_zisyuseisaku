@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 use App\Models\Policy;
 use App\Models\Possesion;
+use App\Models\Item;
 
 class User extends Authenticatable
 {
@@ -61,6 +62,14 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Possesion');
     }
 
+    public function possesion_items(){
+        return $this->belongsToMany('App\Models\Item', 'possesions', 'user_id', 'item_id')
+            ->withTimestamps();
+    }
+
+    public function is_possesion($itemId){
+        return $this->possesions()->where('item_id', $itemId)->exists();
+    }
 
     /**
      * 一般ユーザーの場合はemail情報を渡さない
