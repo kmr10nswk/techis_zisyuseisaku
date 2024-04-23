@@ -32,11 +32,11 @@
                             @if(Auth::user())
                                 @if(!$item->has)
                                         <button class="btn position-absolute">
-                                            <i class="bi bi-bookmark-check text-primary p-icon" data-possesion-id="{{ $item->id }}" data-has-id="{{ $item->has }}"></i>
+                                            <i class="bi bi-bookmark-check text-primary p-icon" id="card-icon" data-possesion-id="{{ $item->id }}" data-has-id="{{ $item->has }}"></i>
                                         </button>
                                 @else
                                         <button class="btn position-absolute">
-                                            <i class="bi bi-bookmark-check-fill text-primary p-icon" data-possesion-id="{{ $item->id }}" data-has-id="{{ $item->has }}"></i>
+                                            <i class="bi bi-bookmark-check-fill text-primary p-icon" id="card-icon" data-possesion-id="{{ $item->id }}" data-has-id="{{ $item->has }}"></i>
                                         </button>
                                 @endif
                             @endif
@@ -49,7 +49,7 @@
                                     <a href="{{ route('items.show', $item) }}">{{ $item->name }}</a>
                                 </div>
                                 <p class="card-text text-center mb-1">{{ $item->release->format('Y/m') }}発売</p>
-                                <p class="card-text text-center">所持者数：<span class="p-count">{{ $item->possesions_count }}</span></p>
+                                <p class="card-text text-center">所持者数：<span class="p-count" id="card-count">{{ $item->possesions_count }}</span></p>
                             </div>
                                 <ul class="my-1">
                                     <li class="c-tag">{{ $item->category }}</li>
@@ -92,12 +92,12 @@
                                 <td>{{ $item->kind }}</td>
                                 <td>{{ $item->company }}</td>
                                 <td>{{ $item->release->format('Y/m') }}</td>
-                                <td>{{ intval($item->possesions_count) }}人</td>
+                                <td><span class="p-count" id="table-count">{{ intval($item->possesions_count) }}</span>人</td>
                                 @if(Auth::user())
                                     @if(!$item->has)
-                                        <td class="text-center"><button class="btn-sm btn-outline-primary p-icon" data-possesion-id="{{ $item->id }}" data-has-id="{{ $item->has }}">✓</button></td>
+                                        <td class="text-center"><button class="btn-sm btn-outline-primary p-icon" id="table-icon" data-possesion-id="{{ $item->id }}" data-has-id="{{ $item->has }}">✓</button></td>
                                     @else
-                                        <td class="text-center"><button class="btn-sm btn-primary p-icon" data-possesion-id="{{ $item->id }}" data-has-id="{{ $item->has }}">✓</button></td>
+                                        <td class="text-center"><button class="btn-sm btn-primary p-icon" id="table-icon" data-possesion-id="{{ $item->id }}" data-has-id="{{ $item->has }}">✓</button></td>
                                     @endif
                                 @endif
                             </tr>
@@ -344,8 +344,8 @@
             $('.p-icon').on('click', function () {
                 const possesion_id = $(this).data('possesion-id');
                 const has_id = $(this).data('has-id');
-                const possesion_obj = $('.p-icon');
-                const possesion_count_obj = $('.p-count');
+                const possesion_obj = $(this);
+                const possesion_count_obj = $(this).closest('.card', 'table').find('.p-count');
                 let possesion_count = Number(possesion_obj.html());
                 
                 if(has_id){
@@ -362,11 +362,41 @@
                         timeout: 10000
                     })
                     .done(() => {
+                        // p-count
                         possesion_count--;
                         possesion_count_obj.html(possesion_count+1);
                         $(this).data('has-id', false);
-                        possesion_obj.removeClass('bi-bookmark-check-fill', 'btn-primary');
-                        possesion_obj.addClass('bi-bookmark-check', 'btn-outline-primary');
+
+                        // p-icon
+                        if($(this).hasClass('bi-bookmark-check-fill')){
+                            possesion_obj.removeClass('bi-bookmark-check-fill');
+                            possesion_obj.addClass('bi-bookmark-check');
+
+                            // カード表示を押したらテーブルにもclass反映
+                            // $('#table-icon').each(function() {
+                            //     let row_icon = $(this).data('possesion-id');
+                            //     let row_count = Number($(this).closest('tbody').find('p-count').html());
+                            //     if(possesion_id === row_icon){
+                            //         $(this).removeClass('btn-primary');
+                            //         $(this).addClass('btn-outline-primary');
+                                    
+                            //         let row_count = Number($(this).closest('tr').find('p-count').html());
+                            //         row_count--;
+                            //     }
+                            // });
+                        } else if ($(this).hasClass('btn-primary')){
+                            possesion_obj.removeClass('btn-primary');
+                            possesion_obj.addClass('btn-outline-primary');
+
+                            // テーブル表示を押したらカードにもclass反映
+                            // $('.card').each(function() {
+                            //     let row_icon = $(this).data('possesion-id');
+                            //     if(possesion_id === row_icon){
+                            //         $(this).removeClass('bi-bookmark-check-fill');
+                            //         $(this).addClass('bi-bookmark-check');
+                            //     }
+                            // });
+                        }
                     })
                     .fail((data) => {
                         alert('処理中にエラーが発生しました。');
@@ -386,11 +416,36 @@
                         timeout: 10000
                     })
                     .done((data) => {
+                        // p-count
                         possesion_count++;
                         possesion_count_obj.html(possesion_count);
                         $(this).data('has-id', true);
-                        possesion_obj.removeClass('bi-bookmark-check', 'btn-outline-primary');
-                        possesion_obj.addClass('bi-bookmark-check-fill', 'btn-primary');
+
+                        // p-icon
+                        if($(this).hasClass('bi-bookmark-check')){
+                            possesion_obj.removeClass('bi-bookmark-check');
+                            possesion_obj.addClass('bi-bookmark-check-fill');
+                            
+                            /**
+                             * Todo:カード表示を押したらテーブルにもclass反映
+                             * 分からん→foreachで回してる要素に対して、どのように「今ブックマークボタンを押したobject」を判断すれば良いか。
+                             */
+                            // $('#table-icon').each(function() {
+                            //     let row_icon = $(this).data('possesion-id');
+
+                            //     if(possesion_id === row_icon){
+                            //         $(this).removeClass('btn-primary');
+                            //         $(this).addClass('btn-outline-primary');
+                                    
+                            //         let row_count = Number($(this).closest('tr').find('.p-count').html());
+                            //         row_count++;
+                            //         $(this).closest('tr').find('.p-count').html(row_count);
+                            //     }
+                            // });
+                        } else if($(this).hasClass('btn-outline-primary')){
+                            possesion_obj.removeClass('btn-outline-primary');
+                            possesion_obj.addClass('btn-primary');                            
+                        }
                     })
                     .fail((data) => {
                         alert('処理中にエラーが発生しました。');
