@@ -16,7 +16,56 @@
 @stop
 
 @section('content')
+    <!-- 検索欄 -->
+    <form action="" method="get" class="mb-2" role="search">
+        <ul class="col-md-12 col-sm-12 p-0 row">
+            <li class="col-lg-3 col-md-4 col-sm-12">
+                <label for="search_free" class="form-label mb-0">フリーワード</label>
+                <input type="serach" id="search_free" name="search_free" value="" class="form-control" placeholder="フリーワード">
+            </li>
+            <li class="col-lg-1 col-md-2 col-sm-4">
+                <label for="search_category" class="form-label mb-0">カテゴリ</label>
+                <select name="search_category" id="search_category" class="form-control">
+                    <option></option>
+                    <!-- Todo:foreach -->
+                </select>
+            </li>
+            <li class="col-lg-2 col-md-3 col-sm-5">
+                <label for="search_theme" class="form-label mb-0">テーマ</label>
+                <select name="search_theme" id="search_theme" class="form-control">
+                    <option></option>
+                    <!-- Todo:foreach -->
+                </select>
+            </li>
+            <li class="col-lg-2 col-md-3 col-sm-5">
+                <label for="search_kind" class="form-label mb-0">書籍種類</label>
+                <select name="search_kind" id="search_kind" class="form-control">
+                    <option></option>
+                    <!-- Todo:foreach -->
+                </select>
+            </li>
+            <li class="col-lg-2 col-md-3 col-sm-5">
+                <label for="search_company" class="form-label mb-0">会社名</label>
+                <select name="search_company" id="search_company" class="form-control">
+                    <option></option>
+                    <!-- Todo:foreach -->
+                </select>
+            </li>
+            <li class="col-lg-2 col-md-3 col-sm-5">
+                <label for="search_possesion" class="form-label mb-0">所持者数</label>
+                <div class="row">
+                    <input type="text" class="form-control col-3 mr-1" id="search_possesion" placeholder="数">
+                    <select name="p_condition" class="form-control col-5">
+                        <option value="up">以上</option>
+                        <option value="down">以下</option>
+                    </select>
+                </div>
+            </li>
+        </ul>
+    </form>
+
     <div class="tabbox">
+        <!-- 切り替えボタン -->
         <div class="tabselect">
             <input type="radio" name="tabset" id="card-check" checked>
             <label for="card-check" class="tab_label">カード型</label>
@@ -92,7 +141,7 @@
                                 <td>{{ $item->kind }}</td>
                                 <td>{{ $item->company }}</td>
                                 <td>{{ $item->release->format('Y/m') }}</td>
-                                <td><span class="p-count" id="table-count">{{ intval($item->possesions_count) }}</span>人</td>
+                                <td><span class="p-count" id="table-count">{{ $item->possesions_count }}</span>人</td>
                                 @if(Auth::user())
                                     @if(!$item->has)
                                         <td class="text-center"><button class="btn-sm btn-outline-primary p-icon" id="table-icon" data-possesion-id="{{ $item->id }}" data-has-id="{{ $item->has }}">✓</button></td>
@@ -111,6 +160,23 @@
 
 @section('css')
     <style>
+        /* 検索欄 */
+        form ul {
+            list-style: none;
+        }
+
+        form ul li label{
+            font-size: 0.9rem;
+            padding-left: 0;
+        }
+
+        form ul li input {
+            padding-left: 0;
+        }
+
+        @media screen and (max-width: 576px) {
+        }
+
         /* ラジオボタン */
         .tabselect{
             display: flex;
@@ -323,21 +389,36 @@
 
 @section('js')
     <script>
+        // localStorageから選択状態を復元
         $(function () {
-            // カードとテーブルの切り替え
             const cardButton = $('#card-check');
             const tableButton = $('#table-check');
             const cardContent = $('#card-content');
             const tableContent = $('#table-content');
 
+            // selectしてた方を更新しても保存しておく。
+            $(document).ready(function() {
+                if(localStorage.getItem('selectedTab') === '#table-check'){
+                    localStorage.setItem('selectedTab', '#table-check');
+                    cardContent.hide();
+                    tableContent.show();
+                    $('#table-check').prop('checked', true);
+                }
+            });
+
+            // カードとテーブルの切り替え
             cardButton.on('click', function() {
                 tableContent.hide();
                 cardContent.show();
+
+                localStorage.setItem('selectedTab', '#card-check');
             });
 
             tableButton.on('click', function() {
                 cardContent.hide();
                 tableContent.show();
+                
+                localStorage.setItem('selectedTab', '#table-check');
             });
 
             // 所持機能 非同期
@@ -345,8 +426,14 @@
                 const possesion_id = $(this).data('possesion-id');
                 const has_id = $(this).data('has-id');
                 const possesion_obj = $(this);
-                const possesion_count_obj = $(this).closest('.card', 'table').find('.p-count');
+                if($(this).hasClass('text-primary')){
+                    var possesion_count_obj = $(this).closest('.card').find('.p-count');
+                } else {
+                    // Todo:なぜかp-iconが取得される。なんで？ parents().children()にしてもダメだった。
+                    var possesion_count_obj = $(this).closest('.table').find('p-count');
+                }
                 let possesion_count = Number(possesion_obj.html());
+                console.log(possesion_count_obj, possesion_count);
                 
                 if(has_id){
                     // 取り消し
