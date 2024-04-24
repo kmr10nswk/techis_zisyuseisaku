@@ -7,8 +7,9 @@
         <h1 class="mr-3">商品一覧</h1>
         <div class="input-group input-group-sm col">
             <div class="input-group-append ml-auto">
-                <!-- Todo:admin管理 -->
-                <a href="{{ url('items/add') }}" class="btn btn-default">商品登録</a>
+                @if(Auth::guard('admin')->check())
+                    <a href="{{ url('items/add') }}" class="btn btn-default">商品登録</a>
+                @endif
             </div>
         </div>
     </div>
@@ -20,7 +21,7 @@
     <form action="" method="get" class="mb-2" role="search">
         <ul class="col-md-12 col-sm-12 p-0 row">
             <li class="col-lg-3 col-md-4 col-sm-12">
-                <label for="search_free" class="form-label mb-0">フリーワード</label>
+                <label for="search_free" class="form-label mb-0 @error('search_free') is-invalid @enderror">フリーワード</label>
                 <input type="serach" id="search_free" name="search_free" value="" class="form-control" placeholder="フリーワード">
             </li>
             <li class="col-lg-1 col-md-2 col-sm-4">
@@ -55,7 +56,7 @@
                 <label for="search_possesion" class="form-label mb-0">所持者数</label>
                 <div class="row">
                     <input type="text" class="form-control col-3 mr-1" id="search_possesion" placeholder="数">
-                    <select name="p_condition" class="form-control col-5">
+                    <select name="search_condition" class="form-control col-5">
                         <option value="up">以上</option>
                         <option value="down">以下</option>
                     </select>
@@ -72,6 +73,7 @@
             <input type="radio" name="tabset" id="table-check">
             <label for="table-check">テーブル型</label>
         </div>
+
         <!-- カード用コンテンツ -->
         <div id="card-content" class="tabcontent">
             <div class="row align-items-stretch">
@@ -81,11 +83,11 @@
                             @if(Auth::user())
                                 @if(!$item->has)
                                         <button class="btn position-absolute">
-                                            <i class="bi bi-bookmark-check text-primary p-icon" id="card-icon" data-possesion-id="{{ $item->id }}" data-has-id="{{ $item->has }}"></i>
+                                            <i class="bi bi-bookmark-check text-primary p-icon" id="card-icon{{ $item->id }}" data-possesion-id="{{ $item->id }}" data-has-id="{{ $item->has }}"></i>
                                         </button>
                                 @else
                                         <button class="btn position-absolute">
-                                            <i class="bi bi-bookmark-check-fill text-primary p-icon" id="card-icon" data-possesion-id="{{ $item->id }}" data-has-id="{{ $item->has }}"></i>
+                                            <i class="bi bi-bookmark-check-fill text-primary p-icon" id="card-icon{{ $item->id }}" data-possesion-id="{{ $item->id }}" data-has-id="{{ $item->has }}"></i>
                                         </button>
                                 @endif
                             @endif
@@ -98,7 +100,7 @@
                                     <a href="{{ route('items.show', $item) }}">{{ $item->name }}</a>
                                 </div>
                                 <p class="card-text text-center mb-1">{{ $item->release->format('Y/m') }}発売</p>
-                                <p class="card-text text-center">所持者数：<span class="p-count" id="card-count">{{ $item->possesions_count }}</span></p>
+                                <p class="card-text text-center">所持者数：<span class="p-count" id="card-count{{ $item->id }}">{{ $item->possesions_count }}</span></p>
                             </div>
                                 <ul class="my-1">
                                     <li class="c-tag">{{ $item->category }}</li>
@@ -141,12 +143,12 @@
                                 <td>{{ $item->kind }}</td>
                                 <td>{{ $item->company }}</td>
                                 <td>{{ $item->release->format('Y/m') }}</td>
-                                <td><span class="p-count" id="table-count">{{ $item->possesions_count }}</span>人</td>
+                                <td><span class="p-count" id="table-count{{ $item->id }}">{{ $item->possesions_count }}</span>人</td>
                                 @if(Auth::user())
                                     @if(!$item->has)
-                                        <td class="text-center"><button class="btn-sm btn-outline-primary p-icon" id="table-icon" data-possesion-id="{{ $item->id }}" data-has-id="{{ $item->has }}">✓</button></td>
+                                        <td class="text-center"><button class="btn-sm btn-outline-primary p-icon" id="table-icon{{ $item->id }}" data-possesion-id="{{ $item->id }}" data-has-id="{{ $item->has }}">✓</button></td>
                                     @else
-                                        <td class="text-center"><button class="btn-sm btn-primary p-icon" id="table-icon" data-possesion-id="{{ $item->id }}" data-has-id="{{ $item->has }}">✓</button></td>
+                                        <td class="text-center"><button class="btn-sm btn-primary p-icon" id="table-icon{{ $item->id }}" data-possesion-id="{{ $item->id }}" data-has-id="{{ $item->has }}">✓</button></td>
                                     @endif
                                 @endif
                             </tr>
@@ -427,13 +429,17 @@
                 const has_id = $(this).data('has-id');
                 const possesion_obj = $(this);
                 if($(this).hasClass('text-primary')){
-                    var possesion_count_obj = $(this).closest('.card').find('.p-count');
+                    var possesion_count_obj = $('#card-count' + possesion_id);
+                    var row_icon = $('#table-icon' + possesion_id);
+                    var row_count_obj = $('#table-count' + possesion_id);
+                    var row_count = Number(row_count_obj.html());
                 } else {
-                    // Todo:なぜかp-iconが取得される。なんで？ parents().children()にしてもダメだった。
-                    var possesion_count_obj = $(this).closest('.table').find('p-count');
+                    var possesion_count_obj = $('#table-count' + possesion_id);
+                    var row_icon = $('#card-icon' + possesion_id);
+                    var row_count_obj = $('#card-count' + possesion_id);
+                    var row_count = Number(row_count_obj.html());
                 }
-                let possesion_count = Number(possesion_obj.html());
-                console.log(possesion_count_obj, possesion_count);
+                let possesion_count = Number(possesion_count_obj.html());
                 
                 if(has_id){
                     // 取り消し
@@ -451,7 +457,7 @@
                     .done(() => {
                         // p-count
                         possesion_count--;
-                        possesion_count_obj.html(possesion_count+1);
+                        possesion_count_obj.html(possesion_count);
                         $(this).data('has-id', false);
 
                         // p-icon
@@ -460,29 +466,21 @@
                             possesion_obj.addClass('bi-bookmark-check');
 
                             // カード表示を押したらテーブルにもclass反映
-                            // $('#table-icon').each(function() {
-                            //     let row_icon = $(this).data('possesion-id');
-                            //     let row_count = Number($(this).closest('tbody').find('p-count').html());
-                            //     if(possesion_id === row_icon){
-                            //         $(this).removeClass('btn-primary');
-                            //         $(this).addClass('btn-outline-primary');
-                                    
-                            //         let row_count = Number($(this).closest('tr').find('p-count').html());
-                            //         row_count--;
-                            //     }
-                            // });
+                            row_icon.removeClass('btn-primary');
+                            row_icon.addClass('btn-outline-primary');
+                            
+                            row_count--;
+                            row_count_obj.html(row_count);
                         } else if ($(this).hasClass('btn-primary')){
                             possesion_obj.removeClass('btn-primary');
                             possesion_obj.addClass('btn-outline-primary');
 
                             // テーブル表示を押したらカードにもclass反映
-                            // $('.card').each(function() {
-                            //     let row_icon = $(this).data('possesion-id');
-                            //     if(possesion_id === row_icon){
-                            //         $(this).removeClass('bi-bookmark-check-fill');
-                            //         $(this).addClass('bi-bookmark-check');
-                            //     }
-                            // });
+                            row_icon.removeClass('bi-bookmark-check-fill');
+                            row_icon.addClass('bi-bookmark-check');
+                            
+                            row_count--;
+                            row_count_obj.html(row_count);
                         }
                     })
                     .fail((data) => {
@@ -513,25 +511,22 @@
                             possesion_obj.removeClass('bi-bookmark-check');
                             possesion_obj.addClass('bi-bookmark-check-fill');
                             
-                            /**
-                             * Todo:カード表示を押したらテーブルにもclass反映
-                             * 分からん→foreachで回してる要素に対して、どのように「今ブックマークボタンを押したobject」を判断すれば良いか。
-                             */
-                            // $('#table-icon').each(function() {
-                            //     let row_icon = $(this).data('possesion-id');
-
-                            //     if(possesion_id === row_icon){
-                            //         $(this).removeClass('btn-primary');
-                            //         $(this).addClass('btn-outline-primary');
-                                    
-                            //         let row_count = Number($(this).closest('tr').find('.p-count').html());
-                            //         row_count++;
-                            //         $(this).closest('tr').find('.p-count').html(row_count);
-                            //     }
-                            // });
+                            // カード表示を押したらテーブルにもclass反映
+                            row_icon.removeClass('btn-outline-primary');
+                            row_icon.addClass('btn-primary');
+                            
+                            row_count++;
+                            row_count_obj.html(row_count);
                         } else if($(this).hasClass('btn-outline-primary')){
                             possesion_obj.removeClass('btn-outline-primary');
-                            possesion_obj.addClass('btn-primary');                            
+                            possesion_obj.addClass('btn-primary');
+                            
+                            // テーブル表示を押したらカードにもclass反映
+                            row_icon.removeClass('bi-bookmark-check');
+                            row_icon.addClass('bi-bookmark-check-fill');
+                            
+                            row_count++;
+                            row_count_obj.html(row_count);
                         }
                     })
                     .fail((data) => {
