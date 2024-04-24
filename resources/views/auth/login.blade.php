@@ -5,7 +5,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-lg-7 col-md-10">
             <div class="card">
                 <div class="card-header">{{ isset($authgrout) ? ucwords($authgroup) : "" }}{{ __('Login') }}</div>
 
