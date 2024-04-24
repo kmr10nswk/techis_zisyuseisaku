@@ -176,6 +176,10 @@ return [
         'search_company'              => '会社名',
         'search_possesion'            => '所持者数',
         'search_condition'            => '所持者条件',
+        'search_name'                 => '名前',
+        'search_gmpl'                 => 'GM/PL傾向',
+        'search_style'                => 'セッションスタイル',
+        'search_item'                 => '商品名',
     ],
 
 ];
