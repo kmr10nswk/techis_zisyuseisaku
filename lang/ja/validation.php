@@ -153,6 +153,14 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'search_free' => 'フリーワード',
+        'search_category' => 'カテゴリ',
+        'search_theme' => 'テーマ',
+        'search_kind' => '書籍種類',
+        'search_company' => '会社名',
+        'search_possesion' => '所持者数',
+        'search_condition' => '所持者条件',
+    ],
 
 ];
