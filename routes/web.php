@@ -57,7 +57,7 @@ Route::prefix('users')->name('users.')->group(function (){
     Route::get('/', [UserController::class, 'index'])->name('index');
     Route::patch('/delete/{id}',[UserController::class, 'delete'])->name('delete');
     
-    Route::get('/profile/show/{user}',[UserController::class, 'profile_show'])->name('profile.show');
+    Route::get('/profile/show/{id}',[UserController::class, 'profile_show'])->name('profile.show');
     Route::get('/profile/edit',[UserController::class, 'profile_edit'])->name('profile.edit');
     Route::patch('/profile/update/{user}',[UserController::class, 'profile_update'])->name('profile.update');
 });

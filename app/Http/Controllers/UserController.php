@@ -32,9 +32,12 @@ class UserController extends Controller
     /**
      * プロフィール画面表示
      */
-    public function profile_show(User $user)
+    public function profile_show($id)
     {
-        User::noEmail($user);
+        $users_obj = User::where('id', $id)->with('possesions');
+        $users = $users_obj->get();
+        $users = User::noEmail($users);
+        $user = $users->first();
         $user['possesions'] = $user->possesion_items()
             ->orderBy('name','asc')
             ->get();

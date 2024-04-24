@@ -75,12 +75,10 @@ class User extends Authenticatable
      * 一般ユーザーの場合はemail情報を渡さない
      */
     public static function noEmail($users) {
-        if(Auth::user() && $users->count() > 1){
+        if(Auth::user()){
             foreach($users as $user){
                 $user = $user->makeHidden('email');
             }
-        } elseif(Auth::user()) {
-            $users->makeHidden('email');
         }
         return $users;
     }
