@@ -5,7 +5,14 @@
 @endif
 
 @section('content_header')
-    <h1>プロフィール編集画面</h1>
+    <div class="row">
+        <h1>プロフィール編集画面</h1>
+        <div class="input-group input-group-sm col">
+            <div class="input-group-append ml-auto">
+                <a href="{{ url('users/') }}" class="btn btn-default">戻る</a>
+            </div>
+        </div>
+    </div>
     <hr>
 @stop
 
@@ -190,7 +197,7 @@
             </div>
 
             <div class="row mb-0">
-                <div class="col-md-6 offset-md-4">
+                <div class="col-md-6 mx-auto text-center">
                     <button type="submit" class="btn btn-primary">
                         {{ __('更新') }}
                     </button>
@@ -204,7 +211,7 @@
     <style>
         .container {
             max-width: 50%;
-            @media screen and (max-width: 915px) {
+            @media screen and (max-width: 1100px) {
                 max-width: 90%;
             }
         }

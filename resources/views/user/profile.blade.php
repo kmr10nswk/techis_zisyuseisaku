@@ -1,6 +1,5 @@
 @extends('adminlte::page')
 
-<!-- Todo:if文で自分の時はマイプロフィール、そうじゃない時はプロフィール画面 -->
 @if($checkUser === $user->id)
     @section('title', 'マイプロフィール')
 @else
@@ -8,11 +7,18 @@
 @endif
 
 @section('content_header')
+    <div class="row">
     @if($checkUser === $user->id)
         <h1>マイプロフィール</h1>
     @else
         <h1>{{ $user->nickname }}さんのプロフィール</h1>
     @endif
+        <div class="input-group input-group-sm col">
+            <div class="input-group-append ml-auto">
+                <a href="{{ url('users/') }}" class="btn btn-default">戻る</a>
+            </div>
+        </div>
+    </div>
     <hr>
 @stop
 
@@ -47,12 +53,8 @@
                 <tr>
                     <th scope="row">所持ルールブック</th>
                     <td>
-                        <!-- Todo:あとでブックマークテスト -->
                         @foreach($user->possesions as $possesion)
-                            {{ $possesion->name }}
-                            @if(!$possesion->last())
-                                、
-                            @endif
+                            {{ $possesion->name }}、 
                         @endforeach
                     </td>
                 </tr>

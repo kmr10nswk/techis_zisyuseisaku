@@ -11,10 +11,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">管理者一覧
-                        <!-- Todo:上手く動いてないテスト -->
-                        @can('all_admin') {{dd('aaa')}} @endcan
-                    </h3>
+                    <h3 class="card-title">管理者一覧</h3>
                     <div class="card-tools">
                         <div class="input-group input-group-sm">
                         </div>
