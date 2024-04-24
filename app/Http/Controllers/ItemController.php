@@ -51,8 +51,10 @@ class ItemController extends Controller
         
         // blade整え
         $items = Item::listSeiton($items);
-        foreach($items as $item) {
-            $item['has'] = Auth::user()->is_possesion($item->id);
+        if(Auth::user()){
+            foreach($items as $item) {
+                $item['has'] = Auth::user()->is_possesion($item->id);
+            }
         }
         
         $nothing_message = null;

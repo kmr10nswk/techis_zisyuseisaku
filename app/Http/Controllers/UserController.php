@@ -40,7 +40,7 @@ class UserController extends Controller
 
         // 通常
         $users = $users->where('status', 'active')
-            ->orderby('id', 'asc')
+            ->orderby('id', 'desc')
             ->paginate(20)->withQueryString();
         
         $users = User::noEmail($users);
