@@ -52,12 +52,11 @@ class Item extends Model
      * Possesion関連
      */
     // 所持ボタンを押したかを判定
-    // public function isPossesionBy($user) : bool {
-    //     return Possesion::where('user_id', $user->id)
-    //         ->where('item_id', $this->id)
-    //         ->first() !==null;
-    //     }
-    
+    public function isPossesionBy($user) : bool {
+        return Possesion::where('user_id', $user->id)
+            ->where('item_id', $this->id)
+            ->first() !==null;
+        }    
 
     /**
      * リスト一覧
@@ -103,25 +102,18 @@ class Item extends Model
     /**
      * blade整え
      */
-    public static function listSeiton($items, $count = null)
-    {        
+    public static function listSeiton($items)
+    {
         $c_list = Item::category_list();
         $t_list = Item::theme_list();
         $k_list = Item::kind_list();
         $co_list = Item::company_list();
 
-        if($count > 1){
-            foreach ($items as $item){
-                $item->category = $c_list[$item->category];
-                $item->theme = $t_list[$item->theme];
-                $item->kind = $k_list[$item->kind];
-                $item->company = $co_list[$item->company];
-            }
-        } else {
-            $items->category = $c_list[$items->category];
-            $items->theme = $t_list[$items->theme];
-            $items->kind = $k_list[$items->kind];
-            $items->company = $co_list[$items->company];
+        foreach ($items as $item){
+            $item->category = $c_list[$item->category];
+            $item->theme = $t_list[$item->theme];
+            $item->kind = $k_list[$item->kind];
+            $item->company = $co_list[$item->company];
         }
         return $items;
     }
