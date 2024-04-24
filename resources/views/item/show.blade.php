@@ -59,9 +59,8 @@
                     <td>{{ $item->release->format('Y/m') }}</td>
                 </tr>
                 <tr>
-                    <!-- Todo:所持ルールブックの対応 -->
                     <th scope="row">所持者数</th>
-                    <td>あとでね</td>
+                    <td>{{ $item->possesions_count }}人</td>
                 </tr>
                 <tr>
                     <th scope="row">詳細</th>
