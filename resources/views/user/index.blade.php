@@ -195,10 +195,6 @@
             vertical-align: middle;
         }
 
-        .row .col-12 table tbody tr td:last-child{
-            border-right: none;
-        }
-
     </style>
 @stop
 
