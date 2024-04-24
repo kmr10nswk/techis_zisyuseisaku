@@ -18,52 +18,117 @@
 
 @section('content')
     <!-- 検索欄 -->
-    <form action="" method="get" class="mb-2" role="search">
-        <ul class="col-md-12 col-sm-12 p-0 row">
-            <li class="col-lg-3 col-md-4 col-sm-12">
-                <label for="search_free" class="form-label mb-0 @error('search_free') is-invalid @enderror">フリーワード</label>
-                <input type="serach" id="search_free" name="search_free" value="" class="form-control" placeholder="フリーワード">
-            </li>
-            <li class="col-lg-1 col-md-2 col-sm-4">
-                <label for="search_category" class="form-label mb-0">カテゴリ</label>
-                <select name="search_category" id="search_category" class="form-control">
-                    <option></option>
-                    <!-- Todo:foreach -->
-                </select>
-            </li>
-            <li class="col-lg-2 col-md-3 col-sm-5">
-                <label for="search_theme" class="form-label mb-0">テーマ</label>
-                <select name="search_theme" id="search_theme" class="form-control">
-                    <option></option>
-                    <!-- Todo:foreach -->
-                </select>
-            </li>
-            <li class="col-lg-2 col-md-3 col-sm-5">
-                <label for="search_kind" class="form-label mb-0">書籍種類</label>
-                <select name="search_kind" id="search_kind" class="form-control">
-                    <option></option>
-                    <!-- Todo:foreach -->
-                </select>
-            </li>
-            <li class="col-lg-2 col-md-3 col-sm-5">
-                <label for="search_company" class="form-label mb-0">会社名</label>
-                <select name="search_company" id="search_company" class="form-control">
-                    <option></option>
-                    <!-- Todo:foreach -->
-                </select>
-            </li>
-            <li class="col-lg-2 col-md-3 col-sm-5">
-                <label for="search_possesion" class="form-label mb-0">所持者数</label>
-                <div class="row">
-                    <input type="text" class="form-control col-3 mr-1" id="search_possesion" placeholder="数">
-                    <select name="search_condition" class="form-control col-5">
-                        <option value="up">以上</option>
-                        <option value="down">以下</option>
+    <button class="btn btn-outline-light" data-toggle="collapse" data-target="#search-ori" aria-expand="false" aria-controls="search-ori">検索欄の表示</button>
+    <div class="collapse" id="search-ori">
+        <form action="" method="get" class="mb-2" role="search">
+            <ul class="col-md-12 col-sm-12 p-0 row">
+                <li class="col-lg-3 col-md-4 col-sm-12">
+                    <label for="search_free" class="form-label mb-0 @error('search_free') is-invalid @enderror">フリーワード</label>
+                    <input type="serach" id="search_free" name="search_free" value="{{ isset($search['search_free']) ? $search['search_free'] : '' }}" class="form-control" placeholder="フリーワード">
+
+                    @error('search_free')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </li>
+                <li class="col-lg-1 col-md-2 col-sm-4">
+                    <label for="search_category" class="form-label mb-0">カテゴリ</label>
+                    <select name="search_category" id="search_category" class="form-control @error('search_category') is-invalid @enderror">
+                        <option></option>
+                            @foreach($types['categories'] as $key => $value)
+                                <option value="{{ $key }}" @if(isset($search['search_category']) && $search['search_category'] == $key) selected @endif>{{ $value }}</option>
+                            @endforeach
                     </select>
-                </div>
-            </li>
-        </ul>
-    </form>
+
+                    @error('search_category')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </li>
+                <li class="col-lg-2 col-md-3 col-sm-5">
+                    <label for="search_theme" class="form-label mb-0">テーマ</label>
+                    <select name="search_theme" id="search_theme" class="form-control @error('search_theme') is-invalid @enderror">
+                        <option></option>
+                            @foreach($types['themes'] as $key => $value)
+                                <option value="{{ $key }}" @if(isset($search['search_theme']) && $search['search_theme'] == $key) selected @endif>{{ $value }}</option>
+                            @endforeach
+                    </select>
+
+                    @error('search_theme')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </li>
+                <li class="col-lg-2 col-md-3 col-sm-5">
+                    <label for="search_kind" class="form-label mb-0">書籍種類</label>
+                    <select name="search_kind" id="search_kind" class="form-control @error('search_kind') is-invalid @enderror">
+                        <option></option>
+                            @foreach($types['kinds'] as $key => $value)
+                                <option value="{{ $key }}" @if(isset($search['search_kind']) && $search['search_kind'] == $key) selected @endif>{{ $value }}</option>
+                            @endforeach
+                    </select>
+
+                    @error('search_kind')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+
+                </li>
+                <li class="col-lg-2 col-md-3 col-sm-5">
+                    <label for="search_company" class="form-label mb-0">会社名</label>
+                    <select name="search_company" id="search_company" class="form-control @error('search_company') is-invalid @enderror">
+                        <option></option>
+                            @foreach($types['companies'] as $key => $value)
+                                <option value="{{ $key }}" @if(isset($search['search_company']) && $search['search_company'] == $key) selected @endif>{{ $value }}</option>
+                            @endforeach
+                    </select>
+
+                    @error('search_company')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </li>
+                <li class="col-lg-2 col-md-3 col-sm-5">
+                    <label for="search_possesion" class="form-label mb-0">所持者数</label>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 col-sm-2 pr-1">
+                            <input name="search_possesion" type="text" class="form-control @error('search_possesion') is-invalid @enderror" id="search_possesion" placeholder="0~">
+
+                            @error('search_possesion')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-3 p-0">
+                            <select name="search_condition" class="form-control @error('search_condition') is-invalid @enderror">
+                                <option value="up">以上</option>
+                                <option value="down">以下</option>
+                            </select>
+                            
+                            @error('search_condition')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
+                </li>
+                <li class="col-md-3 d-flex flex-row align-items-end">
+                    <button class="mt-2 mr-2 btn btn-outline-success" type="submit">検索</button>
+                    <!-- クリアボタン -->
+                    <button type="submit" class="mt-2 btn btn-outline-info" id="clearSearch">クリア</button>
+                </li>
+            </ul>
+            <div class="col-4">
+            </div>
+        </form>
+    </div>
 
     <div class="tabbox">
         <!-- 切り替えボタン -->
@@ -73,6 +138,13 @@
             <input type="radio" name="tabset" id="table-check">
             <label for="table-check">テーブル型</label>
         </div>
+
+        <!-- フラッシュメッセージ欄 -->
+        @if (isset($nothing_message))
+            <div class="alert alert-light col-5">
+                {{ $nothing_message }}
+            </div>
+        @endif
 
         <!-- カード用コンテンツ -->
         <div id="card-content" class="tabcontent">
@@ -177,6 +249,12 @@
         }
 
         @media screen and (max-width: 576px) {
+            form ul li .row .col-sm-2{
+                width: 20%;
+            }
+            form ul li .row .col-sm-3{
+                width: 30%;
+            }
         }
 
         /* ラジオボタン */
@@ -421,6 +499,12 @@
                 tableContent.show();
                 
                 localStorage.setItem('selectedTab', '#table-check');
+            });
+
+            // 検索クリアボタン
+            $('#clearSearch').on('click',function() {
+                $('#search_free').val('');
+                // search_category.value = '';
             });
 
             // 所持機能 非同期
