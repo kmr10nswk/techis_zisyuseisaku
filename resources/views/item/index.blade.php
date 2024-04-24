@@ -18,7 +18,7 @@
 
 @section('content')
     <!-- 検索欄 -->
-    <button class="btn btn-outline-light" data-toggle="collapse" data-target="#search-ori" aria-expand="false" aria-controls="search-ori">検索欄の表示</button>
+    <button class="btn btn-outline-light mb-1" data-toggle="collapse" data-target="#search-ori" aria-expand="false" aria-controls="search-ori">検索欄の表示</button>
     <div class="collapse" id="search-ori">
         <form action="" method="get" class="mb-2" role="search">
             <ul class="col-md-12 col-sm-12 p-0 row">
@@ -131,12 +131,24 @@
     </div>
 
     <div class="tabbox">
-        <!-- 切り替えボタン -->
-        <div class="tabselect">
-            <input type="radio" name="tabset" id="card-check" checked>
-            <label for="card-check" class="tab_label">カード型</label>
-            <input type="radio" name="tabset" id="table-check">
-            <label for="table-check">テーブル型</label>
+        <div class="row">
+            <!-- 切り替えボタン -->
+            <div class="tabselect">
+                <input type="radio" name="tabset" id="card-check" checked>
+                <label for="card-check" class="tab_label">カード型</label>
+                <input type="radio" name="tabset" id="table-check">
+                <label for="table-check">テーブル型</label>
+            </div>
+            <!-- 並び替えボタン -->
+            <div class="align-items-end ml-auto mr-3 orderselect">
+                <form action="" method="get" id="orderForm">
+                    <select name="order" id="order" class="form-control">
+                        @foreach($types['orders'] as $key => $value)
+                            <option value="{{ $key }}" @if(isset($order['order']) && $order['order'] == $key) selected @endif>{{ $value }}</option>
+                        @endforeach
+                    </select>
+                </form>
+            </div>
         </div>
 
         <!-- フラッシュメッセージ欄 -->
@@ -291,6 +303,27 @@
             border-radius: 3px;
             color: #fff;
             margin: 0;
+        }
+
+        /* 並び替え欄 */
+        .tabbox .row .orderselect {
+            potision: relative;
+            padding-right: 7.5px;
+            padding-left: 7.5px;
+        }
+
+        @media screen and (max-width: 991px) {
+            .tabbox .row .orderselect {
+                flex: 0 0 20%;
+                max-width: 20%;
+            }
+        }
+        
+        @media screen and (max-width: 767px) {
+            .tabbox .row .orderselect {
+                flex: 0 0 40%;
+                max-width: 40%;
+            }
         }
 
         /* カード型  */
@@ -493,7 +526,6 @@
 
                 localStorage.setItem('selectedTab', '#card-check');
             });
-
             tableButton.on('click', function() {
                 cardContent.hide();
                 tableContent.show();
@@ -504,7 +536,16 @@
             // 検索クリアボタン
             $('#clearSearch').on('click',function() {
                 $('#search_free').val('');
-                // search_category.value = '';
+                $('#search_category').val('');
+                $('#search_theme').val('');
+                $('#search_kind').val('');
+                $('#search_company').val('');
+                $('#search_possesion').val('');
+            });
+
+            // 並び替え実行ボタン
+            $('#orderForm').on('change', function() {
+                $('#orderForm').submit();
             });
 
             // 所持機能 非同期

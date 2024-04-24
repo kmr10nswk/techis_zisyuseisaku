@@ -22,17 +22,32 @@ class ItemController extends Controller
         $types['themes'] = Item::theme_list();
         $types['kinds'] = Item::kind_list();
         $types['companies'] = Item::company_list();
+        $types['orders'] = [
+            'add_desc_order' => '登録日(降順)',
+            'add_asc_order' => '登録日(昇順)',
+            'desc_order' => '発売日(降順)',
+            'asc_order' => '発売日(昇順)',
+            'has_desc_order' => '所持者数(降順)',
+            'has_asc_order' => '所持者数(昇順)',
+            'name_order' => '名前順',
+        ];
 
         // 検索用
         $search = $request->only(['search_free', 'search_category', 'search_theme', 'search_kind', 'search_company', 'search_possesion', 'search_condition']);
 
-        $this->searchValidator($request->all(), $types)->validate();
-        $items = $this->search($items, $search, $types);
+        $this->searchValidator($request->all())->validate();
+        $items = $this->search($items, $search);
+
+        // 並び替え用
+        $this->Validate($request, [
+            'order' => ['in:' . implode(',', array_keys($types['orders']))]
+        ]);
+        $order = $request->only('order');
+        $items = $this->order($items, $order);
 
         // 通常
         $items = $items->where('status', 'active')
-            ->orderby('id', 'asc')
-            ->paginate(10)->withQueryString();
+            ->paginate(20)->withQueryString();
         
         // blade整え
         $items = Item::listSeiton($items);
@@ -45,7 +60,7 @@ class ItemController extends Controller
             $nothing_message =  '検索結果はありません';
         }
 
-        return view('item.index', compact('items', 'search' , 'types', 'nothing_message'));
+        return view('item.index', compact('items', 'search' , 'order', 'types', 'nothing_message'));
     }
 
     /**
@@ -101,7 +116,7 @@ class ItemController extends Controller
      */
     public function show($id)
     {
-        $item_obj = Item::where('id', $id);
+        $item_obj = Item::where('id', $id)->withCount('possesions');
         $items =  $item_obj->get();
 
         // blade整え
@@ -114,7 +129,7 @@ class ItemController extends Controller
     /**
      * 検索用
      */
-    public function searchValidator(array $data, array $types){
+    public function searchValidator(array $data){
         return Validator::make($data,[
             'search_free' => ['string', 'max:20', 'nullable'],
             'search_category' => ['between:1,4', 'nullable'],
@@ -126,7 +141,7 @@ class ItemController extends Controller
         ]);
     }
     
-    public function search($query, $search, $types)
+    public function search($query, $search)
     {
         // 検索クエリ(多分本当はsearch用のファイルを作った方が良い)
         if(isset($search['search_free'])){  
@@ -159,5 +174,46 @@ class ItemController extends Controller
         }
 
         return $query;
+    }
+
+    /**
+     * 並び替え用
+     */
+    public function order($query, $order)
+    {
+        if(!isset($order['order']) || $order['order'] === 'add_desc_order'){
+            $query = $query->orderby('created_at', 'desc');
+            return $query;
+        }
+
+        if(!isset($order) || $order['order'] === 'add_asc_order'){
+            $query = $query->orderby('created_at', 'asc');
+            return $query;
+        }
+
+        if($order['order'] === 'name_order'){
+            $query = $query->orderby('name', 'asc');
+            return $query;
+        }
+
+        if($order['order'] === 'desc_order'){
+            $query = $query->orderby('release', 'asc');
+            return $query;
+        }
+        
+        if($order['order'] === 'asc_order'){
+            $query = $query->orderby('release', 'asc');
+            return $query;
+        }
+        
+        if($order['order'] === 'has_asc_order'){
+            $query = $query->orderby('possesions_count', 'asc');
+            return $query;
+        }
+        
+        if($order['order'] === 'has_desc_order'){
+            $query = $query->orderby('possesions_count', 'desc');
+            return $query;
+        }
     }
 }
