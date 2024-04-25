@@ -48,7 +48,7 @@
                         </span>
                     @enderror
                 </li>
-                <li class="col-lg-1 col-md-3 col-sm-5">
+                <li class="col-lg-2 col-md-3 col-sm-5 session">
                     <label for="search_style" class="form-label mb-0">セッションスタイル</label>
                     <select name="search_style" id="search_style" class="form-control @error('search_style') is-invalid @enderror">
                         <option></option>
@@ -164,6 +164,10 @@
 
         form ul li input {
             padding-left: 0;
+        }
+
+        form ul .session {
+            max-width: 200px;
         }
 
         /* テーブル */

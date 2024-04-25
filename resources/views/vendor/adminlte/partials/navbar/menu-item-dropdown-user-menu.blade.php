@@ -2,7 +2,7 @@
 @php( $profile_url = View::getSection('profile_url') ?? config('adminlte.profile_url', 'logout') )
 
 @if (config('adminlte.usermenu_profile_url', false))
-    @php( $profile_url = !Auth::guard('admin')->check()->adminlte_profile_url() )
+    @php( $profile_url = Auth::user()->adminlte_profile_url() )
 @endif
 
 @if (config('adminlte.use_route_url', false))
@@ -18,9 +18,9 @@
     {{-- User menu toggler --}}
     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
         @if(config('adminlte.usermenu_image'))
-            <img src="{{ !Auth::guard('admin')->check()->adminlte_image() }}"
+            <img src="{{ Auth::user()->adminlte_image() }}"
                 class="user-image img-circle elevation-2"
-                alt="{{ !Auth::guard('admin')->check()->name }}">
+                alt="{{ Auth::user()->name }}">
         @endif
         @if(Auth::user())
             <span @if(config('adminlte.usermenu_image')) class="d-none d-md-inline" @endif>
@@ -41,14 +41,14 @@
             <li class="user-header {{ config('adminlte.usermenu_header_class', 'bg-primary') }}
                 @if(!config('adminlte.usermenu_image')) h-auto @endif">
                 @if(config('adminlte.usermenu_image'))
-                    <img src="{{ !Auth::guard('admin')->check()->adminlte_image() }}"
+                    <img src="{{ Auth::user()->adminlte_image() }}"
                         class="img-circle elevation-2"
-                        alt="{{ !Auth::guard('admin')->check()->name }}">
+                        alt="{{ Auth::user()->name }}">
                 @endif
                 <p class="@if(!config('adminlte.usermenu_image')) mt-0 @endif">
-                    {{ !Auth::guard('admin')->check()->name }}
+                    {{ Auth::user()->name }}
                     @if(config('adminlte.usermenu_desc'))
-                        <small>{{ !Auth::guard('admin')->check()->adminlte_desc() }}</small>
+                        <small>{{ Auth::user()->adminlte_desc() }}</small>
                     @endif
                 </p>
             </li>

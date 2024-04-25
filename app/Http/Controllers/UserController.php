@@ -88,7 +88,7 @@ class UserController extends Controller
             'image_icon' => ['image', 'mimes:jpeg,png', 'max:1024', 'nullable'],
             'nickname' => ['required','string', 'max:20'],
             'name' => ['required', 'string', 'min:6', 'max:20','regex:/^[a-zA-Z0-9]+$/'],
-            'email' => ['required', 'email', 'unique:users,email,' . !Auth::guard('admin')->check()->email . ',email'],
+            'email' => ['required', 'email', 'unique:users,email,' . Auth::user()->email . ',email'],
             'gmpl' => ['required', 'in:GMのみ,PLのみ,GMより,PLより', 'string'],
             'session_style' => ['required', 'array'],
             'session_style.*'  => ['string', 'in:ボイスのみ,テキストのみ,半分テキスト'],

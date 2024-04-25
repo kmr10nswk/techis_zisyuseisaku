@@ -98,13 +98,13 @@
                 <label for="session_style" class="col-md-3 col-form-label text-md-end">{{__('セッションスタイル')}}</label>
 
                 <div class="col-md-6">
-                    <input type="checkbox" class="@error('session_style') is-invalid @enderror" name="session_style[]" value="ボイスのみ" {{ is_array(old('session_style')) && in_array('ボイスのみ', old('session_style')) ? 'checked' : '' }} {{ in_array('ボイスのみ', $user->session_style) ? 'checked' : "" }} required_without="session_style[]" autocomplete="session_style">
+                    <input type="checkbox" class="@error('session_style') is-invalid @enderror" name="session_style[]" id="voice" value="ボイスのみ" {{ is_array(old('session_style')) && in_array('ボイスのみ', old('session_style')) ? 'checked' : '' }} {{ in_array('ボイスのみ', $user->session_style) ? 'checked' : "" }} required_without="session_style[]" autocomplete="session_style">
                     <label for="voice">ボイスのみ</label>
                     
-                    <input type="checkbox" class="@error('session_style') is-invalid @enderror" name="session_style[]" value="テキストのみ" {{ is_array(old('session_style')) && in_array('テキストのみ', old('session_style')) ? 'checked' : '' }} {{ in_array('テキストのみ', $user->session_style) ? 'checked' : "" }} required_without="session_style[]" autocomplete="session_style">
+                    <input type="checkbox" class="@error('session_style') is-invalid @enderror" name="session_style[]" id="text" value="テキストのみ" {{ is_array(old('session_style')) && in_array('テキストのみ', old('session_style')) ? 'checked' : '' }} {{ in_array('テキストのみ', $user->session_style) ? 'checked' : "" }} required_without="session_style[]" autocomplete="session_style">
                     <label for="text">テキストのみ</label>
                     
-                    <input type="checkbox" class="@error('session_style') is-invalid @enderror" name="session_style[]" value="半分テキスト" {{ is_array(old('session_style')) && in_array('半分テキスト', old('session_style')) ? 'checked' : '' }} {{ in_array('半分テキスト', $user->session_style) ? 'checked' : "" }} required_without="session_style[]" autocomplete="session_style">
+                    <input type="checkbox" class="@error('session_style') is-invalid @enderror" name="session_style[]" id="mix" value="半分テキスト" {{ is_array(old('session_style')) && in_array('半テキ', old('session_style')) ? 'checked' : '' }} {{ in_array('半テキ', $user->session_style) ? 'checked' : "" }} required_without="session_style[]" autocomplete="session_style">
                     <label for="mix">半分テキスト</label>
 
                     @error('session_style.*')
@@ -119,7 +119,7 @@
                 <label for="oneword" class="col-md-3 col-form-label text-md-end">{{ __('一言コメント') }}</label>
 
                 <div class="col-md-6">
-                    <input id="oneword" type="text" class="form-control @error('oneword') is-invalid @enderror" name="oneword" value="{{ old('oneword', $user->oneword) }}" autocomplete="oneword">
+                    <input id="oneword" type="text" class="form-control @error('oneword') is-invalid @enderror" name="oneword" value="{{ old('oneword', $user->oneword) }}" autocomplete="oneword"  maxlength="20">
 
                     @error('oneword')
                         <span class="invalid-feedback" role="alert">
@@ -134,7 +134,7 @@
                 <label for="comment" class="col-md-3 col-form-label text-md-end">{{ __('自己紹介') }}</label>
 
                 <div class="col-md-6">
-                    <textarea id="comment" rows="10" maxlength="400" class="form-control @error('comment') is-invalid @enderror" name="comment" autocomplete="comment" >{{ old('comment',$user->comment) }}</textarea>
+                    <textarea id="comment" rows="10" maxlength="400" class="form-control @error('comment') is-invalid @enderror" name="comment" autocomplete="comment">{{ old('comment',$user->comment) }}</textarea>
 
                     @error('comment')
                         <span class="invalid-feedback" role="alert">
