@@ -16,7 +16,7 @@ class CurrentPasswordRule implements ValidationRule
     {
         // ログインチェックとパスワード抜き出し
         if (!Auth::guard('admin')->check()) {
-            $nowPassword = !Auth::guard('admin')->check()->password;
+            $nowPassword = Auth::user()->password;
         } else {
             $nowPassword = Auth::guard('admin')->user()->password;
         }
