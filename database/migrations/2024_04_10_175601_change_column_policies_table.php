@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('policies', function (Blueprint $table) {
-            $table->dropColumn('user_id');
-            $table->bigInteger('admin_id')->unsigned()->index()->after('id');
+            // $table->dropColumn('user_id');
+            // $table->bigInteger('admin_id')->unsigned()->index()->after('id');
         });
     }
 
@@ -23,8 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('policies', function (Blueprint $table) {
-            $table->dropColumn('admin_id');
-            $table->bigInteger('user_id')->unsigned()->index()->after('id');
+            // $table->dropColumn('admin_id');
+            // $table->bigInteger('user_id')->unsigned()->index()->after('id');
         });
     }
 };
