@@ -38,7 +38,6 @@ Route::get('/login/admin', [LoginController::class, 'showAdminLoginForm'])->name
 Route::post('/login/admin', [LoginController::class, 'adminLogin']);
 
 
-
 // 一般ユーザーのみ
 Route::group(['middleware' => ['custom']], function () {
     // Home
