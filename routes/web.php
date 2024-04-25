@@ -59,11 +59,10 @@ Route::group(['middleware' => ['custom']], function () {
     });
 });
 
-Route::get('/register/admin', [RegisterController::class, 'showAdminRegisterForm'])->name('register.admin');
-Route::post('/register/admin', [RegisterController::class, 'registerAdmin']);
-
 // 管理者のみ
 Route::group(['middleware' => ['auth:admin']], function () {
+    Route::get('/register/admin', [RegisterController::class, 'showAdminRegisterForm'])->name('register.admin');
+    Route::post('/register/admin', [RegisterController::class, 'registerAdmin']);    
 
     // item
     Route::prefix('items')->name('items.')->group(function () {
