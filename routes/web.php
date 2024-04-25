@@ -38,11 +38,11 @@ Route::get('/login/admin', [LoginController::class, 'showAdminLoginForm'])->name
 Route::post('/login/admin', [LoginController::class, 'adminLogin']);
 
 
+
 // 一般ユーザーのみ
-Route::group(['middleware' => ['web', 'auth:admin']], function () {
+Route::group(['middleware' => ['custom']], function () {
     // Home
     Route::get('/', [HomeController::class, 'index'])->name('home');
-
     // Item
     // addは元からあったやつ。getとpostで使い分けてて頭がいいが、俺はpatchの方が好き。
     Route::prefix('items')->name('items.')->group(function () {
