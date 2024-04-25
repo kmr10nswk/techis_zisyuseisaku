@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name',20);
             $table->string('sex',10);
             $table->tinyinteger('age');
-            $table->string('email')->unique();
+            $table->string('email')->charset("utf8")->unique();
             $table->string('password');
             $table->string('image_icon',100)->nullable();
             $table->string('status',20)->default('active');
