@@ -88,7 +88,13 @@
                             <td>{{ $admin->policy_name }}</td>
                             <td>{{ $admin->updated_at }}</td>
                             <td><a href="{{ url('admins/edit', $admin) }}" class="btn btn-outline-primary">編集</a></td>
-                            <td><a href="{{ route('admins.delete', $admin->id) }}" class="btn btn-outline-danger" onclick='return confirm("本当に削除しますか？")'>削除</td>
+                            <td>
+                                <form action="{{ route('admins.delete', $admin->id) }}" method="post" onsubmit='return confirm("本当に削除しますか？")'>
+                                @csrf
+                                @method('patch')
+                                    <button class="btn btn-outline-danger">削除</button>
+                                </form>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

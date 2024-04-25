@@ -23,7 +23,7 @@
 @stop
 
 @section('content')
-    <div class="container">
+    <div class="container pb-5">
         <div class="text-center mb-3">
             <h4>{{ $user->nickname }}さんのマイページ</h4>
         </div>

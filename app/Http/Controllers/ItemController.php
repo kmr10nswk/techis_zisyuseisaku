@@ -210,7 +210,7 @@ class ItemController extends Controller
             'status' => 'deleted',
         ]);
 
-    return redirect()->route('users.index');
+    return redirect()->route('items.index');
     }
 
     /**

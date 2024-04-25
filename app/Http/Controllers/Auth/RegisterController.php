@@ -114,7 +114,11 @@ class RegisterController extends Controller
         if($response = $this->registeredAdmin($request, $user)){
             return $response;
         }
-
+        if(Auth::guard('admin')->check()){
+            return $request->wantsJson()
+                ? new JsonResponse([], 201)
+                : redirect(route('admins.index'));
+        }
         return $request->wantsJson()
             ? new JsonResponse([], 201)
             : redirect(route('home'));

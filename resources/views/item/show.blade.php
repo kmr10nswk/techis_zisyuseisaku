@@ -15,15 +15,17 @@
 @stop
 
 @section('content')
-    <div class="container">
+    <div class="container pb-5">
         <!-- 名前部分 -->
         <div class="row justify-content-center align-items-center mb-3">
             <h4 class="mr-2 mb-0">{{ $item->name }}の詳細</h4>
+            @if(!Auth::guard('admin')->check())
             <span>
                 <button class="btn">
                     <i class="bi bi-bookmark-check text-primary"></i>
                 </button>
             </span>
+            @endif
         </div>
 
         <!-- アイコン部分 -->

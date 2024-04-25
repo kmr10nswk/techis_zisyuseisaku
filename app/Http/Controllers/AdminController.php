@@ -142,7 +142,7 @@ class AdminController extends Controller
     public function delete($id){
         Admin::where('id', $id)
             ->update([
-                'delted_at' => now(),
+                'deleted_at' => now(),
             ]);
 
         return redirect()->route('admins.index');
