@@ -61,7 +61,7 @@ class UserController extends Controller
             ->orderBy('name','asc')
             ->get();
         if(auth()->check()){
-            $checkUser = Auth::user()->id;
+            $checkUser = !Auth::guard('admin')->check()->id;
         } else {
             $checkUser = "";
         }
@@ -74,7 +74,7 @@ class UserController extends Controller
      */
     public function profile_edit()
     {
-        $user = Auth::user();
+        $user = !Auth::guard('admin')->check();
         $user->session_style =  explode(',' ,$user->session_style);
 
         return view('user.profile_edit', compact('user'));
@@ -88,7 +88,7 @@ class UserController extends Controller
             'image_icon' => ['image', 'mimes:jpeg,png', 'max:1024', 'nullable'],
             'nickname' => ['required','string', 'max:20'],
             'name' => ['required', 'string', 'min:6', 'max:20','regex:/^[a-zA-Z0-9]+$/'],
-            'email' => ['required', 'email', 'unique:users,email,' . Auth::user()->email . ',email'],
+            'email' => ['required', 'email', 'unique:users,email,' . !Auth::guard('admin')->check()->email . ',email'],
             'gmpl' => ['required', 'in:GMのみ,PLのみ,GMより,PLより', 'string'],
             'session_style' => ['required', 'array'],
             'session_style.*'  => ['string', 'in:ボイスのみ,テキストのみ,半分テキスト'],

@@ -16,8 +16,8 @@ class PossesionController extends Controller
      */
     public function add(Request $request)
     {
-        \Log::info(Auth::user());
-        $user = Auth::user();
+        \Log::info(!Auth::guard('admin')->check());
+        $user = !Auth::guard('admin')->check();
         $itemId = $request->possesion_id;
 
         if(!$user->is_possesion($itemId)) {
@@ -31,7 +31,7 @@ class PossesionController extends Controller
     
     public function remove(Request $request)
     {
-        $user = Auth::user();
+        $user = !Auth::guard('admin')->check();
         $itemId = $request->possesion_id;
 
         if($user->is_possesion($itemId)){

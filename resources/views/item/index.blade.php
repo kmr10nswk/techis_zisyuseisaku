@@ -164,7 +164,7 @@
                 @foreach($items as $item)
                     <div class="col-lg-3 col-md-4 mb-3">
                         <div class="card h-100 position-relative">
-                            @if(Auth::user())
+                            @if(!Auth::guard('admin')->check())
                                 @if(!$item->has)
                                         <button class="btn position-absolute">
                                             <i class="bi bi-bookmark-check text-primary p-icon" id="card-icon{{ $item->id }}" data-possesion-id="{{ $item->id }}" data-has-id="{{ $item->has }}"></i>
@@ -212,7 +212,7 @@
                             <th><i class="bi bi-building"></i><span>会社名</span></th>
                             <th><i class="bi bi-clock"></i><span>発売月</span></th>
                             <th><i class="bi bi-bookmark-check"></i><span>所持者数</span></th>
-                            @if(Auth::user())
+                            @if(!Auth::guard('admin')->check())
                                 <th><i class="bi bi-check-square"></i><span>所持</span></th>
                             @endif
                         </tr>
@@ -228,7 +228,7 @@
                                 <td>{{ $item->company }}</td>
                                 <td>{{ $item->release->format('Y/m') }}</td>
                                 <td><span class="p-count" id="table-count{{ $item->id }}">{{ $item->possesions_count }}</span>人</td>
-                                @if(Auth::user())
+                                @if(!Auth::guard('admin')->check())
                                     @if(!$item->has)
                                         <td class="text-center"><button class="btn-sm btn-outline-primary p-icon" id="table-icon{{ $item->id }}" data-possesion-id="{{ $item->id }}" data-has-id="{{ $item->has }}">✓</button></td>
                                     @else

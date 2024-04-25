@@ -101,9 +101,9 @@
                         <th>名前</th>
                         <th>GM/PL</th>
                         <th>セッションスタイル</th>
-                        @if(Auth::user())
+                        @if(!Auth::guard('admin')->check())
                             <th>一言コメント</th>
-                        @elseif(Auth::guard('admin')->check())
+                        @else
                             <th>email</th>
                         @endif
                         <th>詳細</th>
@@ -120,9 +120,9 @@
                             <td>{{ $user->nickname }}</td>
                             <td>{{ $user->gmpl }}</td>
                             <td>{{ $user->session_style }}</td>
-                            @if(Auth::user())
+                            @if(!Auth::guard('admin')->check())
                                 <td>{{ $user->oneword }}</td>
-                            @elseif(Auth::guard('admin')->check())
+                            @else
                                 <td>{{ $user->email }}</td>
                             @endif
                             <td><a href="{{ url('users/profile/show', $user) }}" class="btn btn-outline-primary">詳細</a></td>

@@ -75,7 +75,7 @@ class User extends Authenticatable
      * 一般ユーザーの場合はemail情報を渡さない
      */
     public static function noEmail($users) {
-        if(Auth::user()){
+        if(!Auth::guard('admin')->check()){
             foreach($users as $user){
                 $user = $user->makeHidden('email');
             }

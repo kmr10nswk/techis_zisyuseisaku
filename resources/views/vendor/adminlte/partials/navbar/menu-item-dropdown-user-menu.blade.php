@@ -2,7 +2,7 @@
 @php( $profile_url = View::getSection('profile_url') ?? config('adminlte.profile_url', 'logout') )
 
 @if (config('adminlte.usermenu_profile_url', false))
-    @php( $profile_url = Auth::user()->adminlte_profile_url() )
+    @php( $profile_url = !Auth::guard('admin')->check()->adminlte_profile_url() )
 @endif
 
 @if (config('adminlte.use_route_url', false))
@@ -18,13 +18,13 @@
     {{-- User menu toggler --}}
     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
         @if(config('adminlte.usermenu_image'))
-            <img src="{{ Auth::user()->adminlte_image() }}"
+            <img src="{{ !Auth::guard('admin')->check()->adminlte_image() }}"
                 class="user-image img-circle elevation-2"
-                alt="{{ Auth::user()->name }}">
+                alt="{{ !Auth::guard('admin')->check()->name }}">
         @endif
-        @if(Auth::user())
+        @if(!Auth::guard('admin')->check())
             <span @if(config('adminlte.usermenu_image')) class="d-none d-md-inline" @endif>
-                {{ Auth::user()->name }}
+                {{ !Auth::guard('admin')->check()->name }}
             </span>
         @else
             <span @if(config('adminlte.usermenu_image')) class="d-none d-md-inline" @endif>
@@ -41,14 +41,14 @@
             <li class="user-header {{ config('adminlte.usermenu_header_class', 'bg-primary') }}
                 @if(!config('adminlte.usermenu_image')) h-auto @endif">
                 @if(config('adminlte.usermenu_image'))
-                    <img src="{{ Auth::user()->adminlte_image() }}"
+                    <img src="{{ !Auth::guard('admin')->check()->adminlte_image() }}"
                         class="img-circle elevation-2"
-                        alt="{{ Auth::user()->name }}">
+                        alt="{{ !Auth::guard('admin')->check()->name }}">
                 @endif
                 <p class="@if(!config('adminlte.usermenu_image')) mt-0 @endif">
-                    {{ Auth::user()->name }}
+                    {{ !Auth::guard('admin')->check()->name }}
                     @if(config('adminlte.usermenu_desc'))
-                        <small>{{ Auth::user()->adminlte_desc() }}</small>
+                        <small>{{ !Auth::guard('admin')->check()->adminlte_desc() }}</small>
                     @endif
                 </p>
             </li>
@@ -68,7 +68,7 @@
 
         {{-- User menu footer --}}
         <li class="user-footer">
-            @if(Auth::user())
+            @if(!Auth::guard('admin')->check())
             <a href="{{ route('users.profile.edit') }}" class="btn btn-default btn-flat d-flex justify-content-center">
                     <i class="fa fa-fw fa-user text-lightblue"></i>{{ __('adminlte::menu.profile') }}</a>
             @else

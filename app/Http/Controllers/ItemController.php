@@ -52,9 +52,9 @@ class ItemController extends Controller
         
         // blade整え
         $items = Item::listSeiton($items);
-        if(Auth::user()){
+        if(!Auth::guard('admin')->check()){
             foreach($items as $item) {
-                $item['has'] = Auth::user()->is_possesion($item->id);
+                $item['has'] = !Auth::guard('admin')->check()->is_possesion($item->id);
             }
         }
         

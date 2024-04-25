@@ -33,50 +33,57 @@ use App\Http\Controllers\Auth\RegisterController;
 
 Auth::routes();
 
-// TODO:adminregisterは管理者のみ入れる
 // login関連
 Route::get('/login/admin', [LoginController::class, 'showAdminLoginForm'])->name('login.admin');
 Route::post('/login/admin', [LoginController::class, 'adminLogin']);
-Route::get('/register/admin', [RegisterController::class, 'showAdminRegisterForm'])->name('register.admin');;
-Route::post('/register/admin', [RegisterController::class, 'registerAdmin']);
 
-// Home
-Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Item
-// addは元からあったやつ。getとpostで使い分けてて頭がいいが、俺はpatchの方が好き。
-Route::prefix('items')->name('items.')->group(function () {
-    Route::get('/', [ItemController::class, 'index'])->name('index');
-    Route::get('/add', [ItemController::class, 'add'])->name('add');
-    Route::post('/add', [ItemController::class, 'add'])->name('add.post');
-    Route::get('/show/{id}', [ItemController::class, 'show'])->name('show');
-    Route::get('/edit/{id}', [ItemController::class, 'edit'])->name('edit');
-    Route::patch('/update/{item}', [ItemController::class, 'update'])->name('update');
-    Route::patch('delete/{id}', [ItemController::class, 'delete'])->name('delete');
+// 一般ユーザーのみ
+Route::group(['middleware' => ['web', 'auth:admin']], function () {
+    // Home
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+
+    // Item
+    // addは元からあったやつ。getとpostで使い分けてて頭がいいが、俺はpatchの方が好き。
+    Route::prefix('items')->name('items.')->group(function () {
+        Route::get('/', [ItemController::class, 'index'])->name('index');
+        Route::get('/show/{id}', [ItemController::class, 'show'])->name('show');
+    });
+
+    // User
+    Route::prefix('users')->name('users.')->group(function (){
+        Route::get('/', [UserController::class, 'index'])->name('index');
+        Route::get('/profile/show/{id}',[UserController::class, 'profile_show'])->name('profile.show');
+        Route::get('/profile/edit',[UserController::class, 'profile_edit'])->name('profile.edit');
+        Route::patch('/profile/update/{user}',[UserController::class, 'profile_update'])->name('profile.update');
+        Route::patch('/delete/{id}',[UserController::class, 'delete'])->name('delete');    
+    });
 });
 
-// User
-Route::prefix('users')->name('users.')->group(function (){
-    Route::get('/', [UserController::class, 'index'])->name('index');
-    Route::patch('/delete/{id}',[UserController::class, 'delete'])->name('delete');
-    
-    Route::get('/profile/show/{id}',[UserController::class, 'profile_show'])->name('profile.show');
-    Route::get('/profile/edit',[UserController::class, 'profile_edit'])->name('profile.edit');
-    Route::patch('/profile/update/{user}',[UserController::class, 'profile_update'])->name('profile.update');
-});
 
-// Admin
-Route::prefix('admins')->name('admins.')->group(function (){
-    Route::get('/', [AdminController::class, 'index'])->name('index');
-    Route::patch('/delete/{id}',[AdminController::class, 'delete'])->name('delete');
+// 管理者のみ
+Route::group(['middleware' => ['auth:admin']], function () {
+    Route::get('/register/admin', [RegisterController::class, 'showAdminRegisterForm'])->name('register.admin');
+    Route::post('/register/admin', [RegisterController::class, 'registerAdmin']);
 
-    Route::get('/edit/{id}',[AdminController::class, 'edit']);
-    Route::patch('/update/{admin}',[AdminController::class, 'update']);
-    Route::get('profile/edit',[AdminController::class, 'profile_edit'])->name('profile.edit');
-    Route::patch('profile/update/{admin}',[AdminController::class, 'profile_update'])->name('profile.update');
-});
+    // item
+    Route::prefix('items')->name('items.')->group(function () {
+        Route::get('/add', [ItemController::class, 'add'])->name('add');
+        Route::post('/add', [ItemController::class, 'add'])->name('add.post');
+        Route::get('/edit/{id}', [ItemController::class, 'edit'])->name('edit');
+        Route::patch('/update/{item}', [ItemController::class, 'update'])->name('update');
+        Route::patch('delete/{id}', [ItemController::class, 'delete'])->name('delete');
+    });
 
-Route::prefix('admins/item')->name('admins.item')->group(function (){
-    Route::get('/', [ItemController::class, 'edit'])->name('edit');
-    Route::post('/', [ItemController::class, 'edit'])->name('update');
+    // Admin
+    Route::prefix('admins')->name('admins.')->group(function (){
+        Route::get('/', [AdminController::class, 'index'])->name('index');
+        Route::patch('/delete/{id}',[AdminController::class, 'delete'])->name('delete');
+
+        Route::get('/edit/{id}',[AdminController::class, 'edit']);
+        Route::patch('/update/{admin}',[AdminController::class, 'update']);
+        Route::get('profile/edit',[AdminController::class, 'profile_edit'])->name('profile.edit');
+        Route::patch('profile/update/{admin}',[AdminController::class, 'profile_update'])->name('profile.update');
+    });
+
 });
