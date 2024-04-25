@@ -130,8 +130,8 @@ class UserController extends Controller
     /**
      * アカウント削除
      */
-    public function delete(User $user){
-        User::where('id', $user->id)
+    public function delete($id){
+        User::find($id)
             ->update([
                 'status' => 'deleted',
             ]);
@@ -147,7 +147,8 @@ class UserController extends Controller
             $query = $query->where('nickname', 'like', '%' . $search['search_free'] . '%')
                 ->orWhere('name', 'like', '%' . $search['search_free'] . '%')
                 ->orWhere('oneword', 'like', '%' . $search['search_free'] . '%')
-                ->orWhere('comment', 'like', '%' . $search['search_free'] . '%');
+                ->orWhere('comment', 'like', '%' . $search['search_free'] . '%')
+                ->orWhere('email', 'like', '%' . $search['search_free'] . '%');
         }
 
         if(isset($search['search_name'])){

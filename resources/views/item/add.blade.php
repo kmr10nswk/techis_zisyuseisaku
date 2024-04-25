@@ -147,7 +147,7 @@
 
         <div class="text-center">
             <button type="submit" class="btn btn-primary">
-                {{ __('更新') }}
+                {{ __('登録') }}
             </button>
         </div>
     </form>

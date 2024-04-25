@@ -288,24 +288,21 @@ return [
     | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Menu-Configuration
     |
     */
-
     'menu' => [
         [
             'text' => 'ユーザー一覧',
             'url' => 'users/',
-            'icon' => 'fas fa-gamepad',
+            'icon' => 'fas fa-user',
         ],
         [
             'text' => '商品一覧',
             'url'  => 'items/',
-            'icon' => 'fas fa-gamepad',
+            'icon' => 'fas fa-book',
         ],
         [
-            'text' => '管理者一覧',
+            'text' => '管理者一覧(管理者のみ)',
             'url' => 'admins/',
-            'icon' => 'fas fa-gamepad',
-            // Todo:うまく動いてない
-            'can' => 'all_admin',
+            'icon' => 'fas fa-pen-nib',
         ]
 
         // AdminLTEデフォルト

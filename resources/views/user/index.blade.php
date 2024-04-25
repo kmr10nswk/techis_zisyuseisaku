@@ -37,8 +37,8 @@
                     <label for="search_gmpl" class="form-label mb-0">GM/PL傾向</label>
                     <select name="search_gmpl" id="search_gmpl" class="form-control @error('search_gmpl') is-invalid @enderror">
                         <option></option>
-                            @foreach($types['gmpl'] as $key => $value)
-                                <option value="{{ $key }}" @if(isset($search['search_gmpl']) && $search['search_gmpl'] == $key) selected @endif>{{ $value }}</option>
+                            @foreach($types['gmpl'] as $value)
+                                <option value="{{ $value }}" @if(isset($search['search_gmpl']) && $search['search_gmpl'] == $value) selected @endif>{{ $value }}</option>
                             @endforeach
                     </select>
 
@@ -52,8 +52,8 @@
                     <label for="search_style" class="form-label mb-0">セッションスタイル</label>
                     <select name="search_style" id="search_style" class="form-control @error('search_style') is-invalid @enderror">
                         <option></option>
-                            @foreach($types['style'] as $key => $value)
-                                <option value="{{ $key }}" @if(isset($search['search_style']) && $search['search_style'] == $key) selected @endif>{{ $value }}</option>
+                            @foreach($types['style'] as $value)
+                                <option value="{{ $value }}" @if(isset($search['search_style']) && $search['search_style'] == $value) selected @endif>{{ $value }}</option>
                             @endforeach
                     </select>
 
@@ -105,9 +105,11 @@
                             <th>一言コメント</th>
                         @elseif(Auth::guard('admin')->check())
                             <th>email</th>
-                            <th>削除</th>
                         @endif
                         <th>詳細</th>
+                        @if(Auth::guard('admin')->check())
+                            <th>削除</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -122,9 +124,11 @@
                                 <td>{{ $user->oneword }}</td>
                             @elseif(Auth::guard('admin')->check())
                                 <td>{{ $user->email }}</td>
-                                <td><a href="" class="btn btn-outline-danger">削除</td>
                             @endif
                             <td><a href="{{ url('users/profile/show', $user) }}" class="btn btn-outline-primary">詳細</a></td>
+                            @if(Auth::guard('admin')->check())
+                                <td><a href="{{ route('users.delete', $user->id) }}" class="btn btn-outline-danger" onclick='return confirm("本当に削除しますか？")'>削除</td>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>

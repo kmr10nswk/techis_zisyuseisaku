@@ -16,10 +16,25 @@ class AdminController extends Controller
      * Admin一覧
      */
     public function index(Request $request){
-        // Todo:検索機能
         $admins = Admin::query();
+        $admin_list = ['商品のみ', '掲示板のみ', '全て'];
 
-        $admins = $admins->where('status', 'active')
+        // 検索用
+        $search = $request->only(['search_name', 'search_email', 'search_admin']);
+        $this->validate($request, [
+            'search_name' => ['string', 'max:30', 'nullable'],
+            'search_email' => ['string', 'max:50', 'nullable'],
+            'search_admin' => ['in:' . implode(',', $admin_list), 'nullable'],
+        ]);
+
+        $admins = $this->search($admins, $search);
+        $nothing_message = null;
+        if($admins->first() === null) {
+            $nothing_message =  '検索結果はありません';
+        }
+
+        // 通常
+        $admins = $admins->where('deleted_at', null)
             ->orderby('id', 'asc')
             ->paginate(10)->withQueryString();
         
@@ -27,7 +42,7 @@ class AdminController extends Controller
             $admin['policy_name'] = Admin::policyType($admin);
         }
 
-        return view('admin.index', compact('admins'));
+        return view('admin.index', compact('admins', 'admin_list', 'search'));
     }
 
     /**
@@ -121,4 +136,36 @@ class AdminController extends Controller
         return redirect('admins/');
     }
 
+    /**
+     * アカウント削除
+     */
+    public function delete($id){
+        Admin::find($id)
+            ->update([
+                'delted_at' => now(),
+            ]);
+
+        return redirect()->route('admins.index');
+    }
+
+    /**
+     * 検索用
+     */
+    public function search($query, $search)
+    {
+        if(isset($search['search_name'])){
+            $query = $query->where('name', 'like', '%' . $search['search_name'] . '%');
+        }
+        
+        if(isset($search['search_email'])){
+            $query = $query->where('email', 'like', '%' . $search['search_email'] . '%');
+        }
+        
+        if(isset($search['search_admin'])){
+            // Todo:わからん
+            $query = $query->where();
+        }
+        
+        return $query;
+    }
 }

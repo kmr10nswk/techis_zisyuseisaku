@@ -129,6 +129,22 @@ class ItemController extends Controller
     }
 
     /**
+     * 商品変更画面
+     */
+    public function edit($id)
+    {
+
+    }
+
+    /**
+     * 商品変更処理
+     */
+    public function update(Request $request, Item $item)
+    {
+        
+    }
+
+    /**
      * 検索用
      */
     public function searchValidator(array $data){

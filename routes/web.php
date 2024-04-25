@@ -64,8 +64,8 @@ Route::prefix('users')->name('users.')->group(function (){
 
 // Admin
 Route::prefix('admins')->name('admins.')->group(function (){
-    Route::get('/', [AdminController::class, 'index']);
-    Route::patch('/delete/{id}',[AdminController::class, 'delete']);
+    Route::get('/', [AdminController::class, 'index'])->name('index');
+    Route::patch('/delete/{id}',[AdminController::class, 'delete'])->name('delete');
 
     Route::get('/edit/{id}',[AdminController::class, 'edit']);
     Route::patch('/update/{admin}',[AdminController::class, 'update']);
