@@ -56,28 +56,16 @@
                             @else
                                 <div class="input-group input-group-sm col">
                                     <div class="input-group-append ml-auto">
-                                        <a href="{{ url('admins/') }}" class="btn btn-default">戻る</a>
+                                        <a href="{{ url('admins/') }}" class="btn btn-light">戻る</a>
                                     </div>
                                 </div>
                             @endif
                         @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>    
-                                {{ !Auth::guard('admin')->check()->name }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();
-                                                    document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
+                            <div class="input-group input-group-sm col">
+                                <div class="input-group-append ml-auto">
+                                    <a href="{{ url('admins/') }}" class="btn btn-light">戻る</a>
                                 </div>
-                            </li>
+                            </div>
                         @endguest
                     </ul>
                 </div>

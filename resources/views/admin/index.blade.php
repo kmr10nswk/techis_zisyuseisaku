@@ -87,7 +87,7 @@
                             <td>{{ $admin->email }}</td>
                             <td>{{ $admin->policy_name }}</td>
                             <td>{{ $admin->updated_at }}</td>
-                            <td><a href="{{ url('admins/edit', $admin) }}" class="btn btn-outline-success">編集</a></td>
+                            <td><a href="{{ url('admins/edit', $admin) }}" class="btn btn-outline-primary">編集</a></td>
                             <td><a href="{{ route('admins.delete', $admin->id) }}" class="btn btn-outline-danger" onclick='return confirm("本当に削除しますか？")'>削除</td>
                         </tr>
                     @endforeach

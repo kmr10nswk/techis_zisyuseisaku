@@ -22,11 +22,11 @@
                 class="user-image img-circle elevation-2"
                 alt="{{ !Auth::guard('admin')->check()->name }}">
         @endif
-        @if(!Auth::guard('admin')->check())
+        @if(Auth::user())
             <span @if(config('adminlte.usermenu_image')) class="d-none d-md-inline" @endif>
-                {{ !Auth::guard('admin')->check()->name }}
+                {{ Auth::user()->name }}
             </span>
-        @else
+        @elseif(Auth::guard('admin')->check())
             <span @if(config('adminlte.usermenu_image')) class="d-none d-md-inline" @endif>
                 {{ Auth::guard('admin')->user()->name }}
             </span>
@@ -68,7 +68,7 @@
 
         {{-- User menu footer --}}
         <li class="user-footer">
-            @if(!Auth::guard('admin')->check())
+            @if(Auth::user())
             <a href="{{ route('users.profile.edit') }}" class="btn btn-default btn-flat d-flex justify-content-center">
                     <i class="fa fa-fw fa-user text-lightblue"></i>{{ __('adminlte::menu.profile') }}</a>
             @else

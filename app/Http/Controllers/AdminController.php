@@ -85,7 +85,7 @@ class AdminController extends Controller
      * Admin権限編集画面
      */
     public function edit($id){
-        $admin = Admin::where('id', $id);
+        $admin = Admin::find($id);
         $admin['policy_name'] = Admin::policyType($admin);
         return view('admin.edit', compact('admin'));
     }

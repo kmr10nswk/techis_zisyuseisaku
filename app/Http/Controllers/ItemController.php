@@ -54,7 +54,7 @@ class ItemController extends Controller
         $items = Item::listSeiton($items);
         if(!Auth::guard('admin')->check()){
             foreach($items as $item) {
-                $item['has'] = !Auth::guard('admin')->check()->is_possesion($item->id);
+                $item['has'] = Auth::user()->is_possesion($item->id);
             }
         }
         

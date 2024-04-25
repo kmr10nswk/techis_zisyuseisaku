@@ -61,7 +61,7 @@ class UserController extends Controller
             ->orderBy('name','asc')
             ->get();
         if(auth()->check()){
-            $checkUser = !Auth::guard('admin')->check()->id;
+            $checkUser = Auth::user()->id;
         } else {
             $checkUser = "";
         }
@@ -74,7 +74,7 @@ class UserController extends Controller
      */
     public function profile_edit()
     {
-        $user = !Auth::guard('admin')->check();
+        $user = Auth::user();
         $user->session_style =  explode(',' ,$user->session_style);
 
         return view('user.profile_edit', compact('user'));
