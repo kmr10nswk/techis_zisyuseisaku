@@ -127,7 +127,13 @@
                             @endif
                             <td><a href="{{ url('users/profile/show', $user) }}" class="btn btn-outline-primary">詳細</a></td>
                             @if(Auth::guard('admin')->check())
-                                <td><a href="{{ route('users.delete', $user->id) }}" class="btn btn-outline-danger" onclick='return confirm("本当に削除しますか？")'>削除</td>
+                                <td>
+                                    <form action="{{ route('users.delete', $user->id) }}" method="post" onsubmit='return confirm("本当に削除しますか？")'>
+                                    @csrf
+                                    @method('patch')
+                                        <button class="btn btn-outline-danger">削除</button>
+                                    </form>
+                                </td>
                             @endif
                         </tr>
                     @endforeach

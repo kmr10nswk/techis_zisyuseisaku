@@ -167,8 +167,6 @@
             min-height: 200px;
             width: 70%;
         }
-
-
     </style>
 @stop
 

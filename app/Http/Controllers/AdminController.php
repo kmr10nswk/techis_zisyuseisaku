@@ -85,7 +85,7 @@ class AdminController extends Controller
      * Admin権限編集画面
      */
     public function edit($id){
-        $admin = Admin::find($id);
+        $admin = Admin::where('id', $id);
         $admin['policy_name'] = Admin::policyType($admin);
         return view('admin.edit', compact('admin'));
     }
@@ -140,7 +140,7 @@ class AdminController extends Controller
      * アカウント削除
      */
     public function delete($id){
-        Admin::find($id)
+        Admin::where('id', $id)
             ->update([
                 'delted_at' => now(),
             ]);

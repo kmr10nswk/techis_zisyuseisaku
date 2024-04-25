@@ -31,6 +31,17 @@
             <img src="{{ asset('storage/item/' . $item->image_item) }}" alt="書籍画像">
         </div>
         
+        <!-- 変更と削除 -->
+        @if(Auth::guard('admin')->check())
+            <div class="row mb-1 align-items-middle justify-content-center">
+                <a href="{{ route('items.edit', $item->id) }}" class="btn btn-outline-primary mr-2">変更</a>
+                <form action="{{ route('items.delete', $item->id) }}" method="post" onsubmit='return confirm("本当に削除しますか？")'>
+                @csrf
+                @method('patch')
+                    <button class="btn btn-outline-danger">削除</button>
+                </form>
+            </div>
+        @endif
         
         <table class="table table-bordered mx-auto">
             <tbody>

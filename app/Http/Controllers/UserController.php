@@ -84,7 +84,7 @@ class UserController extends Controller
      * プロフィール更新動作
      */
     public function profile_update(Request $request, User $user){
-        $this->Validate($request, [            
+        $this->Validate($request, [     
             'image_icon' => ['image', 'mimes:jpeg,png', 'max:1024', 'nullable'],
             'nickname' => ['required','string', 'max:20'],
             'name' => ['required', 'string', 'min:6', 'max:20','regex:/^[a-zA-Z0-9]+$/'],
@@ -131,7 +131,7 @@ class UserController extends Controller
      * アカウント削除
      */
     public function delete($id){
-        User::find($id)
+        User::where('id', $id)
             ->update([
                 'status' => 'deleted',
             ]);

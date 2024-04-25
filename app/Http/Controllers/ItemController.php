@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Item;
 use App\Models\User;
 use App\Models\Possesion;
+use DateTime;
 
 class ItemController extends Controller
 {
@@ -133,7 +134,25 @@ class ItemController extends Controller
      */
     public function edit($id)
     {
+        $items = Item::where('id', $id)->get();
+        $items = Item::listSeiton($items);
+        $item = $items->first();
 
+        // 各リストを引き出す
+        $category_list = Item::category_list();
+        $theme_list = Item::theme_list();
+        $kind_list = Item::kind_list();
+        $company_list = Item::company_list();
+
+        // 元に戻す
+        foreach ($items as $item){
+            $item->category = array_search($item->category, $category_list);
+            $item->theme = array_search($item->theme, $theme_list);
+            $item->kind = array_search($item->kind, $kind_list);
+            $item->company = array_search($item->company, $company_list);
+        }
+
+        return view('item.edit', compact('item', 'category_list', 'theme_list', 'kind_list', 'company_list'));
     }
 
     /**
@@ -141,7 +160,57 @@ class ItemController extends Controller
      */
     public function update(Request $request, Item $item)
     {
-        
+        $Rdate = substr($request->release, 0, 4) . '/';
+        $Rdate .= substr($request->release, 5);
+        $Rdate .= '/01';
+        $request->release = new DateTime($Rdate);
+
+        // バリデーション
+        $this->validate($request, [
+            'name' => ['required', 'max:50', 'string'],
+            'category' => ['required', 'between:1,4'],
+            'theme' => ['required', 'between:1,7',],
+            'kind' => ['required', 'between:1,3',],
+            'company' => ['required', 'between:1,4',],
+            'release' => ['required', 'date'],
+            'detail' => ['required', 'max:500', 'string'],
+            'image_item' => ['nullable', 'image', 'mimes:jpeg,png', 'max:1024'],
+        ]);
+
+        // 画像処理
+        $file = $request->file('image_item');
+        if(!isset($file)){
+            $file_name = $request->moto_img;
+        } else {
+            $file_name = User::uploadImage($file, 'item');
+        }
+
+        // 商品上書き
+        Item::where('id', $item->id)
+            ->update([
+                'name' => $request->name,
+                'category' => $request->category,
+                'theme' => $request->theme,
+                'kind' => $request->kind,
+                'company' => $request->company,
+                'release' => $request->release,
+                'detail' => $request->detail,
+                'image_item' => $file_name,
+            ]);
+
+        return redirect()->route('items.edit', $item->id);
+    }
+
+    /**
+     * 商品削除処理
+     */
+    public function delete($id){
+        $item = Item::where('id', $id)
+        ->update([
+            'status' => 'deleted',
+        ]);
+
+    return redirect()->route('users.index');
     }
 
     /**

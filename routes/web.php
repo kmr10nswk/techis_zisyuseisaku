@@ -50,6 +50,9 @@ Route::prefix('items')->name('items.')->group(function () {
     Route::get('/add', [ItemController::class, 'add'])->name('add');
     Route::post('/add', [ItemController::class, 'add'])->name('add.post');
     Route::get('/show/{id}', [ItemController::class, 'show'])->name('show');
+    Route::get('/edit/{id}', [ItemController::class, 'edit'])->name('edit');
+    Route::patch('/update/{item}', [ItemController::class, 'update'])->name('update');
+    Route::patch('delete/{id}', [ItemController::class, 'delete'])->name('delete');
 });
 
 // User
