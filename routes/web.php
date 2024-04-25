@@ -8,8 +8,8 @@ use App\Models\Item;
 use App\Models\Policy;
 use App\Models\Possesion;
 
-use App\Http\Controllers\Homecontroller;
-use App\Http\Controllers\Itemcontroller;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PossesionController;
