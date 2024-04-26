@@ -1,12 +1,12 @@
 @extends('adminlte::page')
 
 @if(true)
-    @section('title', 'プロフィール編集画面')
+    @section('title', '商品編集画面')
 @endif
 
 @section('content_header')
     <div class="row">
-        <h1>プロフィール編集画面</h1>
+        <h1>商品編集画面</h1>
         <div class="input-group input-group-sm col">
             <div class="input-group-append ml-auto">
                 <a href="{{ route('items.show', $item->id) }}" class="btn btn-default">戻る</a>
@@ -23,7 +23,6 @@
         @method('patch')
 
             <div class="row mb-3">
-                <input type="hidden" name="moto_img" value="{{ $item->image_item }}">
                 <label for="" class="col-md-3 col-form-label text-md-end">{{__('書籍画像')}}</label>
                 <div class="col-md-6">
                     <p>

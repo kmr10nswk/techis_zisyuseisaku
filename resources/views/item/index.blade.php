@@ -176,7 +176,7 @@
                                 @endif
                             @endif
                             <div class="card-img mx-auto">
-                                <img src="{{ $item->image_item }}" alt="書籍画像" class="mx-auto card-img-top d-block">
+                                <img src="{{ $item->url }}" alt="書籍画像" class="mx-auto card-img-top d-block">
                             </div>
                             <hr>
                             <div class="card-body py-0">
@@ -220,7 +220,7 @@
                     <tbody>
                         @foreach ($items as $item)
                             <tr>
-                                <td><img src="{{ asset('storage/item/' . $item->image_item) }}" alt="書籍画像" class="mx-auto"></td>
+                                <td><img src="{{ $item->url }}" alt="書籍画像" class="mx-auto"></td>
                                 <td class="t-name"><a href="{{ route('items.show', $item) }}">{{ $item->name }}</a></td>
                                 <td>{{ $item->category }}</td>
                                 <td>{{ $item->theme }}</td>

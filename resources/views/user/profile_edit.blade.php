@@ -19,7 +19,7 @@
 @section('content')
     <div class="container">
         <div class="text-center my-3">
-            <img src="{{ asset('storage/icon/' . $user->image_icon) }}" alt="プロフィールアイコン">
+            <img src="{{ $user->url }}" alt="プロフィールアイコン">
         </div>
         <form method="POST" action="{{ url('users/profile/update', $user) }}" enctype="multipart/form-data">
         @csrf

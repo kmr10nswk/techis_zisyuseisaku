@@ -65,7 +65,7 @@
 
                 </li>
                 <li class="col-lg-2 col-md-3 col-sm-5">
-                    <label for="search_item" class="form-label mb-0">商品名</label>
+                    <label for="search_item" class="form-label mb-0">所持ルールブック</label>
                     <select name="search_item" id="search_item" class="form-control @error('search_item') is-invalid @enderror">
                         <option></option>
                             @foreach($types['item'] as $key => $value)
@@ -116,7 +116,7 @@
                     @foreach ($users as $user)
                         <tr class="text-center">
                             <td class="icon">
-                                <img src="{{ asset('storage/icon/'. $user->image_icon) }}" alt="アイコン">
+                                <img src="{{ $user->url }}" alt="アイコン">
                             </td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->nickname }}</td>
