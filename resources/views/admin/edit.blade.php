@@ -5,7 +5,14 @@
 @endif
 
 @section('content_header')
-    <h1>権限編集画面</h1>
+    <div class="row">
+        <h1>権限編集画面</h1>
+        <div class="input-group-append ml-auto">
+            <div class="input-group-append ml-auto">
+                <a href="{{ url('admins/') }}" class="btn btn-default">戻る</a>
+            </div>
+        </div>
+    </div>
     <hr>
 @stop
 
