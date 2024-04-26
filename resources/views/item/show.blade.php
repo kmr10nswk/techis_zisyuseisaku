@@ -77,7 +77,7 @@
                 </tr>
                 <tr>
                     <th scope="row">詳細</th>
-                    <td>{{ $item->detail }}</td>
+                    <td>{!! nl2br(htmlspecialchars($item->detail)) !!}</td>
                 </tr>
             </tbody>
         </table>
