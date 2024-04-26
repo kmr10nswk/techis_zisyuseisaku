@@ -67,12 +67,17 @@ class UserController extends Controller
      */
     public function profile_show($id)
     {
-        $users_obj = User::where('id', $id)->with('possesions');
+        $users_obj = User::where('id', $id)->with('possesions')->where('status', 'active');
         
         // Email渡さないように
         $users = $users_obj->get();
         $users = User::noEmail($users);
         $user = $users->first();
+        
+        // 存在しないユーザーの場合は戻る
+        if(!isset($user)){
+            return back();
+        }
 
         // 所持ルールブック一覧
         $user['possesions'] = $user->possesion_items()

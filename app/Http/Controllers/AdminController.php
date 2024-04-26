@@ -57,28 +57,28 @@ class AdminController extends Controller
      * Adminユーザー編集動作
      */
     public function profile_update(Request $request, Admin $admin){
-            $this->Validate($request, [            
-                'name' => ['required', 'string' , 'max:20'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:admins,email,' . Auth::guard('admin')->user()->email . ',email'],
-                'now_password' => ['required', 'min:6' , 'max:20' , new CurrentPasswordRule(), 'nullable'],
-                'password' => ['confirmed', 'min:6', 'max:20' , 'nullable'],
-            ]);
-    
-            $data = [
-                'name' => $request->name,
-                'email' => $request->email,
-            ];
-                
-            // パスワードが入力されていれば、更新データに追加
-            if($request->password) {
-                $data['password'] = Hash::make($request->password);
-            }
+        $this->Validate($request, [            
+            'name' => ['required', 'string' , 'max:20'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:admins,email,' . Auth::guard('admin')->user()->email . ',email'],
+            'now_password' => ['required', 'min:6' , 'max:20' , new CurrentPasswordRule(), 'nullable'],
+            'password' => ['confirmed', 'min:6', 'max:20' , 'nullable'],
+        ]);
+
+        $data = [
+            'name' => $request->name,
+            'email' => $request->email,
+        ];
             
-            // 更新
-            Admin::where('id', $admin->id)
-                ->update($data);
-    
-            return redirect('admins/');
+        // パスワードが入力されていれば、更新データに追加
+        if($request->password) {
+            $data['password'] = Hash::make($request->password);
+        }
+        
+        // 更新
+        Admin::where('id', $admin->id)
+            ->update($data);
+
+        return redirect('admins/');
     }    
     
     /**
@@ -86,6 +86,12 @@ class AdminController extends Controller
      */
     public function edit($id){
         $admin = Admin::find($id);
+
+        // 存在しない商品の場合は戻る
+        if($admin->deleted_at){
+            return back();
+        }
+        
         $admin['policy_name'] = Admin::policyType($admin);
         return view('admin.edit', compact('admin'));
     }
