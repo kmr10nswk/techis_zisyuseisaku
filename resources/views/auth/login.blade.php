@@ -30,7 +30,9 @@
                                     </span>
                                 @enderror
                             </div>
+                            <span class="col-md-2 d-flex align-items-center">※ID優先です</span>
                         </div>
+                        
                         @endif
 
                         <div class="row mb-3">
