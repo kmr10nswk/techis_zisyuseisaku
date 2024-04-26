@@ -60,7 +60,7 @@
                 </tr>
                 <tr>
                     <th scope="row">自己紹介</th>
-                    <td>{{ $user->comment }}</td>
+                    <td>{!! nl2br(htmlspecialchars($user->comment)) !!}</td>
                 </tr>
             </tbody>
         </table>
