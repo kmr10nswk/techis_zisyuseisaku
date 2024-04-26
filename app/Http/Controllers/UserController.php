@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Rules\CurrentPasswordRule;
-use google\appengine\api\cloud_storage\CloudStorageTools;
 
 class UserController extends Controller
 {
@@ -21,11 +20,6 @@ class UserController extends Controller
         $types['gmpl'] = ['GMのみ', 'PLのみ', 'GMより', 'PLより'];
         $types['style'] = ['ボイスのみ', 'テキストのみ', '半分テキスト'];
         $types['item'] = Item::pluck('name', 'id');
-
-        // 画像取得
-        foreach($users as $user){
-            $user['img_url'] = CloudStorageTools::getImageServingUrl("gs://item-manegement.appspot.com/icon/" . $user->image_icon);
-        }
         
         // 検索用
         $search = $request->only(['search_free', 'search_name', 'search_gmpl', 'search_style', 'search_item']);
