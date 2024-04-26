@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Google\Cloud\Storage\StorageClient;
 
 use App\Models\Item;
 use App\Models\User;
@@ -87,7 +88,7 @@ class ItemController extends Controller
 
             // 画像処理
             $file = $request->file('image_item');
-            $file_name = User::uploadImage($file, 'item');
+            $file_name = isset($file) ? User::uploadImage($file, 'item') : 'default_item_1.jpg';
 
             // 商品登録
             Item::create([
@@ -134,6 +135,7 @@ class ItemController extends Controller
      */
     public function edit($id)
     {
+        // Todo:findだけでいい
         $items = Item::where('id', $id)->get();
         $items = Item::listSeiton($items);
         $item = $items->first();
@@ -144,13 +146,25 @@ class ItemController extends Controller
         $kind_list = Item::kind_list();
         $company_list = Item::company_list();
 
-        // 元に戻す
+        // キーに戻す
         foreach ($items as $item){
             $item->category = array_search($item->category, $category_list);
             $item->theme = array_search($item->theme, $theme_list);
             $item->kind = array_search($item->kind, $kind_list);
             $item->company = array_search($item->company, $company_list);
         }
+
+        // 画像の取得
+        $client = new StorageClient();
+        $bucket_name = app()->isLocal()
+            ? 'item-management-local'
+            : 'item-manegement';
+        $bucket = $client->bucket($bucket_name);
+        // signedUrlで簡単に署名付きURLが取得できる
+        $img_url = $bucket->object($item->image_item)->signedUrl(
+            new \Datetime('tomorrow'),
+        );
+        $item->url = $img_url;
 
         return view('item.edit', compact('item', 'category_list', 'theme_list', 'kind_list', 'company_list'));
     }
