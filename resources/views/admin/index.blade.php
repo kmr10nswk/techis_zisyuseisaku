@@ -39,21 +39,6 @@
                     </span>
                 @enderror
             </li>
-            <li class="col-lg-1 col-md-2 col-sm-5">
-                <label for="search_admin" class="form-label mb-0">権限</label>
-                <select name="search_admin" id="search_admin" class="form-control @error('search_admin') is-invalid @enderror">
-                    <option></option>
-                        @foreach($admin_list as $key => $value)
-                            <option value="{{ $key }}" @if(isset($search['search_admin']) && $search['search_admin'] == $key) selected @endif>{{ $value }}</option>
-                        @endforeach
-                </select>
-
-                @error('search_admin')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-            </li>
             <li class="col-md-3 d-flex flex-row align-items-end">
                 <button class="mt-2 mr-2 btn btn-outline-success" type="submit">検索</button>
                 <!-- クリアボタン -->
