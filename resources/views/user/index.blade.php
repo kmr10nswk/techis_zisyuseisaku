@@ -181,6 +181,9 @@
         }
 
         .row .col-12 table thead tr th {
+            background-color: #d3d3d3;
+
+            /* 固定 */
             position: -webkit-sticky;
             position: sticky;
             top: 0;
