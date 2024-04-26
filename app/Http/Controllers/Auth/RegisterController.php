@@ -60,7 +60,7 @@ class RegisterController extends Controller
             'session_style' => ['required', 'array'],
             'session_style.*'  => ['string', 'in:ボイスのみ,テキストのみ,半テキ'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
         ]);
     }
 
