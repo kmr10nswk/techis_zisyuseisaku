@@ -1,13 +1,13 @@
 @extends('adminlte::page')
 
-@section('title', 'Dashboard')
+@section('title', 'HOME画面')
 
 @section('content_header')
-    <h1>Dashboard</h1>
+    <h1>HOME画面</h1>
 @stop
 
 @section('content')
-    <p>Welcome to this beautiful admin panel.</p>
+    <p>TRPG検索システムへようこそ</p>
 @stop
 
 @section('css')

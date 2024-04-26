@@ -135,12 +135,17 @@ class ItemController extends Controller
      */
     public function show($id)
     {
-        $item_obj = Item::where('id', $id)->withCount('possesions');
+        $item_obj = Item::where('id', $id)->withCount('possesions')->where('status', 'active');
         $items =  $item_obj->get();
 
         // blade整え
         $items = Item::listSeiton($items);
         $item = $items->first();
+
+        // 存在しない商品の場合は戻る
+        if(!isset($item)){
+            return back();
+        }
         
         // 画像読み込み
         $client = new StorageClient();
@@ -162,6 +167,11 @@ class ItemController extends Controller
     public function edit($id)
     {
         $item = Item::find($id);
+
+        // 存在しない商品の場合は戻る
+        if($item->status === 'deleted'){
+            return back();
+        }
 
         // 各リストを引き出す
         $category_list = Item::category_list();
@@ -256,10 +266,12 @@ class ItemController extends Controller
     
     public function search($query, $search)
     {
-        // 検索クエリ(多分本当はsearch用のファイルを作った方が良い)
+        // 検索クエリ(多分本当はsearch用のファイルを作った方が良い気がする)
         if(isset($search['search_free'])){  
-            $query->where('name', 'like', '%' . $search['search_free'] . '%')
+            $query->where(function($query) use ($search){
+                $query->where('name', 'like', '%' . $search['search_free'] . '%')
                 ->orWhere('detail', 'like', '%' . $search['search_free'] . '%');
+            });
         }
 
         if(isset($search['search_category'])){

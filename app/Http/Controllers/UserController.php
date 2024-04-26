@@ -17,7 +17,9 @@ class UserController extends Controller
      * User一覧
      */
     public function index(Request $request){
-        $users = User::query()->with('possesions');
+        $users = User::query()
+            ->with('possesions')
+            ->where('status', 'active');
         $types['gmpl'] = ['GMのみ', 'PLのみ', 'GMより', 'PLより'];
         $types['style'] = ['ボイスのみ', 'テキストのみ', '半分テキスト'];
         $types['item'] = Item::pluck('name', 'id');
@@ -40,8 +42,8 @@ class UserController extends Controller
         }
 
         // 通常
-        $users = $users->where('status', 'active')
-            ->orderby('id', 'desc')
+        $users = $users
+            ->orderBy('id', 'desc')
             ->paginate(20)->withQueryString();
         
         $users = User::noEmail($users);
@@ -67,12 +69,17 @@ class UserController extends Controller
      */
     public function profile_show($id)
     {
-        $users_obj = User::where('id', $id)->with('possesions');
+        $users_obj = User::where('id', $id)->with('possesions')->where('status', 'active');
         
         // Email渡さないように
         $users = $users_obj->get();
         $users = User::noEmail($users);
         $user = $users->first();
+        
+        // 存在しないユーザーの場合は戻る
+        if(!isset($user)){
+            return back();
+        }
 
         // 所持ルールブック一覧
         $user['possesions'] = $user->possesion_items()
@@ -186,11 +193,13 @@ class UserController extends Controller
      */
     public function search($query, $search){
         if(isset($search['search_free'])){
-            $query = $query->where('nickname', 'like', '%' . $search['search_free'] . '%')
-                ->orWhere('name', 'like', '%' . $search['search_free'] . '%')
+            $query = $query->where(function($query) use ($search){
+                $query->where('nickname', 'like', '%' . $search['search_free'] . '%')
+                ->where('name', 'like', '%' . $search['search_free'] . '%')
                 ->orWhere('oneword', 'like', '%' . $search['search_free'] . '%')
                 ->orWhere('comment', 'like', '%' . $search['search_free'] . '%')
                 ->orWhere('email', 'like', '%' . $search['search_free'] . '%');
+            });
         }
 
         if(isset($search['search_name'])){

@@ -3,6 +3,7 @@
 @section('title', 'Login画面')
 
 @section('content')
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-lg-7 col-md-10">
@@ -30,7 +31,9 @@
                                     </span>
                                 @enderror
                             </div>
+                            <span class="col-md-2 d-flex align-items-center">※ID優先です</span>
                         </div>
+                        
                         @endif
 
                         <div class="row mb-3">

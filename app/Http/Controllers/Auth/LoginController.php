@@ -76,6 +76,26 @@ class LoginController extends Controller
     }
 
     /**
+     * Attempt to log the user into the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    protected function attemptLogin(Request $request)
+    {
+        $credentials = $this->credentials($request);
+        if($this->guard()->attempt($credentials, $request->boolean('remember'))){
+            $user = $this->guard()->user();
+            if($user->status === 'deleted'){
+                $this->guard()->logout();
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * 管理者ログイン用
      */
     public function showAdminLoginForm()
@@ -104,7 +124,12 @@ class LoginController extends Controller
             'email' => $request->email, 
             'password' => $request->password,
             ],
-        $request->get('remember'))){
+            $request->get('remember')))
+        {
+            if(Auth::guard('admin')->user()->deleted_at){                
+                Auth::guard('admin')->logout();
+                return back()->withInput($request->only('email', 'remember'))->withErrors(['email' => 'auth.failed',]);
+            }
             return redirect()->intended('/');
         }
 
@@ -113,7 +138,7 @@ class LoginController extends Controller
         // user surpasses their maximum number of attempts they will get locked out.
         $this->incrementLoginAttempts($request);
 
-        return back()->withInput($request->only('email', 'remember'));
+        return back()->withInput($request->only('email', 'remember'))->withErrors(['email' => 'auth.failed',]);
     }
 
 

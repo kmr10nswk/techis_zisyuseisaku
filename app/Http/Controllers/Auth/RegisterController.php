@@ -55,12 +55,12 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'nickname' => ['required','string', 'max:20'],
-            'name' => ['required', 'string', 'min:6', 'max:20','regex:/^[a-zA-Z0-9]+$/'],
+            'name' => ['required', 'string', 'min:6', 'max:20','regex:/^[a-zA-Z0-9]+$/', 'unique:users'],
             'gmpl' => ['required', 'in:GMのみ,PLのみ,GMより,PLより', 'string'],
             'session_style' => ['required', 'array'],
             'session_style.*'  => ['string', 'in:ボイスのみ,テキストのみ,半テキ'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
         ]);
     }
 
