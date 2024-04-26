@@ -141,6 +141,9 @@
                     @endforeach
                 </tbody>
             </table>
+            <div class="d-flex justify-content-center">
+                {{ $users->appends(request()->query())->links() }}
+            </div>
         </div>
     </div>
     

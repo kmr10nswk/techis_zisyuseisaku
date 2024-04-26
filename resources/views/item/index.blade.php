@@ -241,6 +241,10 @@
                 </table>
             </div>
         </div>
+        
+        <div class="d-flex justify-content-center">
+            {{ $items->appends(request()->query())->links() }}
+        </div>
     </div>
 @stop
 

@@ -101,12 +101,17 @@
             </table>
         </div>
     </div>
+
     <!-- フラッシュメッセージ欄 -->
     @if (isset($nothing_message))
         <div class="alert alert-light col-5">
             {{ $nothing_message }}
         </div>
     @endif
+    
+    <div class="d-flex justify-content-center">
+        {{ $admins->appends(request()->query())->links() }}
+    </div>
 @stop
 
 @section('css')
