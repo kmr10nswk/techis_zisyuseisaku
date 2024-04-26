@@ -180,6 +180,7 @@ return [
         'search_gmpl'                 => 'GM/PL傾向',
         'search_style'                => 'セッションスタイル',
         'search_item'                 => '商品名',
+        'search_admin'                => '権限',
     ],
 
 ];

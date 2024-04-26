@@ -68,7 +68,7 @@
 
         {{-- User menu footer --}}
         <li class="user-footer">
-            @if(Auth::user())
+            @if(!Auth::guard('admin')->check())
             <a href="{{ route('users.profile.edit') }}" class="btn btn-default btn-flat d-flex justify-content-center">
                     <i class="fa fa-fw fa-user text-lightblue"></i>{{ __('adminlte::menu.profile') }}</a>
             @else
