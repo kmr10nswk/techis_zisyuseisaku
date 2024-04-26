@@ -115,7 +115,13 @@
                 <tbody>
                     @foreach ($users as $user)
                         <tr class="text-center">
-                            <td class="icon"><img src="{{ asset('storage/icon/'. $user->image_icon) }}" alt="アイコン"></td>
+                            <td class="icon">
+                                @if(app()->isLocal())
+                                    <img src="{{ asset('storage/icon/'. $user->image_icon) }}" alt="アイコン">
+                                @else
+                                    <img src="https://storage.googleapis.com/item-manegement/icon/{{ $user->image_icon }}" alt="アイコン">
+                                @endif
+                            </td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->nickname }}</td>
                             <td>{{ $user->gmpl }}</td>
