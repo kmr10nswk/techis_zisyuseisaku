@@ -54,7 +54,7 @@ class UserController extends Controller
         $bucket = $client->bucket($bucket_name);
         // signedUrlで簡単に署名付きURLが取得できる
         foreach($users as $user){
-            $user->url = $bucket->object($user->image_item)->signedUrl(
+            $user->url = $bucket->object($user->image_icon)->signedUrl(
                 new \Datetime('tomorrow'),
             );
         }
@@ -91,7 +91,7 @@ class UserController extends Controller
             : 'item-manegement';
         $bucket = $client->bucket($bucket_name);
         // signedUrlで簡単に署名付きURLが取得できる
-        $user->url = $bucket->object($user->image_item)->signedUrl(
+        $user->url = $bucket->object($user->image_icon)->signedUrl(
             new \Datetime('tomorrow'),
         );
 
@@ -113,7 +113,7 @@ class UserController extends Controller
             : 'item-manegement';
         $bucket = $client->bucket($bucket_name);
         // signedUrlで簡単に署名付きURLが取得できる
-        $user->url = $bucket->object($user->image_item)->signedUrl(
+        $user->url = $bucket->object($user->image_icon)->signedUrl(
             new \Datetime('tomorrow'),
         );
 
