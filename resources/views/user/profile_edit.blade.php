@@ -19,7 +19,12 @@
 @section('content')
     <div class="container">
         <div class="text-center my-3">
-            <img src="{{ $user->url }}" alt="プロフィールアイコン">
+            <p>
+                <img src="{{ $user->url }}" alt="旧アイコン" id="img-now">
+            </p>
+            <p id="img-new">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" id="preview" class="no-image">
+            </p>
         </div>
         <form method="POST" action="{{ url('users/profile/update', $user) }}" enctype="multipart/form-data">
         @csrf
@@ -29,7 +34,7 @@
                 <label for="image_icon" class="col-md-3 col-form-label text-md-end">{{__('アイコン')}}</label>
                 <div class="col-md-6">
                     <!-- Todo:時間があったらボタン装飾 -->
-                    <input type="file" name="image_icon" id="image_icon" style="display:block;">
+                    <input type="file" name="image_icon" id="image_icon" style="display:block;" accept='image/*' onchange="previewImage(this);">
 
                     @error('image_icon')
                         <span class="invalid-feedback" role="alert">
@@ -216,7 +221,19 @@
             }
         }
 
-        .container .text-center img{
+        .container .text-center #img-now{
+            max-width: 280px;
+            max-height: 280px;
+            width: 30%;
+            border-radius: 50%;
+            object-fit: contain;
+        }
+
+        .container .text-center p .no-image{
+            display: none;
+        }
+
+        .container .text-center p .loaded-image{
             max-width: 280px;
             max-height: 280px;
             width: 30%;
@@ -226,4 +243,29 @@
 @stop
 
 @section('js')
+    <script>
+        function previewImage(obj)
+        {
+            const previewImage = document.getElementById('preview');
+            const fileInput = document.getElementById('image_icon');
+            const nowImage = document.getElementById('img-now');
+
+            if (fileInput.files.length === 1) {
+                var fileReader = new FileReader();
+                fileReader.onload = function() {
+                    previewImage.src = fileReader.result;
+
+                    previewImage.classList.add('loaded-image');
+                    previewImage.classList.remove('no-image');
+                    nowImage.classList.add('no-image');
+                }
+                fileReader.readAsDataURL(obj.files[0]);
+            } else {
+                previewImage.src = '';
+                previewImage.classList.remove('loaded-image');
+                previewImage.classList.add('no-image');
+                nowImage.remove('no-image');
+            }
+        }
+    </script>
 @stop
