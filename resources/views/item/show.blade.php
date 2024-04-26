@@ -30,7 +30,7 @@
 
         <!-- アイコン部分 -->
         <div class="text-center my-3">
-            <img src="{{ asset('storage/item/' . $item->image_item) }}" alt="書籍画像">
+            <img src="{{ $item->url }}" alt="書籍画像">
         </div>
         
         <!-- 変更と削除 -->

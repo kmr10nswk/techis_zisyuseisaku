@@ -63,6 +63,19 @@ class ItemController extends Controller
         if($items->first() === null) {
             $nothing_message =  '検索結果はありません';
         }
+        
+        // 画像読み込み
+        $client = new StorageClient();
+        $bucket_name = app()->isLocal()
+            ? 'item-management-local'
+            : 'item-manegement';
+        $bucket = $client->bucket($bucket_name);
+        foreach($items as $item){
+            // signedUrlで簡単に署名付きURLが取得できる
+            $item->url = $bucket->object($item->image_item)->signedUrl(
+                new \Datetime('tomorrow'),
+            );
+        }
 
         return view('item.index', compact('items', 'search' , 'order', 'types', 'nothing_message'));
     }
@@ -88,7 +101,9 @@ class ItemController extends Controller
 
             // 画像処理
             $file = $request->file('image_item');
-            $file_name = isset($file) ? User::uploadImage($file, 'item') : 'default_item_1.jpg';
+            $file_name = isset($file)
+                ? User::uploadImage($file, 'item') 
+                : 'default_item_1.jpg';
 
             // 商品登録
             Item::create([
@@ -126,6 +141,17 @@ class ItemController extends Controller
         // blade整え
         $items = Item::listSeiton($items);
         $item = $items->first();
+        
+        // 画像読み込み
+        $client = new StorageClient();
+        $bucket_name = app()->isLocal()
+            ? 'item-management-local'
+            : 'item-manegement';
+        $bucket = $client->bucket($bucket_name);
+        // signedUrlで簡単に署名付きURLが取得できる
+        $item->url = $bucket->object($item->image_item)->signedUrl(
+            new \Datetime('tomorrow'),
+        );
 
         return view('item.show', compact('item'));
     }
@@ -135,24 +161,13 @@ class ItemController extends Controller
      */
     public function edit($id)
     {
-        // Todo:findだけでいい
-        $items = Item::where('id', $id)->get();
-        $items = Item::listSeiton($items);
-        $item = $items->first();
+        $item = Item::find($id);
 
         // 各リストを引き出す
         $category_list = Item::category_list();
         $theme_list = Item::theme_list();
         $kind_list = Item::kind_list();
         $company_list = Item::company_list();
-
-        // キーに戻す
-        foreach ($items as $item){
-            $item->category = array_search($item->category, $category_list);
-            $item->theme = array_search($item->theme, $theme_list);
-            $item->kind = array_search($item->kind, $kind_list);
-            $item->company = array_search($item->company, $company_list);
-        }
 
         // 画像の取得
         $client = new StorageClient();
@@ -161,10 +176,9 @@ class ItemController extends Controller
             : 'item-manegement';
         $bucket = $client->bucket($bucket_name);
         // signedUrlで簡単に署名付きURLが取得できる
-        $img_url = $bucket->object($item->image_item)->signedUrl(
+        $item->url = $bucket->object($item->image_item)->signedUrl(
             new \Datetime('tomorrow'),
         );
-        $item->url = $img_url;
 
         return view('item.edit', compact('item', 'category_list', 'theme_list', 'kind_list', 'company_list'));
     }
@@ -193,11 +207,9 @@ class ItemController extends Controller
 
         // 画像処理
         $file = $request->file('image_item');
-        if(!isset($file)){
-            $file_name = $request->moto_img;
-        } else {
-            $file_name = User::uploadImage($file, 'item');
-        }
+        $file_name = isset($file)
+            ? User::uploadImage($file, 'item')
+            : $item->image_item;
 
         // 商品上書き
         Item::where('id', $item->id)

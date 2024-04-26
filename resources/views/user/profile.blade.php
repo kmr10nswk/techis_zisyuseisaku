@@ -29,7 +29,7 @@
         </div>
 
         <div class="text-center my-3">
-            <img src="{{ asset('storage/icon/' . $user->image_icon) }}" alt="プロフィールアイコン">
+            <img src="{{ $user->url }}" alt="プロフィールアイコン">
         </div>
         
         <table class="table table-bordered mx-auto">

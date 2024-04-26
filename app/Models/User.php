@@ -101,17 +101,17 @@ class User extends Authenticatable
             : 'item-manegement';
         $bucket = $client->bucket($bucket_name);
 
-            // ランダム文字列の生成
-            $uuid = Str::uuid()->toString();
-            // パス/ランダム文字列.拡張子
-            $file_path = $path . '/' .$uuid . '.' . $file->getClientOriginalExtension();
+        // ランダム文字列の生成
+        $uuid = Str::uuid()->toString();
+        // パス/ランダム文字列.拡張子
+        $file_path = $path . '/' .$uuid . '.' . $file->getClientOriginalExtension();
 
-            //UPLOAD FILE TO GCS
-            // 'r'はread 書き込み自体は'name' => $file_pathの部分でやってる。
-            $object = $bucket->upload(fopen($file->getRealPath(), 'r'), 
-            [
-                'name'=> $file_path,
-            ]);
+        //UPLOAD FILE TO GCS
+        // 'r'はread 書き込み自体は'name' => $file_pathの部分でやってる。
+        $object = $bucket->upload(fopen($file->getRealPath(), 'r'), 
+        [
+            'name'=> $file_path,
+        ]);
 
         return $file_path;
     }

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Rules\CurrentPasswordRule;
+use Google\Cloud\Storage\StorageClient;
 
 class UserController extends Controller
 {
@@ -45,6 +46,19 @@ class UserController extends Controller
         
         $users = User::noEmail($users);
 
+        // 画像の取得
+        $client = new StorageClient();
+        $bucket_name = app()->isLocal()
+            ? 'item-management-local'
+            : 'item-manegement';
+        $bucket = $client->bucket($bucket_name);
+        // signedUrlで簡単に署名付きURLが取得できる
+        foreach($users as $user){
+            $user->url = $bucket->object($user->image_item)->signedUrl(
+                new \Datetime('tomorrow'),
+            );
+        }
+
         return view('user.index', compact('users', 'types', 'search', 'nothing_message'));
     }
 
@@ -54,9 +68,13 @@ class UserController extends Controller
     public function profile_show($id)
     {
         $users_obj = User::where('id', $id)->with('possesions');
+        
+        // Email渡さないように
         $users = $users_obj->get();
         $users = User::noEmail($users);
         $user = $users->first();
+
+        // 所持ルールブック一覧
         $user['possesions'] = $user->possesion_items()
             ->orderBy('name','asc')
             ->get();
@@ -65,6 +83,17 @@ class UserController extends Controller
         } else {
             $checkUser = "";
         }
+
+        //画像読み込み
+        $client = new StorageClient();
+        $bucket_name = app()->isLocal()
+            ? 'item-management-local'
+            : 'item-manegement';
+        $bucket = $client->bucket($bucket_name);
+        // signedUrlで簡単に署名付きURLが取得できる
+        $user->url = $bucket->object($user->image_item)->signedUrl(
+            new \Datetime('tomorrow'),
+        );
 
         return view('user.profile', compact('user', 'checkUser'));
     }
@@ -76,6 +105,17 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $user->session_style =  explode(',' ,$user->session_style);
+        
+        //画像読み込み
+        $client = new StorageClient();
+        $bucket_name = app()->isLocal()
+            ? 'item-management-local'
+            : 'item-manegement';
+        $bucket = $client->bucket($bucket_name);
+        // signedUrlで簡単に署名付きURLが取得できる
+        $user->url = $bucket->object($user->image_item)->signedUrl(
+            new \Datetime('tomorrow'),
+        );
 
         return view('user.profile_edit', compact('user'));
     }
@@ -118,7 +158,9 @@ class UserController extends Controller
 
         // 画像処理
         $file = $request->file('image_icon');
-        $data['image_icon'] = isset($file) ? User::uploadImage($file, 'icon') : 'default_icon_1.png';
+        $data['image_icon'] = isset($file)
+            ? User::uploadImage($file, 'icon')
+            : $user->image_icon;
 
         // 更新
         User::where('id', $user->id)
