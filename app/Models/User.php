@@ -106,8 +106,12 @@ class User extends Authenticatable
 
             // image_iconの時
             if(isset($file)){
-                $name = uniqid();
+                $name = uniqid() . $file->getClientOriginalExtension();
                 $file = $bucket->upload(fopen(storage_path($path . '/' . $name)), 'r');
+
+                $obj = $bucket->object($name);
+                $obj->downloadToFile(storage_path('app/public' . $path . '/' . $name));
+
                 return ($name);
             } elseif(!isset($file) && $path === 'icon') {
                 return 'default_icon_1.png';
@@ -116,18 +120,4 @@ class User extends Authenticatable
             }
         }
     }
-
-    /**
-     * GCSからの画像読み取り
-     */
-    // public static function downloadImage(string $name, string $path){
-    //     $client = new StorageClient();
-    //     $bucket = $client->bucket('item-manegement');
-    //     $objName = 'path/' . $name;
-
-    //     $img = $bucket->object($objName);
-    //     $imgData = $img->downloadAsStream();
-
-    //     return ;
-    // }
 }

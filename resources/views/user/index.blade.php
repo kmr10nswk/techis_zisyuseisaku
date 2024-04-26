@@ -116,11 +116,7 @@
                     @foreach ($users as $user)
                         <tr class="text-center">
                             <td class="icon">
-                                @if(app()->isLocal())
-                                    <img src="{{ asset('storage/icon/'. $user->image_icon) }}" alt="アイコン">
-                                @else
-                                    <img src="{{ $user->img_url }}" alt="アイコン">
-                                @endif
+                                <img src="{{ asset('storage/icon/'. $user->image_icon) }}" alt="アイコン">
                             </td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->nickname }}</td>
