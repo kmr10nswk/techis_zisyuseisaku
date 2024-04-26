@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Collection;
+use Google\Cloud\Storage\StorageClient;
 
 use App\Models\Policy;
 use App\Models\Possesion;
@@ -89,20 +90,44 @@ class User extends Authenticatable
      * @return string || bool
      */
     public static function uploadImage($file, $path) {
+        if(app()->isLocal()){
         // image_iconの時
-        if(isset($file) && $path === 'icon'){
-            $name = $file->store('public/' . $path);
-            return (basename($name));
-        } elseif(!isset($file) && $path === 'icon') {
-            return 'default_icon_1.png';
-        }
-        
-        // image_itemの時
-        if(isset($file) && $path === 'item') {
-            $name = $file->store('public/' . $path);
-            return (basename($name));
-        } elseif(!isset($file) && $path === 'item') {
-            return 'default_item_1.jpg';
+            if(isset($file) && $path === 'icon'){
+                $name = $file->store('public/' . $path);
+                return (basename($name));
+            } elseif(!isset($file) && $path === 'icon') {
+                return 'default_icon_1.png';
+            } elseif(!isset($file) && $path === 'item') {
+                return 'default_item_1.jpg';
+            }
+        } else {
+            $client = new StorageClient();
+            $bucket = $client->bucket('item-manegement');
+
+            // image_iconの時
+            if(isset($file)){
+                $name = uniqid();
+                $file = $bucket->upload(fopen(storage_path($path . '/' . $name)), 'r');
+                return ($name);
+            } elseif(!isset($file) && $path === 'icon') {
+                return 'default_icon_1.png';
+            } elseif(!isset($file) && $path === 'item') {
+                return 'default_item_1.jpg';
+            }
         }
     }
+
+    /**
+     * GCSからの画像読み取り
+     */
+    // public static function downloadImage(string $name, string $path){
+    //     $client = new StorageClient();
+    //     $bucket = $client->bucket('item-manegement');
+    //     $objName = 'path/' . $name;
+
+    //     $img = $bucket->object($objName);
+    //     $imgData = $img->downloadAsStream();
+
+    //     return ;
+    // }
 }
