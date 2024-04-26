@@ -103,7 +103,7 @@ class ItemController extends Controller
             $file = $request->file('image_item');
             $file_name = isset($file)
                 ? User::uploadImage($file, 'item') 
-                : 'default_item_1.jpg';
+                : 'item/default_item_1.jpg';
 
             // 商品登録
             Item::create([
