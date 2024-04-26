@@ -310,7 +310,7 @@ class ItemController extends Controller
         }
 
         if($order['order'] === 'desc_order'){
-            $query = $query->orderby('release', 'asc');
+            $query = $query->orderby('release', 'desc');
             return $query;
         }
         
