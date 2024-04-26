@@ -17,7 +17,7 @@ class AdminController extends Controller
      */
     public function index(Request $request){
         $admins = Admin::query();
-        $admin_list = ['商品のみ', '掲示板のみ', '全て'];
+        $admin_list = ['商品', '掲示板', '全て'];
 
         // 検索用
         $search = $request->only(['search_name', 'search_email', 'search_admin']);
@@ -161,10 +161,10 @@ class AdminController extends Controller
             $query = $query->where('email', 'like', '%' . $search['search_email'] . '%');
         }
         
-        if(isset($search['search_admin'])){
-            // Todo:わからん
-            $query = $query->where();
-        }
+        // if(isset($search['search_admin'])){
+        //     // Todo:わからん
+        //     $query = $query->where();
+        // }
         
         return $query;
     }
