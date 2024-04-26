@@ -27,7 +27,7 @@
                 <label for="" class="col-md-3 col-form-label text-md-end">{{__('書籍画像')}}</label>
                 <div class="col-md-6">
                     <p>
-                        <img src="{{ asset('storage/item/' . $item->image_item) }}" alt="旧書籍画像" id="img-now" class="">
+                        <img src="{{ $item->url }}" alt="旧書籍画像" id="img-now" class="">
                     </p>
                     <p id="img-new">
                         <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" id="preview" class="no-image">

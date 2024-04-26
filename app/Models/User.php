@@ -10,10 +10,12 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Collection;
 use Google\Cloud\Storage\StorageClient;
+use Illuminate\Support\Str;
 
 use App\Models\Policy;
 use App\Models\Possesion;
 use App\Models\Item;
+use Stringable;
 
 class User extends Authenticatable
 {
@@ -90,34 +92,27 @@ class User extends Authenticatable
      * @return string || bool
      */
     public static function uploadImage($file, $path) {
-        if(app()->isLocal()){
-        // image_iconの時
-            if(isset($file) && $path === 'icon'){
-                $name = $file->store('public/' . $path);
-                return (basename($name));
-            } elseif(!isset($file) && $path === 'icon') {
-                return 'default_icon_1.png';
-            } elseif(!isset($file) && $path === 'item') {
-                return 'default_item_1.jpg';
-            }
-        } else {
-            $client = new StorageClient();
-            $bucket = $client->bucket('item-manegement');
+        // バケットの指定
+        $client = new StorageClient();
 
-            // image_iconの時
-            if(isset($file)){
-                $name = uniqid() . $file->getClientOriginalExtension();
-                $file = $bucket->upload(fopen(storage_path($path . '/' . $name)), 'r');
+        // ローカルと本番で保存バケットを変更
+        $bucket_name = app()->isLocal()
+            ? 'item-management-local'
+            : 'item-manegement';
+        $bucket = $client->bucket($bucket_name);
 
-                $obj = $bucket->object($name);
-                $obj->downloadToFile(storage_path('app/public' . $path . '/' . $name));
+            // ランダム文字列の生成
+            $uuid = Str::uuid()->toString();
+            // パス/ランダム文字列.拡張子
+            $file_path = $path . '/' .$uuid . '.' . $file->getClientOriginalExtension();
 
-                return ($name);
-            } elseif(!isset($file) && $path === 'icon') {
-                return 'default_icon_1.png';
-            } elseif(!isset($file) && $path === 'item') {
-                return 'default_item_1.jpg';
-            }
-        }
+            //UPLOAD FILE TO GCS
+            // 'r'はread 書き込み自体は'name' => $file_pathの部分でやってる。
+            $object = $bucket->upload(fopen($file->getRealPath(), 'r'), 
+            [
+                'name'=> $file_path,
+            ]);
+
+        return $file_path;
     }
 }

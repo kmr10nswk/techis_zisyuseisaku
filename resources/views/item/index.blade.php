@@ -176,7 +176,7 @@
                                 @endif
                             @endif
                             <div class="card-img mx-auto">
-                                <img src="{{ asset('storage/item/' . $item->image_item) }}" alt="書籍画像" class="mx-auto card-img-top d-block">
+                                <img src="{{ $item->image_item }}" alt="書籍画像" class="mx-auto card-img-top d-block">
                             </div>
                             <hr>
                             <div class="card-body py-0">

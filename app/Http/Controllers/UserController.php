@@ -118,7 +118,7 @@ class UserController extends Controller
 
         // 画像処理
         $file = $request->file('image_icon');
-        $data['image_icon'] = User::uploadImage($file, 'icon');
+        $data['image_icon'] = isset($file) ? User::uploadImage($file, 'icon') : 'default_icon_1.png';
 
         // 更新
         User::where('id', $user->id)
