@@ -3,7 +3,7 @@
 @if($checkUser === $user->id)
     @section('title', 'マイプロフィール')
 @else
-    @section('title', '{{ $user->nickname }}さんのプロフィール')
+    @section('title', 'プロフィール画面')
 @endif
 
 @section('content_header')
