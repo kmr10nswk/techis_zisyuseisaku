@@ -269,7 +269,7 @@ class ItemController extends Controller
         // 検索クエリ(多分本当はsearch用のファイルを作った方が良い気がする)
         if(isset($search['search_free'])){  
             $query->where(function($query) use ($search){
-                $query->where('name', 'like', '%' . $search['search_free'] . '%')
+                $query->orWhere('name', 'like', '%' . $search['search_free'] . '%')
                 ->orWhere('detail', 'like', '%' . $search['search_free'] . '%');
             });
         }

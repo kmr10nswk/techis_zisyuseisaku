@@ -194,8 +194,8 @@ class UserController extends Controller
     public function search($query, $search){
         if(isset($search['search_free'])){
             $query = $query->where(function($query) use ($search){
-                $query->where('nickname', 'like', '%' . $search['search_free'] . '%')
-                ->where('name', 'like', '%' . $search['search_free'] . '%')
+                $query->orWhere('nickname', 'like', '%' . $search['search_free'] . '%')
+                ->orWhere('name', 'like', '%' . $search['search_free'] . '%')
                 ->orWhere('oneword', 'like', '%' . $search['search_free'] . '%')
                 ->orWhere('comment', 'like', '%' . $search['search_free'] . '%')
                 ->orWhere('email', 'like', '%' . $search['search_free'] . '%');
