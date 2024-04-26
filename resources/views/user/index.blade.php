@@ -119,7 +119,7 @@
                                 @if(app()->isLocal())
                                     <img src="{{ asset('storage/icon/'. $user->image_icon) }}" alt="アイコン">
                                 @else
-                                    <img src="https://storage.googleapis.com/item-manegement/icon/{{ $user->image_icon }}" alt="アイコン">
+                                    <img src="{{ $user->img_url }}" alt="アイコン">
                                 @endif
                             </td>
                             <td>{{ $user->name }}</td>
