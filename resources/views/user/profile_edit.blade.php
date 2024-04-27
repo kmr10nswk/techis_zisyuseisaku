@@ -201,7 +201,7 @@
                 </div>
             </div>
 
-            <div class="row mb-0">
+            <div class="row mb-0 pb-5">
                 <div class="col-md-6 mx-auto text-center">
                     <button type="submit" class="btn btn-primary">
                         {{ __('更新') }}

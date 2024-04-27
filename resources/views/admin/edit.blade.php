@@ -60,7 +60,7 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">更新</button>
+        <button type="submit" class="btn btn-primary pb-5">更新</button>
     </form>
 </div>
 
