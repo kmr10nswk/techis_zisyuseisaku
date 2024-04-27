@@ -42,7 +42,7 @@ class AdminController extends Controller
             $admin['policy_name'] = Admin::policyType($admin);
         }
 
-        return view('admin.index', compact('admins', 'admin_list', 'search'));
+        return view('admin.index', compact('admins', 'admin_list', 'search', 'nothing_message'));
     }
 
     /**
