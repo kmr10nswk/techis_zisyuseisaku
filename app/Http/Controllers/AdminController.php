@@ -35,7 +35,7 @@ class AdminController extends Controller
 
         // 通常
         $admins = $admins->where('deleted_at', null)
-            ->orderby('id', 'asc')
+            ->orderby('id', 'desc')
             ->paginate(10)->withQueryString();
         
         foreach($admins as $admin){
