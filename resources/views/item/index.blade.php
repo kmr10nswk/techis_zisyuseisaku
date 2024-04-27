@@ -97,7 +97,7 @@
                     <label for="search_possesion" class="form-label mb-0">所持者数</label>
                     <div class="row">
                         <div class="col-lg-3 col-md-4 col-sm-2 pr-1">
-                            <input name="search_possesion" type="text" class="form-control @error('search_possesion') is-invalid @enderror" id="search_possesion" placeholder="0~">
+                            <input name="search_possesion" type="text" class="form-control @error('search_possesion') is-invalid @enderror" value="{{ isset($search['search_possesion']) ? $search['search_possesion'] : '' }}" id="search_possesion" placeholder="0~">
 
                             @error('search_possesion')
                                 <span class="invalid-feedback" role="alert">
@@ -107,8 +107,8 @@
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-3 p-0">
                             <select name="search_condition" class="form-control @error('search_condition') is-invalid @enderror">
-                                <option value="up">以上</option>
-                                <option value="down">以下</option>
+                                <option value="up" @if(isset($search['search_condition']) && $search['search_condition'] == 'up') selected @endif>以上</option>
+                                <option value="down" @if(isset($search['search_condition']) && $search['search_condition'] == 'down') selected @endif>以下</option>
                             </select>
                             
                             @error('search_condition')
