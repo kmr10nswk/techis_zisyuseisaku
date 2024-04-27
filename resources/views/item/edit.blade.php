@@ -47,9 +47,9 @@
                 <label for="name" class="col-md-3 col-form-label text-md-end">{{__('書籍名')}}</label>
 
                 <div class="col-md-6">
-                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $item->name) }}" required autocomplete="name" autofocus>
+                    <input id="name" type="text" class="form-control @error('bookName') is-invalid @enderror" name="bookName" value="{{ old('bookName', $item->name) }}" required autocomplete="name" autofocus>
 
-                    @error('name')
+                    @error('bookName')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>

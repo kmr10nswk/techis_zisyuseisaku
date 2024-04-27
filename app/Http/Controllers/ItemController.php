@@ -89,7 +89,7 @@ class ItemController extends Controller
         if ($request->isMethod('post')) {
             // バリデーション
             $this->validate($request, [
-                'name' => ['required', 'max:50', 'string'],
+                'bookName' => ['required', 'max:50', 'string'],
                 'category' => ['required', 'between:1,4'],
                 'theme' => ['required', 'between:1,7',],
                 'kind' => ['required', 'between:1,3',],
@@ -107,7 +107,7 @@ class ItemController extends Controller
 
             // 商品登録
             Item::create([
-                'name' => $request->name,
+                'name' => $request->bookName,
                 'category' => $request->category,
                 'theme' => $request->theme,
                 'kind' => $request->kind,
@@ -205,7 +205,7 @@ class ItemController extends Controller
 
         // バリデーション
         $this->validate($request, [
-            'name' => ['required', 'max:50', 'string'],
+            'bookName' => ['required', 'max:50', 'string'],
             'category' => ['required', 'between:1,4'],
             'theme' => ['required', 'between:1,7',],
             'kind' => ['required', 'between:1,3',],
@@ -224,7 +224,7 @@ class ItemController extends Controller
         // 商品上書き
         Item::where('id', $item->id)
             ->update([
-                'name' => $request->name,
+                'name' => $request->bookName,
                 'category' => $request->category,
                 'theme' => $request->theme,
                 'kind' => $request->kind,
