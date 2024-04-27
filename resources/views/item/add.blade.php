@@ -4,7 +4,15 @@
 @section('title', '商品登録')
 
 @section('content_header')
-    <h1>商品登録</h1>
+    <div class="row">
+        <h1>商品登録画面</h1>
+        <div class="input-group input-group-sm col">
+            <div class="input-group-append ml-auto">
+                <a href="{{ route('items.show', $item->id) }}" class="btn btn-default">戻る</a>
+            </div>
+        </div>
+    </div>
+    <hr>
 @stop
 
 @section('content')
