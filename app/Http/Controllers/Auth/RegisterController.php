@@ -42,7 +42,8 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except(['showAdminRegisterForm', 'registerAdmin']);
+        $this->middleware('guest:web');
+        $this->middleware('guest:admin')->except(['showAdminRegisterForm', 'registerAdmin']);
     }
 
     /**
