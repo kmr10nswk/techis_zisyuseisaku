@@ -34,7 +34,7 @@
             <label for="name" class="col-md-3 col-form-label text-md-end">{{__('書籍名')}}</label>
 
             <div class="col-md-6">
-                <input id="name" type="text" class="form-control @error('bookName') is-invalid @enderror" name="bookName" value="{{ old('bookName') }}" required autocomplete="name" autofocus>
+                <input id="name" type="text" class="form-control @error('bookName') is-invalid @enderror" name="bookName" value="{{ old('bookName') }}" required autocomplete="name" maxlength="50" autofocus>
 
                 @error('bookName')
                     <span class="invalid-feedback" role="alert">
@@ -135,7 +135,7 @@
             <label for="detail" class="col-md-3 col-form-label text-md-end">{{ __('詳細') }}</label>
 
             <div class="col-md-6">
-                <textarea id="detail" rows="10" maxlength="500" class="form-control @error('detail') is-invalid @enderror" name="detail" autocomplete="detail" required>{{ old('detail') }}</textarea>
+                <textarea id="detail" rows="10" maxlength="500" class="form-control @error('detail') is-invalid @enderror" name="detail" maxlength="500" autocomplete="detail" required>{{ old('detail') }}</textarea>
 
                 @error('detail')
                     <span class="invalid-feedback" role="alert">
