@@ -157,7 +157,7 @@
                 </div>
             </div>
 
-            <div class="text-center">
+            <div class="text-center pb-5">
                 <button type="submit" class="btn btn-primary">
                     {{ __('更新') }}
                 </button>
