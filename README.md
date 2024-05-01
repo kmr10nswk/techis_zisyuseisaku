@@ -18,16 +18,16 @@
 * 商品の新規登録、変更、削除
 
 ### 開発環境
-    ```console
-    PHP 8.3
-    MySQL 8.0
-    Laravel 10
-    ```
+```
+PHP 8.3
+MySQL 8.0
+Laravel 10
+```
 ### 設計書
-`[設計書ページへ](https://docs.google.com/spreadsheets/d/1E85HU6zMW3Bc3RNEOs1tbDJNBD0HABIZ/edit?usp=drive_link&ouid=107675818066869907379&rtpof=true&sd=true)`
+[設計書ページへ](https://docs.google.com/spreadsheets/d/1E85HU6zMW3Bc3RNEOs1tbDJNBD0HABIZ/edit?usp=drive_link&ouid=107675818066869907379&rtpof=true&sd=true)
 
 ### システム閲覧
-`[アプリケーションページへ](https://item-management-kimura-a53060a9dc04.herokuapp.com/register)`
+[アプリケーションページへ](https://item-management-kimura-a53060a9dc04.herokuapp.com/register)
 
 ### テストアカウント情報
 ```
